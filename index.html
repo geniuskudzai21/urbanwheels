@@ -31,12 +31,7 @@
   </script>
   <style>
     * { box-sizing: border-box; }
-    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; cursor: none; }
-    .cursor { position: fixed; width: 12px; height: 12px; background: #e31515; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.2s, height 0.2s; }
-    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid #e31515; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s; }
-    body:hover .cursor-ring { opacity: 1; }
-    .cursor.expand { width: 20px; height: 20px; }
-    .cursor-ring.expand { width: 60px; height: 60px; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; }
 
     /* Ticker */
     .ticker-wrap { overflow: hidden; white-space: nowrap; }
@@ -96,10 +91,6 @@
 </head>
 <body class="bg-uw-black text-uw-white">
 
-  <!-- Custom Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
-
   <!-- ═══════════════════════════════════════
        NAVIGATION
   ═══════════════════════════════════════ -->
@@ -107,9 +98,7 @@
     <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-uw-red flex items-center justify-center">
-          <span class="font-display text-uw-white text-lg leading-none">U</span>
-        </div>
+        <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
         <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
       </a>
 
@@ -194,7 +183,7 @@
           </h1>
 
           <div class="flex items-start gap-6 mt-8 fade-in-up" style="animation-delay:0.45s">
-            <div class="w-12 h-px bg-uw-red mt-3 flex-shrink-0"></div>
+          
             <p class="font-body text-uw-muted text-lg leading-relaxed max-w-md">
               Urban Wheels curates Zimbabwe's most sought-after vehicles. From track-ready performance cars to refined luxury SUVs — we bring the extraordinary to your doorstep.
             </p>
@@ -206,7 +195,7 @@
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
             <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300">
-              Book a Test Drive
+              Contact Us Now
             </a>
           </div>
         </div>
@@ -217,20 +206,18 @@
             <!-- Accent box -->
             <div class="absolute -top-4 -left-4 w-full h-full border border-uw-red opacity-40"></div>
             <div class="bg-uw-gray border border-uw-mid p-0 relative overflow-hidden" id="hero-featured-card">
-              <!-- Skeleton -->
-              <div class="skeleton h-56 w-full" id="hero-skeleton"></div>
-              <div class="p-6 hidden" id="hero-card-content">
+              <img src="assets/hero.jpeg" alt="Featured Vehicle" class="w-full h-56 object-cover">
+              <div class="p-6" id="hero-card-content">
                 <div class="flex justify-between items-start mb-3">
                   <div>
                     <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-1" id="hero-tag">Featured</div>
-                    <h3 class="font-display text-2xl tracking-wide" id="hero-name">Loading...</h3>
-                    <p class="font-body text-uw-muted text-sm" id="hero-sub"></p>
+                    <h3 class="font-display text-2xl tracking-wide" id="hero-name">Toyota BMW BENZ HONDA FORD..</h3>
+                    <p class="font-body text-uw-muted text-sm" id="hero-sub">24/7 Customer Assistance • Top Performance</p>
                   </div>
                   <div class="text-right">
                     <div class="font-display text-3xl text-uw-red" id="hero-price"></div>
                   </div>
                 </div>
-                <div class="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-uw-mid" id="hero-specs"></div>
               </div>
             </div>
           </div>
@@ -456,9 +443,7 @@
       <div class="grid md:grid-cols-4 gap-12 mb-16">
         <div class="md:col-span-2">
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-8 bg-uw-red flex items-center justify-center">
-              <span class="font-display text-uw-white text-lg leading-none">U</span>
-            </div>
+            <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
             <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
           </div>
           <p class="font-body text-uw-muted text-sm leading-relaxed max-w-xs">Zimbabwe's premier automotive dealership. Curating exceptional vehicles since 2018.</p>
@@ -502,20 +487,6 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
   <script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursor-ring');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-    });
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.classList.add('expand'); ring.classList.add('expand'); });
-      el.addEventListener('mouseleave', () => { cursor.classList.remove('expand'); ring.classList.remove('expand'); });
-    });
-
     // Mobile menu
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');

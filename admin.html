@@ -275,6 +275,21 @@
               </div>
             </div>
 
+                <!-- Price and Inspection -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Price (USD) *</label>
+                <input type="number" id="f-price" placeholder="45000" min="0" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Inspection Status</label>
+                <select id="f-inspection" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="with inspection">With Inspection</option>
+                  <option value="without inspection">Without Inspection</option>
+                </select>
+              </div>
+            </div>
+
             <!-- Description Section -->
             <div class="border-l-4 border-uw-red pl-6 mb-6">
               <h3 class="font-display text-xl text-uw-red mb-4">VEHICLE DETAILS</h3>
@@ -528,6 +543,7 @@
       document.getElementById('f-color').value = car.color || '';
       document.getElementById('f-engine').value = car.engine || '';
       document.getElementById('f-desc').value = car.description || '';
+      document.getElementById('f-inspection').value = car.inspection || 'with inspection';
       if (car.image_url) {
         document.getElementById('img-preview-wrap').style.display = 'block';
         document.getElementById('img-preview').src = car.image_url;
@@ -582,6 +598,7 @@
         engine: document.getElementById('f-engine').value,
         image_url: imageUrl,
         description: document.getElementById('f-desc').value,
+        inspection: document.getElementById('f-inspection').value,
       };
 
       const editId = document.getElementById('edit-car-id').value;

@@ -259,13 +259,16 @@
         </div>
       </div>
       <div class="border-t border-uw-mid pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels. All rights reserved.</div>
+        <div class="font-mono text-uw-muted text-xs">© <span id="current-year"></span> Urban Wheels. All rights reserved.</div>
         <div class="font-mono text-uw-muted text-xs">Harare, Zimbabwe</div>
       </div>
     </div>
   </footer>
 
   <script>
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
     document.getElementById('menu-toggle').addEventListener('click', () => {
       document.getElementById('mobile-menu').classList.toggle('open');
     });

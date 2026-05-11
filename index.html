@@ -201,7 +201,7 @@
         </div>
 
         <!-- Right: Featured Car Card -->
-        <div class="lg:col-span-5 relative mt-16 lg:mt-0 fade-in-up" style="animation-delay:0.5s">
+        <div class="lg:col-span-5 relative mt-8 lg:mt-8 fade-in-up" style="animation-delay:0.5s">
           <div class="relative">
             <!-- Accent box -->
             <div class="absolute -top-4 -left-4 w-full h-full border border-uw-red opacity-40"></div>
@@ -474,7 +474,7 @@
       </div>
 
       <div class="border-t border-uw-mid pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels. All rights reserved.</div>
+        <div class="font-mono text-uw-muted text-xs">© <span id="current-year"></span> Urban Wheels. All rights reserved.</div>
         <div class="font-mono text-uw-muted text-xs">Harare, Zimbabwe</div>
       </div>
     </div>
@@ -487,6 +487,9 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
   <script>
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
     // Mobile menu
     const toggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');

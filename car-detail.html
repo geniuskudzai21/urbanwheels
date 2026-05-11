@@ -194,7 +194,7 @@
         <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
         <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
       </div>
-      <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels · Harare, Zimbabwe</div>
+      <div class="font-mono text-uw-muted text-xs">© <span id="current-year"></span> Urban Wheels · Harare, Zimbabwe</div>
     </div>
   </footer>
 
@@ -202,6 +202,9 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
   <script>
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
     document.getElementById('menu-toggle').addEventListener('click', () => {
       document.getElementById('mobile-menu').classList.toggle('open');
     });

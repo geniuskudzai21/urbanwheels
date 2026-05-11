@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Wheels — Drive Different</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'uw-black': '#0a0a0a',
+            'uw-white': '#f5f0eb',
+            'uw-red': '#e31515',
+            'uw-gray': '#1a1a1a',
+            'uw-mid': '#2e2e2e',
+            'uw-muted': '#7a7a7a',
+          },
+          fontFamily: {
+            display: ['Bebas Neue', 'sans-serif'],
+            body: ['Barlow', 'sans-serif'],
+            mono: ['Space Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; cursor: none; }
+    .cursor { position: fixed; width: 12px; height: 12px; background: #e31515; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.2s, height 0.2s; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid #e31515; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s; }
+    body:hover .cursor-ring { opacity: 1; }
+    .cursor.expand { width: 20px; height: 20px; }
+    .cursor-ring.expand { width: 60px; height: 60px; }
+
+    /* Ticker */
+    .ticker-wrap { overflow: hidden; white-space: nowrap; }
+    .ticker-inner { display: inline-flex; animation: ticker 30s linear infinite; }
+    .ticker-inner:hover { animation-play-state: paused; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* Hero large text */
+    .hero-word { font-family: 'Bebas Neue', sans-serif; line-height: 0.88; letter-spacing: -0.02em; }
+
+    /* Card hover */
+    .car-card { transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .car-card:hover { transform: translateY(-6px); }
+    .car-card:hover .card-img { filter: brightness(1.05); }
+    .card-img { transition: filter 0.3s; }
+
+    /* Number counter */
+    .stat-num { font-family: 'Bebas Neue'; font-size: clamp(3rem, 6vw, 5rem); color: #e31515; }
+
+    /* Marquee divider */
+    .marquee-red { background: #e31515; }
+
+    /* Nav underline */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px; background: #e31515; transition: width 0.3s; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Section reveal */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Diagonal cut */
+    .diagonal-cut { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
+
+    /* Featured badge */
+    .badge-featured { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-family: 'Space Mono'; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+    /* Price tag */
+    .price-slash { font-family: 'Bebas Neue'; color: #e31515; font-size: 1.6rem; }
+
+    /* Search bar */
+    input:focus { outline: none; border-color: #e31515; }
+
+    /* Mobile menu */
+    #mobile-menu { transition: max-height 0.4s ease, opacity 0.4s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+
+    .filter-btn.active { background: #e31515; color: #f5f0eb; border-color: #e31515; }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    .fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+
+    /* Loading skeleton */
+    .skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #2e2e2e 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  </style>
+</head>
+<body class="bg-uw-black text-uw-white">
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ═══════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════ -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center">
+          <span class="font-display text-uw-white text-lg leading-none">U</span>
+        </div>
+        <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-red">Home</a>
+        <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white hover:text-uw-white">Inventory</a>
+        <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">About</a>
+        <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="hamburger-line block w-6 h-0.5 bg-uw-white transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-uw-white transition-all duration-300"></span>
+        <span class="hamburger-line block w-4 h-0.5 bg-uw-red transition-all duration-300"></span>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6 py-0">
+      <div class="flex flex-col gap-0">
+        <a href="index.html" class="font-display text-2xl py-3 text-uw-red border-b border-uw-mid">Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Contact</a>
+        <a href="admin.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Admin ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       TICKER BANNER
+  ═══════════════════════════════════════ -->
+  <div class="pt-16 bg-uw-red overflow-hidden py-2.5">
+    <div class="ticker-wrap">
+      <div class="ticker-inner">
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Premium Vehicles</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Zimbabwe's Finest Auto Dealer</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Finance Available</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Trade-In Welcome</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Certified Pre-Owned</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Premium Vehicles</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Zimbabwe's Finest Auto Dealer</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Finance Available</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Trade-In Welcome</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Certified Pre-Owned</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="min-h-screen bg-uw-black flex flex-col justify-center relative overflow-hidden">
+    <!-- Background Grid -->
+    <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(0deg, #f5f0eb 0, #f5f0eb 1px, transparent 1px, transparent 80px), repeating-linear-gradient(90deg, #f5f0eb 0, #f5f0eb 1px, transparent 1px, transparent 80px);"></div>
+
+    <!-- Large BG number -->
+    <div class="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[20rem] leading-none text-uw-white opacity-[0.03] select-none pointer-events-none pr-4">01</div>
+
+    <div class="max-w-screen-xl mx-auto px-6 w-full py-20">
+      <div class="grid lg:grid-cols-12 gap-0 items-center">
+        <!-- Left Text -->
+        <div class="lg:col-span-7 relative z-10">
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-6 fade-in-up" style="animation-delay:0.1s">Harare, Zimbabwe — Est. 2018</div>
+
+          <h1 class="hero-word text-[clamp(5rem,14vw,13rem)] text-uw-white leading-none mb-0 fade-in-up" style="animation-delay:0.2s">DRIVE</h1>
+          <h1 class="hero-word text-[clamp(5rem,14vw,13rem)] leading-none mb-0 fade-in-up" style="animation-delay:0.3s">
+            <span class="text-uw-white">DIF</span><span class="text-uw-red">FER</span><span class="text-uw-white">ENT</span>
+          </h1>
+
+          <div class="flex items-start gap-6 mt-8 fade-in-up" style="animation-delay:0.45s">
+            <div class="w-12 h-px bg-uw-red mt-3 flex-shrink-0"></div>
+            <p class="font-body text-uw-muted text-lg leading-relaxed max-w-md">
+              Urban Wheels curates Zimbabwe's most sought-after vehicles. From track-ready performance cars to refined luxury SUVs — we bring the extraordinary to your doorstep.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-4 mt-10 fade-in-up" style="animation-delay:0.55s">
+            <a href="inventory.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-3">
+              Browse Inventory
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300">
+              Book a Test Drive
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Featured Car Card -->
+        <div class="lg:col-span-5 relative mt-16 lg:mt-0 fade-in-up" style="animation-delay:0.5s">
+          <div class="relative">
+            <!-- Accent box -->
+            <div class="absolute -top-4 -left-4 w-full h-full border border-uw-red opacity-40"></div>
+            <div class="bg-uw-gray border border-uw-mid p-0 relative overflow-hidden" id="hero-featured-card">
+              <!-- Skeleton -->
+              <div class="skeleton h-56 w-full" id="hero-skeleton"></div>
+              <div class="p-6 hidden" id="hero-card-content">
+                <div class="flex justify-between items-start mb-3">
+                  <div>
+                    <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-1" id="hero-tag">Featured</div>
+                    <h3 class="font-display text-2xl tracking-wide" id="hero-name">Loading...</h3>
+                    <p class="font-body text-uw-muted text-sm" id="hero-sub"></p>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-display text-3xl text-uw-red" id="hero-price"></div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-uw-mid" id="hero-specs"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 fade-in-up" style="animation-delay:0.8s">
+      <span class="font-mono text-uw-muted text-[10px] tracking-widest uppercase">Scroll</span>
+      <div class="w-px h-12 bg-uw-mid relative overflow-hidden">
+        <div class="w-full h-1/2 bg-uw-red absolute top-0 animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STATS BAR
+  ═══════════════════════════════════════ -->
+  <section class="bg-uw-gray border-y border-uw-mid py-12">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="reveal">
+          <div class="stat-num" data-target="350">0</div>
+          <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mt-1">Cars Sold</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.1s">
+          <div class="stat-num" data-target="12">0</div>
+          <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mt-1">Brands Available</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.2s">
+          <div class="stat-num" data-target="6">0</div>
+          <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mt-1">Years Experience</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.3s">
+          <div class="stat-num" data-target="98">0</div>
+          <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mt-1">% Client Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FEATURED CARS
+  ═══════════════════════════════════════ -->
+  <section class="py-24 bg-uw-black">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <!-- Section Header -->
+      <div class="flex items-end justify-between mb-16 reveal">
+        <div>
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Featured Listings</div>
+          <h2 class="font-display text-[clamp(3rem,7vw,6rem)] leading-none text-uw-white">HAND<span class="text-uw-red">PICKED</span><br>FOR YOU</h2>
+        </div>
+        <a href="inventory.html" class="hidden md:flex items-center gap-2 font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">
+          View All <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Cars Grid -->
+      <div id="featured-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Skeleton placeholders -->
+        <div class="skeleton h-80 rounded-none"></div>
+        <div class="skeleton h-80 rounded-none"></div>
+        <div class="skeleton h-80 rounded-none"></div>
+      </div>
+
+      <div class="mt-8 md:hidden text-center reveal">
+        <a href="inventory.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">View All Inventory →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MARQUEE DIVIDER
+  ═══════════════════════════════════════ -->
+  <div class="marquee-red py-4 overflow-hidden">
+    <div class="ticker-wrap">
+      <div class="ticker-inner">
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">URBAN WHEELS</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">DRIVE DIFFERENT</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">URBAN WHEELS</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">DRIVE DIFFERENT</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">URBAN WHEELS</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">DRIVE DIFFERENT</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <!-- dup -->
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">URBAN WHEELS</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+        <span class="font-display text-uw-white text-5xl px-6 leading-none">DRIVE DIFFERENT</span>
+        <span class="font-display text-uw-black text-5xl px-6 leading-none opacity-40">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       WHY URBAN WHEELS
+  ═══════════════════════════════════════ -->
+  <section class="py-24 bg-uw-gray">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left -->
+        <div class="reveal">
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Why Choose Us</div>
+          <h2 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-8">THE URBAN<br>WHEELS<br><span class="text-uw-red">DIFFERENCE</span></h2>
+          <p class="font-body text-uw-muted leading-relaxed mb-8 max-w-md">We don't just sell cars. We match you with a machine that reflects who you are. Every vehicle in our inventory is hand-selected, inspected, and certified by our team of automotive experts.</p>
+          <a href="about.html" class="font-mono text-sm uppercase tracking-widest text-uw-white border-b border-uw-red pb-1 hover:text-uw-red transition-colors">Our Story →</a>
+        </div>
+        <!-- Right: Feature Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 reveal" style="transition-delay:0.2s">
+          <div class="border border-uw-mid p-6 hover:border-uw-red transition-colors duration-300 group">
+            <div class="font-display text-5xl text-uw-red mb-3">01</div>
+            <h3 class="font-body font-700 text-lg mb-2 group-hover:text-uw-red transition-colors">Certified Inspection</h3>
+            <p class="font-body text-uw-muted text-sm leading-relaxed">150-point mechanical inspection on every vehicle before it enters our showroom.</p>
+          </div>
+          <div class="border border-uw-mid border-l-0 p-6 hover:border-uw-red transition-colors duration-300 group">
+            <div class="font-display text-5xl text-uw-red mb-3">02</div>
+            <h3 class="font-body font-700 text-lg mb-2 group-hover:text-uw-red transition-colors">Flexible Finance</h3>
+            <p class="font-body text-uw-muted text-sm leading-relaxed">Tailored payment plans and partnerships with leading financial institutions.</p>
+          </div>
+          <div class="border border-uw-mid border-t-0 p-6 hover:border-uw-red transition-colors duration-300 group">
+            <div class="font-display text-5xl text-uw-red mb-3">03</div>
+            <h3 class="font-body font-700 text-lg mb-2 group-hover:text-uw-red transition-colors">Trade-In Program</h3>
+            <p class="font-body text-uw-muted text-sm leading-relaxed">Get a fair market value for your current vehicle when you upgrade with us.</p>
+          </div>
+          <div class="border border-uw-mid border-t-0 border-l-0 p-6 hover:border-uw-red transition-colors duration-300 group">
+            <div class="font-display text-5xl text-uw-red mb-3">04</div>
+            <h3 class="font-body font-700 text-lg mb-2 group-hover:text-uw-red transition-colors">After-Sales Support</h3>
+            <p class="font-body text-uw-muted text-sm leading-relaxed">Dedicated service team and warranty coverage on all certified vehicles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       BRAND SHOWCASE
+  ═══════════════════════════════════════ -->
+  <section class="py-16 bg-uw-black border-y border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="font-mono text-uw-muted text-xs tracking-[0.3em] uppercase text-center mb-10 reveal">Brands We Carry</div>
+      <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 reveal">
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">BMW</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">MERCEDES</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">TOYOTA</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">AUDI</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">FORD</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">LAND ROVER</span>
+        <span class="font-display text-3xl text-uw-mid hover:text-uw-white transition-colors cursor-default">PORSCHE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       TESTIMONIALS
+  ═══════════════════════════════════════ -->
+  <section class="py-24 bg-uw-black">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4 reveal">— Client Reviews</div>
+      <h2 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-16 reveal">WHAT THEY<br><span class="text-uw-red">SAY</span></h2>
+
+      <div class="grid md:grid-cols-3 gap-0">
+        <div class="border border-uw-mid p-8 hover:border-uw-red transition-colors duration-300 reveal">
+          <div class="font-display text-6xl text-uw-red leading-none mb-4">"</div>
+          <p class="font-body text-uw-muted leading-relaxed mb-6">Urban Wheels found me a pristine BMW 5 Series in exactly the spec I wanted. The process was seamless and the team genuinely knew their cars.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-uw-red flex items-center justify-center font-display text-xl">T</div>
+            <div>
+              <div class="font-body font-700 text-sm">Tendai M.</div>
+              <div class="font-mono text-uw-muted text-xs">Harare</div>
+            </div>
+          </div>
+        </div>
+        <div class="border border-uw-mid border-l-0 p-8 hover:border-uw-red transition-colors duration-300 reveal" style="transition-delay:0.15s">
+          <div class="font-display text-6xl text-uw-red leading-none mb-4">"</div>
+          <p class="font-body text-uw-muted leading-relaxed mb-6">Traded in my old SUV and walked out with a Land Cruiser the same day. Their trade-in offer was fair and the paperwork was effortless.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-uw-mid flex items-center justify-center font-display text-xl">R</div>
+            <div>
+              <div class="font-body font-700 text-sm">Rudo N.</div>
+              <div class="font-mono text-uw-muted text-xs">Bulawayo</div>
+            </div>
+          </div>
+        </div>
+        <div class="border border-uw-mid border-l-0 p-8 hover:border-uw-red transition-colors duration-300 reveal" style="transition-delay:0.3s">
+          <div class="font-display text-6xl text-uw-red leading-none mb-4">"</div>
+          <p class="font-body text-uw-muted leading-relaxed mb-6">The finance plan they arranged made it possible for me to get my dream Porsche Cayenne. Couldn't have done it without the Urban Wheels team.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-uw-mid flex items-center justify-center font-display text-xl">C</div>
+            <div>
+              <div class="font-body font-700 text-sm">Chidi O.</div>
+              <div class="font-mono text-uw-muted text-xs">Gweru</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CTA BANNER
+  ═══════════════════════════════════════ -->
+  <section class="bg-uw-red py-20">
+    <div class="max-w-screen-xl mx-auto px-6 text-center">
+      <h2 class="font-display text-[clamp(3rem,8vw,7rem)] leading-none text-uw-white mb-6 reveal">READY TO<br>FIND YOUR CAR?</h2>
+      <p class="font-body text-uw-white opacity-80 max-w-md mx-auto mb-10 reveal">Browse our current inventory or speak directly to one of our automotive consultants today.</p>
+      <div class="flex flex-wrap justify-center gap-4 reveal">
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300">Browse Cars</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="bg-uw-black border-t border-uw-mid pt-16 pb-8">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-12 mb-16">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-uw-red flex items-center justify-center">
+              <span class="font-display text-uw-white text-lg leading-none">U</span>
+            </div>
+            <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+          </div>
+          <p class="font-body text-uw-muted text-sm leading-relaxed max-w-xs">Zimbabwe's premier automotive dealership. Curating exceptional vehicles since 2018.</p>
+          <div class="flex gap-4 mt-6">
+            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">FB</a>
+            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">IG</a>
+            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">TW</a>
+          </div>
+        </div>
+        <div>
+          <div class="font-mono text-xs tracking-widest uppercase text-uw-muted mb-5">Navigation</div>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="font-body text-sm text-uw-white hover:text-uw-red transition-colors">Home</a>
+            <a href="inventory.html" class="font-body text-sm text-uw-white hover:text-uw-red transition-colors">Inventory</a>
+            <a href="about.html" class="font-body text-sm text-uw-white hover:text-uw-red transition-colors">About Us</a>
+            <a href="contact.html" class="font-body text-sm text-uw-white hover:text-uw-red transition-colors">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div class="font-mono text-xs tracking-widest uppercase text-uw-muted mb-5">Contact</div>
+          <div class="flex flex-col gap-3 font-body text-sm text-uw-muted">
+            <span>123 Samora Machel Ave<br>Harare, Zimbabwe</span>
+            <a href="tel:+263771234567" class="hover:text-uw-red transition-colors">+263 77 123 4567</a>
+            <a href="mailto:info@urbanwheels.co.zw" class="hover:text-uw-red transition-colors">info@urbanwheels.co.zw</a>
+            <span>Mon–Sat: 8am – 6pm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-uw-mid pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels. All rights reserved.</div>
+        <div class="font-mono text-uw-muted text-xs">Harare, Zimbabwe</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       SUPABASE + SCRIPTS
+  ═══════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.classList.add('expand'); ring.classList.add('expand'); });
+      el.addEventListener('mouseleave', () => { cursor.classList.remove('expand'); ring.classList.remove('expand'); });
+    });
+
+    // Mobile menu
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Counter animation
+    function animateCounters() {
+      document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const step = Math.ceil(target / 60);
+        const interval = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current + (el.dataset.target === '98' ? '%' : '+');
+          if (current >= target) clearInterval(interval);
+        }, 25);
+      });
+    }
+    const statObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) { animateCounters(); statObserver.disconnect(); }
+    }, { threshold: 0.5 });
+    const statsSection = document.querySelector('.stat-num');
+    if (statsSection) statObserver.observe(statsSection.closest('section'));
+
+    // Load featured cars from Supabase
+    async function loadFeaturedCars() {
+      const grid = document.getElementById('featured-grid');
+      try {
+        const { data: cars, error } = await window.supabaseClient
+          .from('cars')
+          .select('*')
+          .eq('featured', true)
+          .limit(3);
+
+        if (error || !cars || cars.length === 0) {
+          // Fallback demo data
+          renderFeaturedCars(getDemoCars().slice(0,3), grid);
+          return;
+        }
+        renderFeaturedCars(cars, grid);
+      } catch (e) {
+        renderFeaturedCars(getDemoCars().slice(0,3), grid);
+      }
+    }
+
+    function renderFeaturedCars(cars, grid) {
+      grid.innerHTML = '';
+      cars.forEach((car, i) => {
+        const card = document.createElement('div');
+        card.className = 'car-card bg-uw-gray border border-uw-mid hover:border-uw-red transition-colors duration-300 flex flex-col reveal';
+        card.style.transitionDelay = (i * 0.1) + 's';
+        card.innerHTML = `
+          <div class="relative overflow-hidden h-52">
+            <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'}"
+              alt="${car.name}" class="card-img w-full h-full object-cover" loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
+            ${car.featured ? '<div class="absolute top-3 left-3 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Featured</div>' : ''}
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <div class="font-mono text-uw-muted text-xs tracking-wider uppercase">${car.make || 'Brand'}</div>
+                <h3 class="font-display text-xl tracking-wide mt-0.5">${car.name}</h3>
+              </div>
+              <div class="font-display text-2xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 mt-auto pt-4 border-t border-uw-mid">
+              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
+              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
+              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.transmission || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
+            </div>
+            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block">View Details →</a>
+          </div>`;
+        grid.appendChild(card);
+        setTimeout(() => card.classList.add('visible'), 100 + i * 100);
+      });
+    }
+
+    function getDemoCars() {
+      return [
+        { id: 1, name: 'BMW 5 Series', make: 'BMW', price: 45000, year: 2021, mileage: 32000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80' },
+        { id: 2, name: 'Mercedes GLE', make: 'Mercedes', price: 68000, year: 2022, mileage: 18000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&q=80' },
+        { id: 3, name: 'Porsche Cayenne', make: 'Porsche', price: 92000, year: 2023, mileage: 8000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80' },
+      ];
+    }
+
+    // Load hero featured car
+    async function loadHeroCard() {
+      const skeleton = document.getElementById('hero-skeleton');
+      const content = document.getElementById('hero-card-content');
+      try {
+        const { data: cars } = await window.supabaseClient.from('cars').select('*').eq('featured', true).limit(1);
+        const car = (cars && cars.length > 0) ? cars[0] : getDemoCars()[0];
+        showHeroCard(car);
+      } catch {
+        showHeroCard(getDemoCars()[0]);
+      }
+      function showHeroCard(car) {
+        skeleton.innerHTML = `<img src="${car.image_url || 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80'}" class="w-full h-56 object-cover" alt="${car.name}" />`;
+        skeleton.classList.remove('skeleton');
+        document.getElementById('hero-name').textContent = car.name;
+        document.getElementById('hero-sub').textContent = (car.year || '') + ' · ' + (car.make || '');
+        document.getElementById('hero-price').textContent = '$' + Number(car.price || 0).toLocaleString();
+        document.getElementById('hero-specs').innerHTML = `
+          <div class="text-center"><div class="font-display text-xl">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
+          <div class="text-center"><div class="font-display text-xl">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
+          <div class="text-center"><div class="font-display text-xl">${car.transmission || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Trans</div></div>`;
+        content.classList.remove('hidden');
+      }
+    }
+
+    loadFeaturedCars();
+    loadHeroCard();
+  </script>
+</body>
+</html>

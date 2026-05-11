@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Urban Wheels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { 'uw-black':'#0a0a0a','uw-white':'#f5f0eb','uw-red':'#e31515','uw-gray':'#1a1a1a','uw-mid':'#2e2e2e','uw-muted':'#7a7a7a' },
+        fontFamily: { display:['Bebas Neue','sans-serif'], body:['Barlow','sans-serif'], mono:['Space Mono','monospace'] }
+      }}
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#e31515; transition:width 0.3s; }
+    .nav-link:hover::after { width:100%; }
+    #mobile-menu { transition: max-height 0.4s ease, opacity 0.4s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .timeline-item::before { content: ''; position: absolute; left: -1px; top: 0; bottom: 0; width: 1px; background: #2e2e2e; }
+    .timeline-dot { position: absolute; left: -5px; top: 24px; width: 10px; height: 10px; background: #e31515; }
+  </style>
+</head>
+<body class="bg-uw-black text-uw-white">
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+        <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Home</a>
+        <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Inventory</a>
+        <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-red">About</a>
+        <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+      </div>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-4 h-0.5 bg-uw-red"></span>
+      </button>
+    </div>
+    <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6">
+      <div class="flex flex-col">
+        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid text-uw-red">About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="pt-32 pb-24 bg-uw-black relative overflow-hidden">
+    <div class="absolute right-0 top-0 bottom-0 w-1/2 bg-uw-gray hidden lg:block"></div>
+    <div class="max-w-screen-xl mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Our Story</div>
+          <h1 class="font-display text-[clamp(3.5rem,9vw,8rem)] leading-none mb-6">WE LIVE<br>FOR <span class="text-uw-red">CARS</span></h1>
+          <p class="font-body text-uw-muted text-lg leading-relaxed max-w-md">Founded in 2018 in the heart of Harare, Urban Wheels was born from a simple belief: every person deserves access to a vehicle that moves them — not just in miles, but in spirit.</p>
+        </div>
+        <div class="bg-uw-black border border-uw-mid p-8">
+          <div class="grid grid-cols-2 gap-0">
+            <div class="p-6 border-b border-r border-uw-mid text-center">
+              <div class="font-display text-5xl text-uw-red">6+</div>
+              <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mt-1">Years in Business</div>
+            </div>
+            <div class="p-6 border-b border-uw-mid text-center">
+              <div class="font-display text-5xl text-uw-red">350+</div>
+              <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mt-1">Happy Clients</div>
+            </div>
+            <div class="p-6 border-r border-uw-mid text-center">
+              <div class="font-display text-5xl text-uw-red">12+</div>
+              <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mt-1">Premium Brands</div>
+            </div>
+            <div class="p-6 text-center">
+              <div class="font-display text-5xl text-uw-red">98%</div>
+              <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mt-1">Satisfaction Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="py-24 bg-uw-gray">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="grid lg:grid-cols-3 gap-0 reveal">
+        <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-uw-mid p-8">
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">Our Mission</div>
+          <h2 class="font-display text-4xl leading-tight">TO REDEFINE AUTO<br>RETAIL IN AFRICA</h2>
+        </div>
+        <div class="lg:col-span-2 p-8">
+          <p class="font-body text-uw-muted text-lg leading-relaxed mb-6">At Urban Wheels, we believe the car-buying experience should be as exceptional as the vehicle itself. We've stripped away the pressure, the confusion, and the gimmicks — replacing them with expertise, transparency, and genuine care.</p>
+          <p class="font-body text-uw-muted leading-relaxed">Every car we list has been personally vetted. Every price is fair. Every client leaves with confidence. This isn't just a business — it's a commitment to elevating Zimbabwe's automotive culture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="py-24 bg-uw-black">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4 reveal">— Milestones</div>
+      <h2 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-16 reveal">OUR <span class="text-uw-red">JOURNEY</span></h2>
+      <div class="max-w-2xl ml-8 border-l border-uw-mid">
+        <div class="timeline-item relative pl-10 pb-12 reveal">
+          <div class="timeline-dot"></div>
+          <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-2">2018</div>
+          <h3 class="font-display text-2xl mb-2">Founded in Harare</h3>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Urban Wheels opens its first showroom on Samora Machel Avenue with a lineup of 12 premium vehicles.</p>
+        </div>
+        <div class="timeline-item relative pl-10 pb-12 reveal" style="transition-delay:0.1s">
+          <div class="timeline-dot"></div>
+          <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-2">2019</div>
+          <h3 class="font-display text-2xl mb-2">100th Car Sold</h3>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Within our first year, we hit our first major milestone and introduced our trade-in program.</p>
+        </div>
+        <div class="timeline-item relative pl-10 pb-12 reveal" style="transition-delay:0.2s">
+          <div class="timeline-dot"></div>
+          <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-2">2021</div>
+          <h3 class="font-display text-2xl mb-2">Finance Partnerships</h3>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Launched flexible finance options through partnerships with Zimbabwe's leading financial institutions.</p>
+        </div>
+        <div class="timeline-item relative pl-10 pb-12 reveal" style="transition-delay:0.3s">
+          <div class="timeline-dot"></div>
+          <div class="font-mono text-uw-red text-xs tracking-widest uppercase mb-2">2023</div>
+          <h3 class="font-display text-2xl mb-2">Expanded Inventory</h3>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Grew to carry 12+ premium brands and launched our digital platform for a seamless online experience.</p>
+        </div>
+        <div class="timeline-item relative pl-10 reveal" style="transition-delay:0.4s">
+          <div class="timeline-dot" style="background:#f5f0eb"></div>
+          <div class="font-mono text-uw-white text-xs tracking-widest uppercase mb-2">Today</div>
+          <h3 class="font-display text-2xl mb-2">350+ Clients Served</h3>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Continuing to grow Zimbabwe's most trusted premium automotive dealership with eyes on regional expansion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="py-24 bg-uw-gray">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4 reveal">— The Team</div>
+      <h2 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-16 reveal">PEOPLE BEHIND<br><span class="text-uw-red">URBAN WHEELS</span></h2>
+      <div class="grid md:grid-cols-3 gap-0">
+        <div class="border border-uw-mid p-6 hover:border-uw-red transition-colors duration-300 reveal group">
+          <div class="w-16 h-16 bg-uw-red flex items-center justify-center font-display text-3xl text-uw-white mb-4 group-hover:bg-uw-white group-hover:text-uw-red transition-colors duration-300">T</div>
+          <h3 class="font-display text-2xl mb-1">Takudzwa Moyo</h3>
+          <div class="font-mono text-uw-red text-xs uppercase tracking-widest mb-3">Founder & CEO</div>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">15 years in automotive. Built Urban Wheels from a single bay to Zimbabwe's premier dealership.</p>
+        </div>
+        <div class="border border-uw-mid border-l-0 p-6 hover:border-uw-red transition-colors duration-300 reveal group" style="transition-delay:0.1s">
+          <div class="w-16 h-16 bg-uw-mid flex items-center justify-center font-display text-3xl text-uw-white mb-4 group-hover:bg-uw-red transition-colors duration-300">R</div>
+          <h3 class="font-display text-2xl mb-1">Rudo Chikanda</h3>
+          <div class="font-mono text-uw-red text-xs uppercase tracking-widest mb-3">Head of Sales</div>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">Client-first philosophy. Rudo has personally facilitated over 200 successful vehicle purchases.</p>
+        </div>
+        <div class="border border-uw-mid border-l-0 p-6 hover:border-uw-red transition-colors duration-300 reveal group" style="transition-delay:0.2s">
+          <div class="w-16 h-16 bg-uw-mid flex items-center justify-center font-display text-3xl text-uw-white mb-4 group-hover:bg-uw-red transition-colors duration-300">S</div>
+          <h3 class="font-display text-2xl mb-1">Solomon Nyathi</h3>
+          <div class="font-mono text-uw-red text-xs uppercase tracking-widest mb-3">Chief Mechanic</div>
+          <p class="font-body text-uw-muted text-sm leading-relaxed">ASE Certified technician. Solomon ensures every car passes our rigorous 150-point inspection.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-uw-red py-20">
+    <div class="max-w-screen-xl mx-auto px-6 text-center">
+      <h2 class="font-display text-[clamp(2.5rem,7vw,6rem)] leading-none text-uw-white mb-6">READY TO DRIVE?</h2>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300">Browse Inventory</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-uw-black border-t border-uw-mid pt-16 pb-8">
+    <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+        <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+      </div>
+      <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels · Harare, Zimbabwe</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

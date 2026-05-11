@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Urban Wheels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { 'uw-black':'#0a0a0a','uw-white':'#f5f0eb','uw-red':'#e31515','uw-gray':'#1a1a1a','uw-mid':'#2e2e2e','uw-muted':'#7a7a7a','uw-green':'#22c55e','uw-yellow':'#eab308' },
+        fontFamily: { display:['Bebas Neue','sans-serif'], body:['Barlow','sans-serif'], mono:['Space Mono','monospace'] }
+      }}
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #e31515; }
+    .skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #2e2e2e 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* Modal */
+    #modal-overlay { transition: opacity 0.3s; }
+    #modal-panel { transition: transform 0.3s, opacity 0.3s; }
+    #modal-overlay.hidden { display: none; }
+
+    /* Sidebar */
+    #sidebar { transition: transform 0.3s; }
+    .sidebar-link { position: relative; }
+    .sidebar-link.active { border-left: 3px solid #e31515; background: #1a1a1a; }
+
+    /* Table row hover */
+    .car-row:hover { background: #1a1a1a; }
+    .car-row { transition: background 0.15s; }
+
+    /* Toast */
+    #toast { transition: transform 0.3s, opacity 0.3s; transform: translateY(100px); opacity: 0; }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Login */
+    #login-screen { transition: opacity 0.3s; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in { animation: fadeIn 0.4s ease forwards; }
+
+    /* Stats card */
+    .stat-card { border-left: 3px solid #e31515; }
+  </style>
+</head>
+<body class="bg-uw-black text-uw-white min-h-screen">
+
+  <!-- ═══════════════════════════════
+       LOGIN SCREEN
+  ═══════════════════════════════ -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-uw-black flex items-center justify-center px-6">
+    <div class="w-full max-w-md fade-in">
+      <div class="flex items-center gap-3 mb-12 justify-center">
+        <div class="w-10 h-10 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-2xl leading-none">U</span></div>
+        <span class="font-display text-3xl tracking-widest">URBAN WHEELS</span>
+      </div>
+      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2 text-center">— Admin Access</div>
+      <h1 class="font-display text-5xl text-center mb-8">SIGN IN</h1>
+      <form id="login-form" class="flex flex-col gap-4">
+        <div>
+          <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Email</label>
+          <input type="email" id="login-email" placeholder="admin@urbanwheels.co.zw" required
+            class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        </div>
+        <div>
+          <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required
+            class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        </div>
+        <div id="login-error" class="hidden font-mono text-uw-red text-xs py-2">Invalid credentials. Please try again.</div>
+        <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 mt-2">Sign In →</button>
+      </form>
+      <div class="mt-6 text-center">
+        <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">← Back to Site</a>
+      </div>
+      <!-- Demo note -->
+      <div class="mt-8 border border-uw-mid p-4 text-center">
+        <div class="font-mono text-uw-muted text-xs mb-1 uppercase tracking-widest">Demo Mode</div>
+        <div class="font-body text-uw-muted text-xs">Enter any email & password to access dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       MAIN ADMIN LAYOUT
+  ═══════════════════════════════ -->
+  <div id="admin-app" class="hidden min-h-screen flex">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-uw-gray border-r border-uw-mid z-40 flex flex-col">
+      <!-- Logo -->
+      <div class="p-6 border-b border-uw-mid">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+          <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+        </div>
+        <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mt-1">Admin Panel</div>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="flex-1 py-4">
+        <button onclick="showSection('dashboard')" class="sidebar-link active w-full text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-uw-white hover:text-uw-red transition-colors flex items-center gap-3" id="link-dashboard">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button onclick="showSection('cars')" class="sidebar-link w-full text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-uw-muted hover:text-uw-white transition-colors flex items-center gap-3" id="link-cars">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+          Manage Cars
+        </button>
+        <button onclick="showSection('add')" class="sidebar-link w-full text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-uw-muted hover:text-uw-white transition-colors flex items-center gap-3" id="link-add">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+          Add New Car
+        </button>
+      </nav>
+
+      <!-- User / Logout -->
+      <div class="p-6 border-t border-uw-mid">
+        <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Logged in as</div>
+        <div class="font-body text-sm text-uw-white mb-3" id="admin-email-display">admin@urbanwheels.co.zw</div>
+        <button onclick="logout()" class="w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">Sign Out</button>
+        <a href="index.html" target="_blank" class="mt-2 w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors block text-center">View Site ↗</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="ml-64 flex-1 min-h-screen">
+      <!-- Top bar -->
+      <div class="bg-uw-black border-b border-uw-mid px-8 py-4 flex items-center justify-between sticky top-0 z-30">
+        <h2 class="font-display text-2xl tracking-widest" id="page-title">DASHBOARD</h2>
+        <button onclick="showSection('add')" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest px-5 py-2.5 hover:bg-uw-white hover:text-uw-black transition-colors duration-200 flex items-center gap-2">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Add Car
+        </button>
+      </div>
+
+      <!-- ─── SECTION: DASHBOARD ─── -->
+      <section id="section-dashboard" class="p-8">
+        <!-- Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <div class="stat-card bg-uw-gray p-5">
+            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Total Cars</div>
+            <div class="font-display text-4xl text-uw-white" id="stat-total">—</div>
+          </div>
+          <div class="stat-card bg-uw-gray p-5">
+            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Available</div>
+            <div class="font-display text-4xl text-uw-green" id="stat-available">—</div>
+          </div>
+          <div class="stat-card bg-uw-gray p-5">
+            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Featured</div>
+            <div class="font-display text-4xl text-uw-yellow" id="stat-featured">—</div>
+          </div>
+          <div class="stat-card bg-uw-gray p-5">
+            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Sold</div>
+            <div class="font-display text-4xl text-uw-red" id="stat-sold">—</div>
+          </div>
+        </div>
+
+        <!-- Recent Listings preview -->
+        <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mb-4">Recent Listings</div>
+        <div id="recent-cars" class="space-y-3">
+          <div class="skeleton h-16"></div>
+          <div class="skeleton h-16"></div>
+          <div class="skeleton h-16"></div>
+        </div>
+        <button onclick="showSection('cars')" class="mt-6 font-mono text-xs uppercase tracking-widest text-uw-red hover:underline">View All Cars →</button>
+      </section>
+
+      <!-- ─── SECTION: MANAGE CARS ─── -->
+      <section id="section-cars" class="hidden p-8">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mb-1">All Vehicles</div>
+            <div class="font-mono text-uw-muted text-xs"><span id="cars-count">0</span> total</div>
+          </div>
+          <input type="text" id="admin-search" placeholder="Search..." class="bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-2 focus:border-uw-red transition-colors placeholder-uw-muted w-64" />
+        </div>
+
+        <!-- Table -->
+        <div class="border border-uw-mid overflow-x-auto">
+          <table class="w-full min-w-[700px]">
+            <thead class="bg-uw-gray">
+              <tr>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Vehicle</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Price</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Year</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Status</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Featured</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="cars-table-body">
+              <tr><td colspan="6" class="px-4 py-8 text-center"><div class="skeleton h-10 w-full"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── SECTION: ADD / EDIT CAR ─── -->
+      <section id="section-add" class="hidden p-8">
+        <div class="max-w-3xl">
+          <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mb-2" id="form-mode-label">New Listing</div>
+          <h2 class="font-display text-4xl mb-8" id="form-section-title">ADD A <span class="text-uw-red">NEW CAR</span></h2>
+
+          <form id="car-form" class="space-y-6">
+            <input type="hidden" id="edit-car-id" />
+
+            <!-- Row 1 -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Car Name *</label>
+                <input type="text" id="f-name" placeholder="e.g. BMW 5 Series" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Make / Brand *</label>
+                <input type="text" id="f-make" placeholder="e.g. BMW" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="grid md:grid-cols-3 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Model</label>
+                <input type="text" id="f-model" placeholder="e.g. 520d" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Year *</label>
+                <input type="number" id="f-year" placeholder="2023" min="1990" max="2030" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Price (USD) *</label>
+                <input type="number" id="f-price" placeholder="45000" min="0" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="grid md:grid-cols-3 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Mileage (km)</label>
+                <input type="number" id="f-mileage" placeholder="32000" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Transmission</label>
+                <select id="f-transmission" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="">Select...</option>
+                  <option>Automatic</option>
+                  <option>Manual</option>
+                  <option>CVT</option>
+                  <option>Semi-Auto</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Fuel Type</label>
+                <select id="f-fuel" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="">Select...</option>
+                  <option>Petrol</option>
+                  <option>Diesel</option>
+                  <option>Hybrid</option>
+                  <option>Electric</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="grid md:grid-cols-3 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Body Type</label>
+                <select id="f-body" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="">Select...</option>
+                  <option>SUV</option>
+                  <option>Sedan</option>
+                  <option>Hatchback</option>
+                  <option>Coupe</option>
+                  <option>Pickup</option>
+                  <option>Wagon</option>
+                  <option>Convertible</option>
+                  <option>Van</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Colour</label>
+                <input type="text" id="f-color" placeholder="e.g. Black" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Engine</label>
+                <input type="text" id="f-engine" placeholder="e.g. 3.0L V6" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+            </div>
+
+            <!-- Image URL -->
+            <div>
+              <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Image URL</label>
+              <input type="url" id="f-image" placeholder="https://..." class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              <div class="mt-2" id="img-preview-wrap" style="display:none">
+                <img id="img-preview" src="" alt="Preview" class="h-32 w-auto border border-uw-mid object-cover" />
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Description</label>
+              <textarea id="f-desc" rows="4" placeholder="Describe the vehicle — condition, features, history..." class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted resize-none"></textarea>
+            </div>
+
+            <!-- Toggles -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Status</label>
+                <select id="f-status" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="available">Available</option>
+                  <option value="sold">Sold</option>
+                  <option value="reserved">Reserved</option>
+                </select>
+              </div>
+              <div class="flex items-end pb-3">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <div class="relative">
+                    <input type="checkbox" id="f-featured" class="sr-only" />
+                    <div class="w-12 h-6 bg-uw-mid rounded-full toggle-bg transition-colors duration-200"></div>
+                    <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-uw-white rounded-full transition-transform duration-200 toggle-dot"></div>
+                  </div>
+                  <span class="font-mono text-xs uppercase tracking-widest text-uw-muted">Mark as Featured</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-4 pt-4 border-t border-uw-mid">
+              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300">Save Listing →</button>
+              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <div id="modal-overlay" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center px-6">
+    <div id="modal-panel" class="bg-uw-gray border border-uw-red max-w-sm w-full p-8">
+      <div class="font-display text-4xl mb-2">DELETE CAR?</div>
+      <p class="font-body text-uw-muted text-sm mb-6">This action cannot be undone. The listing will be permanently removed.</p>
+      <div class="flex gap-3">
+        <button id="confirm-delete-btn" class="flex-1 bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest py-3 hover:bg-uw-white hover:text-uw-black transition-colors">Delete</button>
+        <button onclick="closeModal()" class="flex-1 border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-widest py-3 hover:border-uw-red hover:text-uw-red transition-colors">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-uw-gray border border-uw-mid px-6 py-4 font-mono text-sm">
+    <span id="toast-message"></span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ─── Toggle switch styling ───
+    const featuredToggle = document.getElementById('f-featured');
+    const toggleBg = document.querySelector('.toggle-bg');
+    const toggleDot = document.querySelector('.toggle-dot');
+    featuredToggle.addEventListener('change', () => {
+      toggleBg.style.background = featuredToggle.checked ? '#e31515' : '';
+      toggleDot.style.transform = featuredToggle.checked ? 'translateX(24px)' : '';
+    });
+
+    // ─── Image preview ───
+    document.getElementById('f-image').addEventListener('input', function() {
+      const wrap = document.getElementById('img-preview-wrap');
+      const img = document.getElementById('img-preview');
+      if (this.value) { wrap.style.display = 'block'; img.src = this.value; }
+      else { wrap.style.display = 'none'; }
+    });
+
+    // ─── Admin data ───
+    let adminCars = [];
+    let deleteTargetId = null;
+    let isEditMode = false;
+
+    // ─── LOGIN ───
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+      btn.textContent = 'Signing in...';
+
+      // Try Supabase auth
+      try {
+        const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        document.getElementById('admin-email-display').textContent = email;
+        showAdminApp();
+      } catch {
+        // Demo mode: accept any credentials
+        if (email && password.length >= 4) {
+          document.getElementById('admin-email-display').textContent = email;
+          showAdminApp();
+        } else {
+          document.getElementById('login-error').classList.remove('hidden');
+          btn.textContent = 'Sign In →';
+        }
+      }
+    });
+
+    function showAdminApp() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-app').classList.remove('hidden');
+      loadAdminCars();
+    }
+
+    function logout() {
+      window.supabaseClient.auth.signOut();
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('admin-app').classList.add('hidden');
+    }
+
+    // ─── SECTIONS ───
+    function showSection(name) {
+      ['dashboard','cars','add'].forEach(s => {
+        document.getElementById('section-' + s).classList.add('hidden');
+        document.getElementById('link-' + s)?.classList.remove('active');
+      });
+      document.getElementById('section-' + name).classList.remove('hidden');
+      document.getElementById('link-' + name)?.classList.add('active');
+      const titles = { dashboard: 'DASHBOARD', cars: 'MANAGE CARS', add: isEditMode ? 'EDIT CAR' : 'ADD NEW CAR' };
+      document.getElementById('page-title').textContent = titles[name];
+    }
+
+    // ─── LOAD CARS ───
+    async function loadAdminCars() {
+      try {
+        const { data: cars, error } = await window.supabaseClient.from('cars').select('*').order('created_at', { ascending: false });
+        if (error || !cars) { adminCars = getAllDemoCars(); }
+        else { adminCars = cars.length > 0 ? cars : getAllDemoCars(); }
+      } catch { adminCars = getAllDemoCars(); }
+
+      updateStats();
+      renderRecentCars();
+      renderCarsTable(adminCars);
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = adminCars.length;
+      document.getElementById('stat-available').textContent = adminCars.filter(c => c.status === 'available' || !c.status).length;
+      document.getElementById('stat-featured').textContent = adminCars.filter(c => c.featured).length;
+      document.getElementById('stat-sold').textContent = adminCars.filter(c => c.status === 'sold').length;
+      document.getElementById('cars-count').textContent = adminCars.length;
+    }
+
+    function renderRecentCars() {
+      const container = document.getElementById('recent-cars');
+      container.innerHTML = '';
+      adminCars.slice(0, 5).forEach(car => {
+        const el = document.createElement('div');
+        el.className = 'flex items-center gap-4 bg-uw-gray border border-uw-mid px-4 py-3';
+        el.innerHTML = `
+          <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'}" alt="" class="w-14 h-10 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'" />
+          <div class="flex-1 min-w-0">
+            <div class="font-body font-700 text-sm truncate">${car.name}</div>
+            <div class="font-mono text-uw-muted text-[10px]">${car.year || ''} · ${car.make || ''}</div>
+          </div>
+          <div class="font-display text-xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
+          <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : 'border-uw-green text-uw-green'}">${car.status || 'Available'}</span>`;
+        container.appendChild(el);
+      });
+    }
+
+    function renderCarsTable(cars) {
+      const tbody = document.getElementById('cars-table-body');
+      if (cars.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>';
+        return;
+      }
+      tbody.innerHTML = '';
+      cars.forEach(car => {
+        const tr = document.createElement('tr');
+        tr.className = 'car-row border-b border-uw-mid';
+        tr.innerHTML = `
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60'}" alt="" class="w-12 h-9 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60'" />
+              <div>
+                <div class="font-body font-700 text-sm">${car.name}</div>
+                <div class="font-mono text-uw-muted text-[10px]">${car.make || ''} · ${car.body_type || ''}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-4 py-3 font-display text-uw-red text-lg">$${Number(car.price || 0).toLocaleString()}</td>
+          <td class="px-4 py-3 font-mono text-uw-muted text-xs">${car.year || '—'}</td>
+          <td class="px-4 py-3">
+            <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : car.status === 'reserved' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green'}">${car.status || 'available'}</span>
+          </td>
+          <td class="px-4 py-3">
+            <span class="font-mono text-[10px]">${car.featured ? '★ Yes' : '—'}</span>
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex gap-2">
+              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors">Edit</button>
+              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">Delete</button>
+            </div>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Admin search
+    document.getElementById('admin-search').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      const filtered = q ? adminCars.filter(c =>
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.make && c.make.toLowerCase().includes(q))
+      ) : adminCars;
+      renderCarsTable(filtered);
+    });
+
+    // ─── EDIT CAR ───
+    function editCar(id) {
+      const car = adminCars.find(c => c.id == id);
+      if (!car) return;
+      isEditMode = true;
+      document.getElementById('edit-car-id').value = car.id;
+      document.getElementById('f-name').value = car.name || '';
+      document.getElementById('f-make').value = car.make || '';
+      document.getElementById('f-model').value = car.model || '';
+      document.getElementById('f-year').value = car.year || '';
+      document.getElementById('f-price').value = car.price || '';
+      document.getElementById('f-mileage').value = car.mileage || '';
+      document.getElementById('f-transmission').value = car.transmission || '';
+      document.getElementById('f-fuel').value = car.fuel_type || '';
+      document.getElementById('f-body').value = car.body_type || '';
+      document.getElementById('f-color').value = car.color || '';
+      document.getElementById('f-engine').value = car.engine || '';
+      document.getElementById('f-image').value = car.image_url || '';
+      document.getElementById('f-desc').value = car.description || '';
+      document.getElementById('f-status').value = car.status || 'available';
+      featuredToggle.checked = !!car.featured;
+      toggleBg.style.background = car.featured ? '#e31515' : '';
+      toggleDot.style.transform = car.featured ? 'translateX(24px)' : '';
+      if (car.image_url) {
+        document.getElementById('img-preview-wrap').style.display = 'block';
+        document.getElementById('img-preview').src = car.image_url;
+      }
+      document.getElementById('form-mode-label').textContent = 'Editing: ' + car.name;
+      document.getElementById('form-section-title').innerHTML = 'EDIT <span class="text-uw-red">LISTING</span>';
+      document.getElementById('submit-btn').textContent = 'Save Changes →';
+      showSection('add');
+    }
+
+    function resetForm() {
+      isEditMode = false;
+      document.getElementById('car-form').reset();
+      document.getElementById('edit-car-id').value = '';
+      document.getElementById('img-preview-wrap').style.display = 'none';
+      document.getElementById('form-mode-label').textContent = 'New Listing';
+      document.getElementById('form-section-title').innerHTML = 'ADD A <span class="text-uw-red">NEW CAR</span>';
+      document.getElementById('submit-btn').textContent = 'Save Listing →';
+      toggleBg.style.background = '';
+      toggleDot.style.transform = '';
+      showSection('cars');
+    }
+
+    // ─── FORM SUBMIT ───
+    document.getElementById('car-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+
+      const carData = {
+        name: document.getElementById('f-name').value,
+        make: document.getElementById('f-make').value,
+        model: document.getElementById('f-model').value,
+        year: parseInt(document.getElementById('f-year').value) || null,
+        price: parseFloat(document.getElementById('f-price').value) || null,
+        mileage: parseInt(document.getElementById('f-mileage').value) || null,
+        transmission: document.getElementById('f-transmission').value,
+        fuel_type: document.getElementById('f-fuel').value,
+        body_type: document.getElementById('f-body').value,
+        color: document.getElementById('f-color').value,
+        engine: document.getElementById('f-engine').value,
+        image_url: document.getElementById('f-image').value,
+        description: document.getElementById('f-desc').value,
+        status: document.getElementById('f-status').value,
+        featured: document.getElementById('f-featured').checked,
+      };
+
+      const editId = document.getElementById('edit-car-id').value;
+      let success = false;
+
+      try {
+        if (editId) {
+          const { error } = await window.supabaseClient.from('cars').update(carData).eq('id', editId);
+          if (!error) success = true;
+        } else {
+          const { error } = await window.supabaseClient.from('cars').insert([carData]);
+          if (!error) success = true;
+        }
+      } catch {}
+
+      // Demo mode: simulate success
+      if (!success) {
+        if (editId) {
+          const idx = adminCars.findIndex(c => c.id == editId);
+          if (idx > -1) adminCars[idx] = { ...adminCars[idx], ...carData };
+        } else {
+          adminCars.unshift({ ...carData, id: Date.now() });
+        }
+        success = true;
+      } else {
+        await loadAdminCars();
+      }
+
+      updateStats();
+      renderRecentCars();
+      renderCarsTable(adminCars);
+      showToast(editId ? '✓ Car updated successfully' : '✓ Car added successfully');
+      resetForm();
+      btn.textContent = isEditMode ? 'Save Changes →' : 'Save Listing →';
+      btn.disabled = false;
+    });
+
+    // ─── DELETE ───
+    function openDeleteModal(id) {
+      deleteTargetId = id;
+      document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.add('hidden');
+      deleteTargetId = null;
+    }
+    document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+      if (!deleteTargetId) return;
+      try {
+        await window.supabaseClient.from('cars').delete().eq('id', deleteTargetId);
+      } catch {}
+      adminCars = adminCars.filter(c => c.id != deleteTargetId);
+      updateStats();
+      renderRecentCars();
+      renderCarsTable(adminCars);
+      closeModal();
+      showToast('✓ Car deleted');
+    });
+
+    // ─── TOAST ───
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  </script>
+</body>
+</html>

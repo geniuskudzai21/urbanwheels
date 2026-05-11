@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — Urban Wheels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { 'uw-black':'#0a0a0a','uw-white':'#f5f0eb','uw-red':'#e31515','uw-gray':'#1a1a1a','uw-mid':'#2e2e2e','uw-muted':'#7a7a7a' },
+        fontFamily: { display:['Bebas Neue','sans-serif'], body:['Barlow','sans-serif'], mono:['Space Mono','monospace'] }
+      }}
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; }
+    .car-card { transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .car-card:hover { transform: translateY(-5px); }
+    .car-card:hover .card-img { filter: brightness(1.08); }
+    .card-img { transition: filter 0.3s; }
+    .filter-btn { transition: all 0.2s; }
+    .filter-btn.active { background: #e31515; color: #f5f0eb; border-color: #e31515; }
+    input:focus, select:focus { outline: none; border-color: #e31515; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#e31515; transition:width 0.3s; }
+    .nav-link:hover::after { width:100%; }
+    .nav-link { position:relative; }
+    #mobile-menu { transition: max-height 0.4s ease, opacity 0.4s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+    .skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #2e2e2e 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .sort-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237a7a7a' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: calc(100% - 12px) center; padding-right: 36px; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in { animation: fadeInUp 0.4s ease forwards; }
+  </style>
+</head>
+<body class="bg-uw-black text-uw-white">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+        <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Home</a>
+        <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-red">Inventory</a>
+        <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">About</a>
+        <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+      </div>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-4 h-0.5 bg-uw-red"></span>
+      </button>
+    </div>
+    <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6">
+      <div class="flex flex-col">
+        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid text-uw-red">Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Contact</a>
+        <a href="admin.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Admin ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="pt-32 pb-12 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-3">— All Vehicles</div>
+      <h1 class="font-display text-[clamp(3rem,8vw,7rem)] leading-none">OUR <span class="text-uw-red">INVENTORY</span></h1>
+      <p class="font-body text-uw-muted mt-4 max-w-xl">Browse our full collection of handpicked vehicles. Filter by brand, type, or price to find your perfect match.</p>
+    </div>
+  </section>
+
+  <!-- SEARCH + FILTERS -->
+  <section class="bg-uw-gray border-b border-uw-mid py-6 sticky top-16 z-40">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <!-- Search Bar -->
+      <div class="relative mb-5">
+        <input type="text" id="search-input" placeholder="Search by make, model, or keyword..."
+          class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-5 py-3 pr-12 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        <svg class="absolute right-4 top-1/2 -translate-y-1/2 text-uw-muted" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+
+      <div class="flex flex-wrap gap-3 items-center justify-between">
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2" id="body-filters">
+          <button class="filter-btn active font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="all">All</button>
+          <button class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="SUV">SUV</button>
+          <button class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Sedan">Sedan</button>
+          <button class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Pickup">Pickup</button>
+          <button class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Hatchback">Hatchback</button>
+          <button class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Coupe">Coupe</button>
+        </div>
+
+        <!-- Sort -->
+        <select id="sort-select" class="sort-select bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-4 py-2 focus:border-uw-red transition-colors">
+          <option value="newest">Newest First</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="mileage-asc">Lowest Mileage</option>
+        </select>
+      </div>
+
+      <!-- Results count -->
+      <div class="mt-4 font-mono text-uw-muted text-xs"><span id="results-count">0</span> vehicles found</div>
+    </div>
+  </section>
+
+  <!-- CARS GRID -->
+  <section class="py-12 bg-uw-black min-h-screen">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <!-- Skeleton -->
+      <div id="cars-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="skeleton h-96"></div>
+        <div class="skeleton h-96"></div>
+        <div class="skeleton h-96"></div>
+        <div class="skeleton h-96"></div>
+        <div class="skeleton h-96"></div>
+        <div class="skeleton h-96"></div>
+      </div>
+      <!-- No results -->
+      <div id="no-results" class="hidden text-center py-32">
+        <div class="font-display text-8xl text-uw-mid mb-4">?</div>
+        <div class="font-display text-3xl text-uw-muted mb-3">No Cars Found</div>
+        <p class="font-body text-uw-muted">Try adjusting your search or filters.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-uw-black border-t border-uw-mid pt-16 pb-8">
+    <div class="max-w-screen-xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+          <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+        </div>
+        <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels · Harare, Zimbabwe</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+
+    let allCars = [];
+    let activeFilter = 'all';
+    let searchQuery = '';
+    let sortBy = 'newest';
+
+    async function loadInventory() {
+      try {
+        const { data: cars, error } = await window.supabaseClient.from('cars').select('*').eq('status', 'available').order('created_at', { ascending: false });
+        if (error || !cars || cars.length === 0) {
+          allCars = getAllDemoCars();
+        } else {
+          allCars = cars;
+        }
+      } catch {
+        allCars = getAllDemoCars();
+      }
+      renderCars();
+    }
+
+    function renderCars() {
+      const grid = document.getElementById('cars-grid');
+      const noResults = document.getElementById('no-results');
+      grid.innerHTML = '';
+
+      let filtered = allCars.filter(car => {
+        const matchFilter = activeFilter === 'all' || (car.body_type && car.body_type === activeFilter);
+        const matchSearch = !searchQuery ||
+          (car.name && car.name.toLowerCase().includes(searchQuery)) ||
+          (car.make && car.make.toLowerCase().includes(searchQuery)) ||
+          (car.model && car.model.toLowerCase().includes(searchQuery));
+        return matchFilter && matchSearch;
+      });
+
+      // Sort
+      if (sortBy === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+      else if (sortBy === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+      else if (sortBy === 'mileage-asc') filtered.sort((a, b) => a.mileage - b.mileage);
+
+      document.getElementById('results-count').textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
+      noResults.classList.add('hidden');
+
+      filtered.forEach((car, i) => {
+        const card = document.createElement('div');
+        card.className = 'car-card bg-uw-gray border border-uw-mid hover:border-uw-red transition-colors duration-300 flex flex-col fade-in';
+        card.style.animationDelay = (i * 0.06) + 's';
+        card.style.opacity = '0';
+        card.innerHTML = `
+          <div class="relative overflow-hidden h-52">
+            <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'}"
+              alt="${car.name}" class="card-img w-full h-full object-cover" loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
+            <div class="absolute top-0 left-0 w-full h-full bg-uw-black opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
+            ${car.featured ? '<div class="absolute top-3 left-3 bg-uw-red font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">Featured</div>' : ''}
+            ${car.fuel_type ? `<div class="absolute bottom-3 right-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-muted px-2 py-1 uppercase tracking-widest">${car.fuel_type}</div>` : ''}
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <div class="flex justify-between items-start mb-1">
+              <div>
+                <div class="font-mono text-uw-muted text-[10px] tracking-wider uppercase">${car.make || ''} · ${car.body_type || ''}</div>
+                <h3 class="font-display text-xl tracking-wide mt-0.5">${car.name}</h3>
+              </div>
+              <div class="font-display text-2xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
+            </div>
+            <p class="font-body text-uw-muted text-sm mt-2 mb-4 line-clamp-2 leading-relaxed">${car.description || ''}</p>
+            <div class="grid grid-cols-3 gap-2 mb-4 mt-auto pt-4 border-t border-uw-mid text-center">
+              <div><div class="font-display text-lg">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
+              <div><div class="font-display text-lg">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">km</div></div>
+              <div><div class="font-display text-base">${car.transmission || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Trans</div></div>
+            </div>
+            <a href="car-detail.html?id=${car.id}" class="w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block">View Details →</a>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderCars();
+      });
+    });
+
+    // Search
+    let searchTimeout;
+    document.getElementById('search-input').addEventListener('input', e => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderCars();
+      }, 300);
+    });
+
+    // Sort
+    document.getElementById('sort-select').addEventListener('change', e => {
+      sortBy = e.target.value;
+      renderCars();
+    });
+
+    loadInventory();
+  </script>
+</body>
+</html>

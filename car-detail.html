@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Detail — Urban Wheels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { 'uw-black':'#0a0a0a','uw-white':'#f5f0eb','uw-red':'#e31515','uw-gray':'#1a1a1a','uw-mid':'#2e2e2e','uw-muted':'#7a7a7a' },
+        fontFamily: { display:['Bebas Neue','sans-serif'], body:['Barlow','sans-serif'], mono:['Space Mono','monospace'] }
+      }}
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0a0a0a; color: #f5f0eb; font-family: 'Barlow', sans-serif; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#e31515; transition:width 0.3s; }
+    .nav-link:hover::after { width:100%; }
+    #mobile-menu { transition: max-height 0.4s ease, opacity 0.4s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+    .skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #2e2e2e 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    input:focus, textarea:focus { outline: none; border-color: #e31515; }
+    .spec-row { border-bottom: 1px solid #2e2e2e; }
+    .spec-row:last-child { border-bottom: none; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in { animation: fadeInUp 0.5s ease forwards; }
+  </style>
+</head>
+<body class="bg-uw-black text-uw-white">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+        <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Home</a>
+        <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-red">Inventory</a>
+        <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">About</a>
+        <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+      </div>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-6 h-0.5 bg-uw-white"></span>
+        <span class="block w-4 h-0.5 bg-uw-red"></span>
+      </button>
+    </div>
+    <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6">
+      <div class="flex flex-col">
+        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid text-uw-red">Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="pt-20 pb-0 bg-uw-black border-b border-uw-mid">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center gap-2 font-mono text-xs text-uw-muted">
+      <a href="index.html" class="hover:text-uw-red transition-colors">Home</a>
+      <span>/</span>
+      <a href="inventory.html" class="hover:text-uw-red transition-colors">Inventory</a>
+      <span>/</span>
+      <span id="breadcrumb-name" class="text-uw-white">Loading...</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="bg-uw-black min-h-screen">
+    <div id="loading-state" class="max-w-screen-xl mx-auto px-6 py-12 grid lg:grid-cols-2 gap-12">
+      <div class="skeleton h-96"></div>
+      <div class="space-y-4">
+        <div class="skeleton h-8 w-3/4"></div>
+        <div class="skeleton h-12 w-full"></div>
+        <div class="skeleton h-16 w-1/2"></div>
+        <div class="skeleton h-4 w-full mt-8"></div>
+        <div class="skeleton h-4 w-full"></div>
+        <div class="skeleton h-4 w-3/4"></div>
+      </div>
+    </div>
+
+    <div id="car-content" class="hidden max-w-screen-xl mx-auto px-6 py-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-16">
+        <!-- LEFT: Image -->
+        <div class="fade-in">
+          <div class="relative border border-uw-mid overflow-hidden">
+            <img id="car-image" src="" alt="" class="w-full object-cover" style="max-height: 480px;" />
+            <div id="car-badge" class="hidden absolute top-4 left-4 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Featured</div>
+          </div>
+          <!-- Back to inventory -->
+          <a href="inventory.html" class="mt-4 inline-flex items-center gap-2 font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Inventory
+          </a>
+        </div>
+
+        <!-- RIGHT: Details -->
+        <div class="fade-in" style="animation-delay:0.15s">
+          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2" id="car-make-badge">Brand</div>
+          <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
+          <div class="font-display text-5xl text-uw-red mb-6" id="car-price">$0</div>
+
+          <!-- Quick Specs -->
+          <div class="grid grid-cols-2 gap-0 border border-uw-mid mb-8" id="quick-specs">
+            <div class="p-4 border-b border-r border-uw-mid">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Year</div>
+              <div class="font-display text-2xl" id="spec-year">—</div>
+            </div>
+            <div class="p-4 border-b border-uw-mid">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Mileage</div>
+              <div class="font-display text-2xl" id="spec-mileage">—</div>
+            </div>
+            <div class="p-4 border-r border-uw-mid">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Transmission</div>
+              <div class="font-display text-2xl" id="spec-transmission">—</div>
+            </div>
+            <div class="p-4">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Fuel Type</div>
+              <div class="font-display text-2xl" id="spec-fuel">—</div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="font-body text-uw-muted leading-relaxed mb-8" id="car-description"></p>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-wrap gap-3">
+            <a href="contact.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 flex-1 text-center">Enquire Now</a>
+            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300 flex-1 text-center">Test Drive</a>
+          </div>
+
+          <!-- Share -->
+          <div class="mt-6 pt-6 border-t border-uw-mid">
+            <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mb-3">Share This Vehicle</div>
+            <div class="flex gap-3">
+              <button onclick="shareVehicle('whatsapp')" class="font-mono text-xs border border-uw-mid text-uw-muted px-4 py-2 hover:border-uw-red hover:text-uw-red transition-colors">WhatsApp</button>
+              <button onclick="shareVehicle('copy')" id="copy-btn" class="font-mono text-xs border border-uw-mid text-uw-muted px-4 py-2 hover:border-uw-red hover:text-uw-red transition-colors">Copy Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Specs Table -->
+      <div class="border-t border-uw-mid pt-12 mb-12 fade-in" style="animation-delay:0.25s">
+        <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Full Specifications</div>
+        <h2 class="font-display text-4xl mb-8">VEHICLE <span class="text-uw-red">SPECS</span></h2>
+        <div class="grid md:grid-cols-2 gap-0 border border-uw-mid" id="full-specs-grid"></div>
+      </div>
+
+      <!-- Enquiry Form -->
+      <div class="bg-uw-gray border border-uw-mid p-8 fade-in" style="animation-delay:0.35s">
+        <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Quick Enquiry</div>
+        <h2 class="font-display text-4xl mb-6">INTERESTED IN <span id="form-car-name" class="text-uw-red">THIS CAR</span>?</h2>
+        <form id="enquiry-form" class="grid md:grid-cols-2 gap-4">
+          <input type="text" placeholder="Your Name" required class="bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+          <input type="email" placeholder="Email Address" required class="bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+          <input type="tel" placeholder="Phone Number" class="bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+          <select class="bg-uw-black border border-uw-mid text-uw-muted font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+            <option>General Enquiry</option>
+            <option>Request Test Drive</option>
+            <option>Finance Enquiry</option>
+            <option>Trade-In Enquiry</option>
+          </select>
+          <textarea placeholder="Your message..." rows="3" class="md:col-span-2 bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted resize-none"></textarea>
+          <div class="md:col-span-2">
+            <button type="submit" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300">Send Enquiry →</button>
+          </div>
+        </form>
+        <div id="form-success" class="hidden mt-4 font-mono text-uw-red text-sm">✓ Enquiry sent. We'll be in touch within 24 hours.</div>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden text-center py-32">
+      <div class="font-display text-8xl text-uw-mid mb-4">404</div>
+      <div class="font-display text-3xl text-uw-muted mb-3">Vehicle Not Found</div>
+      <a href="inventory.html" class="font-mono text-xs uppercase tracking-widest text-uw-red hover:underline">← Back to Inventory</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-uw-black border-t border-uw-mid pt-16 pb-8">
+    <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-uw-red flex items-center justify-center"><span class="font-display text-uw-white text-lg leading-none">U</span></div>
+        <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+      </div>
+      <div class="font-mono text-uw-muted text-xs">© 2024 Urban Wheels · Harare, Zimbabwe</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+
+    const carId = new URLSearchParams(window.location.search).get('id');
+
+    async function loadCarDetail() {
+      if (!carId) { showError(); return; }
+      try {
+        const { data: car, error } = await window.supabaseClient.from('cars').select('*').eq('id', carId).single();
+        if (error || !car) {
+          const demoCar = getAllDemoCars().find(c => c.id == carId);
+          if (demoCar) renderCar(demoCar);
+          else showError();
+        } else {
+          renderCar(car);
+        }
+      } catch {
+        const demoCar = getAllDemoCars().find(c => c.id == carId);
+        if (demoCar) renderCar(demoCar);
+        else showError();
+      }
+    }
+
+    function renderCar(car) {
+      document.title = car.name + ' — Urban Wheels';
+      document.getElementById('breadcrumb-name').textContent = car.name;
+      document.getElementById('car-image').src = car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80';
+      document.getElementById('car-image').alt = car.name;
+      if (car.featured) document.getElementById('car-badge').classList.remove('hidden');
+      document.getElementById('car-make-badge').textContent = (car.make || '') + ' · ' + (car.body_type || '');
+      document.getElementById('car-title').textContent = car.name;
+      document.getElementById('car-price').textContent = '$' + Number(car.price || 0).toLocaleString();
+      document.getElementById('spec-year').textContent = car.year || '—';
+      document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
+      document.getElementById('spec-transmission').textContent = car.transmission || '—';
+      document.getElementById('spec-fuel').textContent = car.fuel_type || '—';
+      document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
+      document.getElementById('form-car-name').textContent = car.name.toUpperCase();
+
+      // Full specs
+      const specData = [
+        ['Make', car.make], ['Model', car.model], ['Year', car.year], ['Body Type', car.body_type],
+        ['Colour', car.color], ['Engine', car.engine], ['Transmission', car.transmission],
+        ['Fuel Type', car.fuel_type], ['Mileage', car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—'],
+        ['Status', car.status || 'Available'],
+      ];
+      const specsGrid = document.getElementById('full-specs-grid');
+      specsGrid.innerHTML = '';
+      specData.forEach(([label, value], i) => {
+        if (!value) return;
+        const isLeft = i % 2 === 0;
+        const div = document.createElement('div');
+        div.className = 'p-5 border-b border-uw-mid ' + (isLeft ? 'border-r' : '');
+        div.innerHTML = `<div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">${label}</div><div class="font-body font-600 text-uw-white">${value || '—'}</div>`;
+        specsGrid.appendChild(div);
+      });
+
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('car-content').classList.remove('hidden');
+    }
+
+    function showError() {
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('error-state').classList.remove('hidden');
+    }
+
+    function shareVehicle(type) {
+      const url = window.location.href;
+      if (type === 'whatsapp') {
+        window.open('https://wa.me/?text=' + encodeURIComponent('Check out this car on Urban Wheels: ' + url));
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = document.getElementById('copy-btn');
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = 'Copy Link', 2000);
+        });
+      }
+    }
+
+    document.getElementById('enquiry-form').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('form-success').classList.remove('hidden');
+      e.target.reset();
+    });
+
+    loadCarDetail();
+  </script>
+</body>
+</html>

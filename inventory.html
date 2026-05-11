@@ -216,23 +216,32 @@
               onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
             <div class="absolute top-0 left-0 w-full h-full bg-uw-black opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
             ${car.featured ? '<div class="absolute top-3 left-3 bg-uw-red font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">Featured</div>' : ''}
-            ${car.fuel_type ? `<div class="absolute bottom-3 right-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-muted px-2 py-1 uppercase tracking-widest">${car.fuel_type}</div>` : ''}
+            <div class="absolute bottom-3 left-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">${car.year || '—'}</div>
+            <div class="absolute bottom-3 right-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">${car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '— km'}</div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
-            <div class="flex justify-between items-start mb-1">
-              <div>
-                <div class="font-mono text-uw-muted text-[10px] tracking-wider uppercase">${car.make || ''} · ${car.body_type || ''}</div>
-                <h3 class="font-display text-xl tracking-wide mt-0.5">${car.name}</h3>
+            <div class="border-b border-uw-mid pb-3 mb-3">
+              <h3 class="font-display text-xl tracking-wide text-uw-white">${car.name}</h3>
+              <div class="font-mono text-uw-red text-sm uppercase tracking-widest mt-1">${car.model || '—'}</div>
+            </div>
+            <p class="font-body text-uw-muted text-sm mb-4 line-clamp-3 leading-relaxed flex-1">${car.description || 'No description available'}</p>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="font-mono text-uw-muted text-xs uppercase tracking-widest">Price</span>
+                <span class="font-display text-xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</span>
               </div>
-              <div class="font-display text-2xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
+              <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-uw-gray border border-uw-mid py-2">
+                  <div class="font-display text-lg text-uw-white">${car.year || '—'}</div>
+                  <div class="font-mono text-uw-muted text-[10px] uppercase">Year</div>
+                </div>
+                <div class="bg-uw-gray border border-uw-mid py-2">
+                  <div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div>
+                  <div class="font-mono text-uw-muted text-[10px] uppercase">km</div>
+                </div>
+              </div>
             </div>
-            <p class="font-body text-uw-muted text-sm mt-2 mb-4 line-clamp-2 leading-relaxed">${car.description || ''}</p>
-            <div class="grid grid-cols-3 gap-2 mb-4 mt-auto pt-4 border-t border-uw-mid text-center">
-              <div><div class="font-display text-lg">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
-              <div><div class="font-display text-lg">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">km</div></div>
-              <div><div class="font-display text-base">${car.transmission || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Trans</div></div>
-            </div>
-            <a href="car-detail.html?id=${car.id}" class="w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block">View Details →</a>
+            <a href="car-detail.html?id=${car.id}" class="w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block mt-4">View Details →</a>
           </div>`;
         grid.appendChild(card);
       });

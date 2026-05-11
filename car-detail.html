@@ -107,6 +107,7 @@
         <div class="fade-in" style="animation-delay:0.15s">
           <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2" id="car-make-badge">Brand</div>
           <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
+          <div class="font-display text-3xl text-uw-red mb-6" id="car-model">Model</div>
           <div class="font-display text-5xl text-uw-red mb-6" id="car-price">$0</div>
 
           <!-- Quick Specs -->
@@ -237,6 +238,7 @@
       if (car.featured) document.getElementById('car-badge').classList.remove('hidden');
       document.getElementById('car-make-badge').textContent = (car.make || '') + ' · ' + (car.body_type || '');
       document.getElementById('car-title').textContent = car.name;
+      document.getElementById('car-model').textContent = car.model || '—';
       document.getElementById('car-price').textContent = '$' + Number(car.price || 0).toLocaleString();
       document.getElementById('spec-year').textContent = car.year || '—';
       document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';

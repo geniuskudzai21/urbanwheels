@@ -1,26 +1,14 @@
--- ═══════════════════════════════════════════════════
--- URBAN WHEELS — SUPABASE DATABASE SETUP
--- Run this in your Supabase SQL Editor
--- ═══════════════════════════════════════════════════
 
--- 1. Create the cars table
+-- 1. Create cars table
 CREATE TABLE IF NOT EXISTS cars (
   id            BIGSERIAL PRIMARY KEY,
   name          TEXT NOT NULL,
-  make          TEXT,
   model         TEXT,
   year          INTEGER,
-  price         NUMERIC(12, 2),
   mileage       INTEGER,
-  transmission  TEXT,        -- 'Automatic' | 'Manual' | 'CVT' | 'Semi-Auto'
-  fuel_type     TEXT,        -- 'Petrol' | 'Diesel' | 'Hybrid' | 'Electric'
-  body_type     TEXT,        -- 'SUV' | 'Sedan' | 'Hatchback' | 'Coupe' | 'Pickup' | 'Wagon' | 'Convertible' | 'Van'
-  color         TEXT,
-  engine        TEXT,
-  image_url     TEXT,
-  description   TEXT,
-  status        TEXT DEFAULT 'available',  -- 'available' | 'sold' | 'reserved'
-  featured      BOOLEAN DEFAULT FALSE,
+  price         NUMERIC(12, 2),
+  inspection    TEXT DEFAULT 'with inspection',  -- 'with inspection' | 'without inspection'
+  description   TEXT,        -- Contains all vehicle details: transmission, fuel_type, body_type, color, engine, etc.
   created_at    TIMESTAMPTZ DEFAULT NOW(),
   updated_at    TIMESTAMPTZ DEFAULT NOW()
 );
@@ -64,25 +52,19 @@ CREATE TRIGGER set_updated_at
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- 6. Sample seed data
-INSERT INTO cars (name, make, model, year, price, mileage, transmission, fuel_type, body_type, color, engine, image_url, description, status, featured) VALUES
+INSERT INTO cars (name, model, year, price, mileage, inspection, description) VALUES
 (
-  'BMW 5 Series', 'BMW', '520d', 2021, 45000, 32000, 'Automatic', 'Petrol', 'Sedan', 'Black', '3.0L Inline-6',
-  'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80',
-  'Immaculate BMW 5 Series with full service history. Twin-turbo inline-six engine delivering effortless power. Loaded with executive package including panoramic sunroof, heated seats, and Harman Kardon audio system.',
-  'available', TRUE
+  'BMW 5 Series', '520d', 2021, 45000, 'with inspection',
+  'Immaculate BMW 5 Series with full service history. Twin-turbo inline-six engine delivering effortless power. Loaded with executive package including panoramic sunroof, heated seats, and Harman Kardon audio system. Automatic transmission, Petrol engine, Sedan body type, Black color, 3.0L Inline-6 engine.'
 ),
 (
-  'Mercedes GLE 450', 'Mercedes', 'GLE 450', 2022, 68000, 18000, 'Automatic', 'Petrol', 'SUV', 'Silver', '3.0L V6',
-  'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80',
-  'Commanding presence with the refined luxury only Mercedes-Benz delivers. AMG Line exterior, MBUX infotainment, adaptive suspension, and 4MATIC all-wheel drive for any terrain.',
-  'available', TRUE
+  'Mercedes GLE 450', 'GLE 450', 2022, 68000, 'with inspection',
+  'Commanding presence with the refined luxury only Mercedes-Benz delivers. AMG Line exterior, MBUX infotainment, adaptive suspension, and 4MATIC all-wheel drive for any terrain. Automatic transmission, Petrol engine, SUV body type, Silver color, 3.0L V6 engine.'
 ),
 (
-  'Porsche Cayenne', 'Porsche', 'Cayenne', 2023, 92000, 8000, 'Automatic', 'Petrol', 'SUV', 'White', '3.0L V6',
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
-  'The benchmark of performance SUVs. PASM air suspension, sport chrono package, Bose surround sound, and panoramic fixed glass roof. Less than 8,000km — practically new.',
-  'available', TRUE
-),
+  'Porsche Cayenne', 'Cayenne', 2023, 92000, 'without inspection',
+  'The benchmark of performance SUVs. PASM air suspension, sport chrono package, Bose surround sound, and panoramic fixed glass roof. Less than 8,000km — practically new. Automatic transmission, Petrol engine, SUV body type, White color, 3.0L V6 engine.'
+);,
 (
   'Toyota Land Cruiser', 'Toyota', 'Land Cruiser 200', 2021, 78000, 45000, 'Automatic', 'Diesel', 'SUV', 'Grey', '4.5L V8 Diesel',
   'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80',

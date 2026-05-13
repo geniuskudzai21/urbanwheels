@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════
-// URBAN WHEELS — MAIN JS UTILITIES
-// ═══════════════════════════════════════
 
 // Format currency
 function formatPrice(price) {

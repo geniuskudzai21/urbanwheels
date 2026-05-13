@@ -121,14 +121,6 @@
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Mileage</div>
               <div class="font-display text-2xl" id="spec-mileage">—</div>
             </div>
-            <div class="p-4 border-r border-uw-mid">
-              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Transmission</div>
-              <div class="font-display text-2xl" id="spec-transmission">—</div>
-            </div>
-            <div class="p-4">
-              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Fuel Type</div>
-              <div class="font-display text-2xl" id="spec-fuel">—</div>
-            </div>
           </div>
 
           <!-- Description -->
@@ -137,25 +129,8 @@
           <!-- CTA Buttons -->
           <div class="flex flex-wrap gap-3">
             <a href="contact.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 flex-1 text-center">Enquire Now</a>
-            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300 flex-1 text-center">Test Drive</a>
-          </div>
-
-          <!-- Share -->
-          <div class="mt-6 pt-6 border-t border-uw-mid">
-            <div class="font-mono text-uw-muted text-xs tracking-widest uppercase mb-3">Share This Vehicle</div>
-            <div class="flex gap-3">
-              <button onclick="shareVehicle('whatsapp')" class="font-mono text-xs border border-uw-mid text-uw-muted px-4 py-2 hover:border-uw-red hover:text-uw-red transition-colors">WhatsApp</button>
-              <button onclick="shareVehicle('copy')" id="copy-btn" class="font-mono text-xs border border-uw-mid text-uw-muted px-4 py-2 hover:border-uw-red hover:text-uw-red transition-colors">Copy Link</button>
-            </div>
           </div>
         </div>
-      </div>
-
-      <!-- Full Specs Table -->
-      <div class="border-t border-uw-mid pt-12 mb-12 fade-in" style="animation-delay:0.25s">
-        <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Full Specifications</div>
-        <h2 class="font-display text-4xl mb-8">VEHICLE <span class="text-uw-red">SPECS</span></h2>
-        <div class="grid md:grid-cols-2 gap-0 border border-uw-mid" id="full-specs-grid"></div>
       </div>
 
       <!-- Enquiry Form -->
@@ -168,7 +143,6 @@
           <input type="tel" placeholder="Phone Number" class="bg-uw-black border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
           <select class="bg-uw-black border border-uw-mid text-uw-muted font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
             <option>General Enquiry</option>
-            <option>Request Test Drive</option>
             <option>Finance Enquiry</option>
             <option>Trade-In Enquiry</option>
           </select>
@@ -251,29 +225,10 @@
       }
       document.getElementById('spec-year').textContent = car.year || '—';
       document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
-      document.getElementById('spec-transmission').textContent = car.transmission || '—';
-      document.getElementById('spec-fuel').textContent = car.fuel_type || '—';
       document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
       document.getElementById('form-car-name').textContent = car.name.toUpperCase();
 
       // Full specs
-      const specData = [
-        ['Make', car.make], ['Model', car.model], ['Year', car.year], ['Body Type', car.body_type],
-        ['Colour', car.color], ['Engine', car.engine], ['Transmission', car.transmission],
-        ['Fuel Type', car.fuel_type], ['Mileage', car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—'],
-        ['Status', car.status || 'Available'],
-      ];
-      const specsGrid = document.getElementById('full-specs-grid');
-      specsGrid.innerHTML = '';
-      specData.forEach(([label, value], i) => {
-        if (!value) return;
-        const isLeft = i % 2 === 0;
-        const div = document.createElement('div');
-        div.className = 'p-5 border-b border-uw-mid ' + (isLeft ? 'border-r' : '');
-        div.innerHTML = `<div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">${label}</div><div class="font-body font-600 text-uw-white">${value || '—'}</div>`;
-        specsGrid.appendChild(div);
-      });
-
       document.getElementById('loading-state').classList.add('hidden');
       document.getElementById('car-content').classList.remove('hidden');
     }
@@ -281,19 +236,6 @@
     function showError() {
       document.getElementById('loading-state').classList.add('hidden');
       document.getElementById('error-state').classList.remove('hidden');
-    }
-
-    function shareVehicle(type) {
-      const url = window.location.href;
-      if (type === 'whatsapp') {
-        window.open('https://wa.me/?text=' + encodeURIComponent('Check out this car on Urban Wheels: ' + url));
-      } else {
-        navigator.clipboard.writeText(url).then(() => {
-          const btn = document.getElementById('copy-btn');
-          btn.textContent = 'Copied!';
-          setTimeout(() => btn.textContent = 'Copy Link', 2000);
-        });
-      }
     }
 
     document.getElementById('enquiry-form').addEventListener('submit', e => {

@@ -215,8 +215,6 @@
               alt="${car.name}" class="card-img w-full h-full object-cover" loading="lazy"
               onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
             <div class="absolute top-0 left-0 w-full h-full bg-uw-black opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-            ${car.inspection === 'with inspection' ? '<div class="absolute top-3 right-3 bg-green-600 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">With Inspection</div>' : ''}
-            ${car.inspection === 'without inspection' ? '<div class="absolute top-3 right-3 bg-orange-600 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">No Inspection</div>' : ''}
             <div class="absolute bottom-3 left-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">${car.year || '—'}</div>
             <div class="absolute bottom-3 right-3 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-white px-2 py-1 uppercase tracking-widest">${car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '— km'}</div>
           </div>

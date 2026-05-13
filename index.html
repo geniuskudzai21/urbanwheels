@@ -95,7 +95,7 @@
        NAVIGATION
   ═══════════════════════════════════════ -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-uw-black border-b border-uw-mid">
-    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-18">
+    <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-3">
         <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
@@ -134,26 +134,26 @@
   <div class="pt-16 bg-uw-red overflow-hidden py-2.5">
     <div class="ticker-wrap">
       <div class="ticker-inner">
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Premium Vehicles</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle sourcing</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Zimbabwe's Finest Auto Dealer</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle shipping</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Finance Available</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle delivery</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Trade-In Welcome</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Clearing and customs</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Certified Pre-Owned</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle registration/span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
         <!-- Duplicate for seamless loop -->
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Premium Vehicles</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle sourcing</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Zimbabwe's Finest Auto Dealer</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle shipping</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Finance Available</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle delivery</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Trade-In Welcome</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Clearing and customs</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Certified Pre-Owned</span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle registration/span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
       </div>
     </div>
@@ -556,7 +556,10 @@
                 <div class="font-mono text-uw-muted text-xs tracking-wider uppercase">${car.model || 'Vehicle'}</div>
                 <h3 class="font-display text-xl tracking-wide mt-0.5">${car.name}</h3>
               </div>
-              <div class="font-display text-2xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</div>
+              <div class="text-right">
+                <div class="font-display text-2xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</div>
+                ${car.inspection ? `<div class="font-mono text-[10px] uppercase tracking-widest mt-1 ${car.inspection === 'with inspection' ? 'text-green-400' : 'text-orange-400'}">${car.inspection === 'with inspection' ? '✓ With Inspection' : '✗ No Inspection'}</div>` : ''}
+              </div>
             </div>
             <div class="grid grid-cols-3 gap-2 mt-auto pt-4 border-t border-uw-mid">
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>

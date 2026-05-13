@@ -108,7 +108,8 @@
           <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2" id="car-make-badge">Brand</div>
           <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
           <div class="font-display text-3xl text-uw-red mb-6" id="car-model">Model</div>
-          <div class="font-display text-5xl text-uw-red mb-6" id="car-price">$0</div>
+          <div class="font-display text-5xl text-uw-red mb-2" id="car-price">$0</div>
+          <div id="car-inspection" class="mb-6"></div>
 
           <!-- Quick Specs -->
           <div class="grid grid-cols-2 gap-0 border border-uw-mid mb-8" id="quick-specs">
@@ -240,6 +241,14 @@
       document.getElementById('car-title').textContent = car.name;
       document.getElementById('car-model').textContent = car.model || '—';
       document.getElementById('car-price').textContent = '$' + Number(car.price || 0).toLocaleString();
+      const inspectionEl = document.getElementById('car-inspection');
+      if (car.inspection === 'with inspection') {
+        inspectionEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-green-600/20 text-green-400 border border-green-600">✓ With Inspection</span>';
+      } else if (car.inspection === 'without inspection') {
+        inspectionEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-orange-600/20 text-orange-400 border border-orange-600">✗ No Inspection</span>';
+      } else {
+        inspectionEl.innerHTML = '';
+      }
       document.getElementById('spec-year').textContent = car.year || '—';
       document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
       document.getElementById('spec-transmission').textContent = car.transmission || '—';

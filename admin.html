@@ -348,7 +348,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="main.js"></script>
   <script>
     
     
@@ -532,16 +532,10 @@
       isEditMode = true;
       document.getElementById('edit-car-id').value = car.id;
       document.getElementById('f-name').value = car.name || '';
-      document.getElementById('f-make').value = car.make || '';
       document.getElementById('f-model').value = car.model || '';
       document.getElementById('f-year').value = car.year || '';
       document.getElementById('f-price').value = car.price || '';
       document.getElementById('f-mileage').value = car.mileage || '';
-      document.getElementById('f-transmission').value = car.transmission || '';
-      document.getElementById('f-fuel').value = car.fuel_type || '';
-      document.getElementById('f-body').value = car.body_type || '';
-      document.getElementById('f-color').value = car.color || '';
-      document.getElementById('f-engine').value = car.engine || '';
       document.getElementById('f-desc').value = car.description || '';
       document.getElementById('f-inspection').value = car.inspection || 'with inspection';
       if (car.image_url) {
@@ -580,25 +574,50 @@
       btn.textContent = 'Saving...';
       btn.disabled = true;
 
-      // Handle image from file upload
-      const previewImg = document.getElementById('img-preview');
-      const imageUrl = previewImg.dataset.fileData || '';
+      // Handle image upload to Supabase Storage
+      const fileInput = document.getElementById('f-image-upload');
+      const file = fileInput.files[0];
+      let imageUrl = '';
+
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+
+        try {
+          const { error: uploadError } = await window.supabaseClient.storage
+            .from('car-images')
+            .upload(fileName, file, { upsert: true });
+
+          if (!uploadError) {
+            const { data: urlData } = window.supabaseClient.storage
+              .from('car-images')
+              .getPublicUrl(fileName);
+            imageUrl = urlData.publicUrl;
+          } else {
+            // Fallback to base64 if storage upload fails
+            const previewImg = document.getElementById('img-preview');
+            imageUrl = previewImg.dataset.fileData || '';
+          }
+        } catch {
+          const previewImg = document.getElementById('img-preview');
+          imageUrl = previewImg.dataset.fileData || '';
+        }
+      } else if (document.getElementById('edit-car-id').value) {
+        // Editing - keep existing image if no new file selected
+        const editId = document.getElementById('edit-car-id').value;
+        const existingCar = adminCars.find(c => c.id == editId);
+        if (existingCar) imageUrl = existingCar.image_url || '';
+      }
 
       const carData = {
         name: document.getElementById('f-name').value,
-        make: document.getElementById('f-make').value,
         model: document.getElementById('f-model').value,
         year: parseInt(document.getElementById('f-year').value) || null,
         price: parseFloat(document.getElementById('f-price').value) || null,
         mileage: parseInt(document.getElementById('f-mileage').value) || null,
-        transmission: document.getElementById('f-transmission').value,
-        fuel_type: document.getElementById('f-fuel').value,
-        body_type: document.getElementById('f-body').value,
-        color: document.getElementById('f-color').value,
-        engine: document.getElementById('f-engine').value,
-        image_url: imageUrl,
         description: document.getElementById('f-desc').value,
         inspection: document.getElementById('f-inspection').value,
+        image_url: imageUrl,
       };
 
       const editId = document.getElementById('edit-car-id').value;

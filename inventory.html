@@ -149,7 +149,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="main.js"></script>
   <script>
     // Set current year
     document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -165,7 +165,7 @@
 
     async function loadInventory() {
       try {
-        const { data: cars, error } = await window.supabaseClient.from('cars').select('*').eq('status', 'available').order('created_at', { ascending: false });
+        const { data: cars, error } = await window.supabaseClient.from('cars').select('*').order('created_at', { ascending: false });
         if (error || !cars || cars.length === 0) {
           allCars = getAllDemoCars();
         } else {
@@ -231,6 +231,7 @@
                 <span class="font-mono text-uw-muted text-xs uppercase tracking-widest">Price</span>
                 <span class="font-display text-2xl text-uw-red font-bold">$${Number(car.price || 0).toLocaleString()}</span>
               </div>
+              ${car.inspection ? `<div class="flex justify-end"><span class="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 ${car.inspection === 'with inspection' ? 'bg-green-600/20 text-green-400 border border-green-600' : 'bg-orange-600/20 text-orange-400 border border-orange-600'}">${car.inspection === 'with inspection' ? '✓ With Inspection' : '✗ No Inspection'}</span></div>` : ''}
             </div>
             <a href="car-detail.html?id=${car.id}" class="w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block mt-4">View Details →</a>
           </div>`;

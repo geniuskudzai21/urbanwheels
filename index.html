@@ -481,7 +481,7 @@
   ═══════════════════════════════════════ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="main.js"></script>
   <script>
     // Set current year
     document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -517,24 +517,23 @@
     const statsSection = document.querySelector('.stat-num');
     if (statsSection) statObserver.observe(statsSection.closest('section'));
 
-    // Load featured cars from Supabase
+    // Load latest cars from Supabase (no featured column in DB)
     async function loadFeaturedCars() {
       const grid = document.getElementById('featured-grid');
       try {
         const { data: cars, error } = await window.supabaseClient
           .from('cars')
           .select('*')
-          .eq('featured', true)
+          .order('created_at', { ascending: false })
           .limit(3);
 
         if (error || !cars || cars.length === 0) {
-          // Fallback demo data
-          renderFeaturedCars(getDemoCars().slice(0,3), grid);
+          renderFeaturedCars(getAllDemoCars().slice(0,3), grid);
           return;
         }
         renderFeaturedCars(cars, grid);
       } catch (e) {
-        renderFeaturedCars(getDemoCars().slice(0,3), grid);
+        renderFeaturedCars(getAllDemoCars().slice(0,3), grid);
       }
     }
 
@@ -549,12 +548,12 @@
             <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'}"
               alt="${car.name}" class="card-img w-full h-full object-cover" loading="lazy"
               onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
-            ${car.featured ? '<div class="absolute top-3 left-3 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Featured</div>' : ''}
+            <div class="absolute top-3 left-3 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Latest</div>
           </div>
           <div class="p-5 flex-1 flex flex-col">
             <div class="flex justify-between items-start mb-2">
               <div>
-                <div class="font-mono text-uw-muted text-xs tracking-wider uppercase">${car.make || 'Brand'}</div>
+                <div class="font-mono text-uw-muted text-xs tracking-wider uppercase">${car.model || 'Vehicle'}</div>
                 <h3 class="font-display text-xl tracking-wide mt-0.5">${car.name}</h3>
               </div>
               <div class="font-display text-2xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</div>
@@ -562,53 +561,13 @@
             <div class="grid grid-cols-3 gap-2 mt-auto pt-4 border-t border-uw-mid">
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
-              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.transmission || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
+              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? 'Auto' : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
             </div>
             <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block">View Details →</a>
           </div>`;
         grid.appendChild(card);
         setTimeout(() => card.classList.add('visible'), 100 + i * 100);
       });
-    }
-
-    function getDemoCars() {
-      return [
-        { id: 1, name: 'BMW 5 Series', make: 'BMW', price: 45000, year: 2021, mileage: 32000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80' },
-        { id: 2, name: 'Mercedes GLE', make: 'Mercedes', price: 68000, year: 2022, mileage: 18000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&q=80' },
-        { id: 3, name: 'Porsche Cayenne', make: 'Porsche', price: 92000, year: 2023, mileage: 8000, transmission: 'Auto', featured: true, image_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80' },
-      ];
-    }
-
-    // Load hero featured car
-    async function loadHeroCard() {
-      const skeleton = document.getElementById('hero-skeleton');
-      const content = document.getElementById('hero-card-content');
-      try {
-        const { data: cars } = await window.supabaseClient.from('cars').select('*').eq('featured', true).limit(1);
-        const car = (cars && cars.length > 0) ? cars[0] : getDemoCars()[0];
-        showHeroCard(car);
-      } catch {
-        showHeroCard(getDemoCars()[0]);
-      }
-      function showHeroCard(car) {
-        skeleton.innerHTML = `<img src="${car.image_url || 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80'}" class="w-full h-56 object-cover" alt="${car.name}" />`;
-        skeleton.classList.remove('skeleton');
-        document.getElementById('hero-name').textContent = car.name;
-        document.getElementById('hero-sub').textContent = (car.year || '') + ' • ' + (car.mileage ? Number(car.mileage).toLocaleString() + ' km' : 'Excellent Condition');
-        document.getElementById('hero-price').textContent = '$' + Number(car.price || 0).toLocaleString();
-        
-        // Add inspection tag
-        const inspectionTag = document.getElementById('hero-inspection-tag');
-        if (car.inspection === 'with inspection') {
-          inspectionTag.innerHTML = '<div class="inline-block bg-green-600 font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest mt-2">With Inspection</div>';
-        } else if (car.inspection === 'without inspection') {
-          inspectionTag.innerHTML = '<div class="inline-block bg-orange-600 font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest mt-2">No Inspection</div>';
-        } else {
-          inspectionTag.innerHTML = '';
-        }
-        
-        content.classList.remove('hidden');
-      }
     }
 
     loadFeaturedCars();

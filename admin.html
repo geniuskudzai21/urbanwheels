@@ -6,6 +6,7 @@
   <title>Admin Dashboard — Urban Wheels</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       theme: { extend: {
@@ -73,10 +74,10 @@
             class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
         </div>
         <div id="login-error" class="hidden font-mono text-uw-red text-xs py-2">Invalid credentials. Please try again.</div>
-        <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 mt-2">Sign In →</button>
+        <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 mt-2 inline-flex items-center gap-2"><i data-lucide="log-in"></i> Sign In →</button>
       </form>
       <div class="mt-6 text-center">
-        <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">← Back to Site</a>
+        <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-2"><i data-lucide="arrow-left"></i> ← Back to Site</a>
       </div>
     </div>
   </div>
@@ -117,8 +118,8 @@
       <div class="p-6 border-t border-uw-mid">
         <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Logged in as</div>
         <div class="font-body text-sm text-uw-white mb-3" id="admin-email-display">email@example.co.zw</div>
-        <button onclick="logout()" class="w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">Sign Out</button>
-        <a href="index.html" target="_blank" class="mt-2 w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors block text-center">View Site ↗</a>
+        <button onclick="logout()" class="w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2 justify-center"><i data-lucide="log-out"></i> Sign Out</button>
+        <a href="index.html" target="_blank" class="mt-2 w-full font-mono text-xs uppercase tracking-widest py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors block text-center inline-flex items-center gap-2 justify-center"><i data-lucide="external-link"></i> View Site ↗</a>
       </div>
     </aside>
 
@@ -162,7 +163,7 @@
           <div class="skeleton h-16"></div>
           <div class="skeleton h-16"></div>
         </div>
-        <button onclick="showSection('cars')" class="mt-6 font-mono text-xs uppercase tracking-widest text-uw-red hover:underline">View All Cars →</button>
+        <button onclick="showSection('cars')" class="mt-6 font-mono text-xs uppercase tracking-widest text-uw-red hover:underline inline-flex items-center gap-2"><i data-lucide="eye"></i> View All Cars →</button>
       </section>
 
       <!-- ─── SECTION: MANAGE CARS ─── -->
@@ -307,8 +308,8 @@
               <div class="space-y-3">
                 <div class="flex items-center gap-3">
                   <input type="file" id="f-image-upload" accept="image/*" class="hidden" />
-                  <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-sm uppercase tracking-widest px-6 py-3 hover:border-uw-red transition-colors">
-                    Choose Image
+                  <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-sm uppercase tracking-widest px-6 py-3 hover:border-uw-red transition-colors inline-flex items-center gap-2">
+                    <i data-lucide="image"></i> Choose Image
                   </button>
                   <span id="file-name" class="font-mono text-xs text-uw-muted">No file selected</span>
                 </div>
@@ -320,8 +321,8 @@
 
             <!-- Actions -->
             <div class="flex gap-4 pt-4 border-t border-uw-mid">
-              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300">Save Listing →</button>
-              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors">Cancel</button>
+              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="save"></i> Save Listing →</button>
+              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="x"></i> Cancel</button>
             </div>
           </form>
         </div>
@@ -335,8 +336,8 @@
       <div class="font-display text-4xl mb-2">DELETE CAR?</div>
       <p class="font-body text-uw-muted text-sm mb-6">This action cannot be undone. The listing will be permanently removed.</p>
       <div class="flex gap-3">
-        <button id="confirm-delete-btn" class="flex-1 bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest py-3 hover:bg-uw-white hover:text-uw-black transition-colors">Delete</button>
-        <button onclick="closeModal()" class="flex-1 border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-widest py-3 hover:border-uw-red hover:text-uw-red transition-colors">Cancel</button>
+        <button id="confirm-delete-btn" class="flex-1 bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest py-3 hover:bg-uw-white hover:text-uw-black transition-colors inline-flex items-center gap-2 justify-center"><i data-lucide="trash-2"></i> Delete</button>
+        <button onclick="closeModal()" class="flex-1 border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-widest py-3 hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2 justify-center"><i data-lucide="x"></i> Cancel</button>
       </div>
     </div>
   </div>
@@ -507,8 +508,8 @@
           </td>
           <td class="px-4 py-3">
             <div class="flex gap-2">
-              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors">Edit</button>
-              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">Delete</button>
+              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors"><i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit</button>
+              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete</button>
             </div>
           </td>`;
         tbody.appendChild(tr);
@@ -544,7 +545,7 @@
       }
       document.getElementById('form-mode-label').textContent = 'Editing: ' + car.name;
       document.getElementById('form-section-title').innerHTML = 'EDIT <span class="text-uw-red">LISTING</span>';
-      document.getElementById('submit-btn').textContent = 'Save Changes →';
+      document.getElementById('submit-btn').innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Changes →';
       showSection('add');
     }
 
@@ -563,7 +564,7 @@
       
       document.getElementById('form-mode-label').textContent = 'New Listing';
       document.getElementById('form-section-title').innerHTML = 'ADD A <span class="text-uw-red">NEW CAR</span>';
-      document.getElementById('submit-btn').textContent = 'Save Listing →';
+      document.getElementById('submit-btn').innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Listing →';
       showSection('cars');
     }
 
@@ -651,7 +652,7 @@
       renderCarsTable(adminCars);
       showToast(editId ? '✓ Car updated successfully' : '✓ Car added successfully');
       resetForm();
-      btn.textContent = isEditMode ? 'Save Changes →' : 'Save Listing →';
+      btn.innerHTML = isEditMode ? '<i data-lucide="save" class="w-4 h-4"></i> Save Changes →' : '<i data-lucide="save" class="w-4 h-4"></i> Save Listing →';
       btn.disabled = false;
     });
 
@@ -685,5 +686,6 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
   </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

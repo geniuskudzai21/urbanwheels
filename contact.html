@@ -6,6 +6,7 @@
   <title>Contact — Urban Wheels</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       theme: { extend: {
@@ -45,7 +46,7 @@
         <a href="inventory.html" class="nav-link font-body text-sm uppercase tracking-widest text-uw-white">Inventory</a>
         <a href="about.html" class="nav-link font-body text-sm uppercase tracking-widest text-uw-white">About</a>
         <a href="contact.html" class="nav-link font-body text-sm uppercase tracking-widest text-uw-red">Contact</a>
-        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+        <a href="admin.html" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200"><i data-lucide="shield"></i>Admin</a>
       </div>
       <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
         <span class="block w-6 h-0.5 bg-uw-white"></span>
@@ -55,10 +56,10 @@
     </div>
     <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6">
       <div class="flex flex-col">
-        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Home</a>
-        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Inventory</a>
-        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">About</a>
-        <a href="contact.html" class="font-display text-2xl py-3 text-uw-red">Contact</a>
+        <a href="index.html" class="inline-flex items-center gap-2 font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors"><i data-lucide="home"></i>Home</a>
+        <a href="inventory.html" class="inline-flex items-center gap-2 font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors"><i data-lucide="warehouse"></i>Inventory</a>
+        <a href="about.html" class="inline-flex items-center gap-2 font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors"><i data-lucide="info"></i>About</a>
+        <a href="contact.html" class="inline-flex items-center gap-2 font-display text-2xl py-3 text-uw-red"><i data-lucide="phone"></i>Contact</a>
       </div>
     </div>
   </nav>
@@ -168,7 +169,7 @@
               <textarea id="c-message" rows="5" placeholder="Tell us how we can help you..." required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted resize-none"></textarea>
             </div>
 
-            <button type="submit" id="contact-submit" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 w-full">Send Message →</button>
+            <button type="submit" id="contact-submit" class="inline-flex items-center gap-2 bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 w-full"><i data-lucide="send"></i>Send Message →</button>
 
             <div id="form-success" class="hidden font-mono text-uw-green text-sm pt-2 text-center">
               ✓ Message sent successfully. We'll be in touch within 24 hours.
@@ -207,21 +208,21 @@
                 <div class="font-body font-700 text-uw-white mb-1">Chat on WhatsApp</div>
                 <div class="font-mono text-uw-muted text-xs">Get instant replies from our team</div>
               </div>
-              <a href="https://wa.me/263771347448" target="_blank" class="ml-auto font-mono text-xs uppercase tracking-widest border border-uw-mid px-4 py-2 text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors whitespace-nowrap">Chat Now</a>
+              <a href="https://wa.me/263771347448" target="_blank" class="ml-auto inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest border border-uw-mid px-4 py-2 text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors whitespace-nowrap"><i data-lucide="message-circle"></i>Chat Now</a>
             </div>
           </div>
 
           <!-- Social -->
           <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-4">Follow Us</div>
           <div class="flex gap-3">
-            <a href="#" class="flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
-              <span>Facebook</span>
+            <a href="#" class="inline-flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
+              <i data-lucide="facebook"></i><span>Facebook</span>
             </a>
-            <a href="#" class="flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
-              <span>Instagram</span>
+            <a href="#" class="inline-flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
+              <i data-lucide="instagram"></i><span>Instagram</span>
             </a>
-            <a href="#" class="flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
-              <span>Twitter/X</span>
+            <a href="#" class="inline-flex items-center gap-2 border border-uw-mid px-4 py-2 font-mono text-xs text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors">
+              <i data-lucide="twitter"></i><span>Twitter/X</span>
             </a>
           </div>
         </div>
@@ -309,5 +310,6 @@
       }, 1200);
     });
   </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

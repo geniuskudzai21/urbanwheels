@@ -6,6 +6,7 @@
   <title>About — Urban Wheels</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       theme: { extend: {
@@ -41,7 +42,7 @@
         <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Inventory</a>
         <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-red">About</a>
         <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
-        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200 inline-flex items-center gap-2"><i data-lucide="shield"></i>Admin</a>
       </div>
       <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2">
         <span class="block w-6 h-0.5 bg-uw-white"></span>
@@ -51,10 +52,10 @@
     </div>
     <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6">
       <div class="flex flex-col">
-        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Home</a>
-        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Inventory</a>
-        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid text-uw-red">About</a>
-        <a href="contact.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Contact</a>
+        <a href="index.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="home"></i>Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="warehouse"></i>Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid text-uw-red inline-flex items-center gap-2"><i data-lucide="info"></i>About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="phone"></i>Contact</a>
       </div>
     </div>
   </nav>
@@ -182,8 +183,8 @@
     <div class="max-w-screen-xl mx-auto px-6 text-center">
       <h2 class="font-display text-[clamp(2.5rem,7vw,6rem)] leading-none text-uw-white mb-6">READY TO DRIVE?</h2>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300">Browse Inventory</a>
-        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300">Get In Touch</a>
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="search"></i>Browse Inventory</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Get In Touch</a>
       </div>
     </div>
   </section>
@@ -212,5 +213,6 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
   </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

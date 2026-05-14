@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -108,7 +109,7 @@
         <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white hover:text-uw-white">Inventory</a>
         <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">About</a>
         <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
-        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200">Admin</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200 inline-flex items-center gap-2"><i data-lucide="shield"></i>Admin</a>
       </div>
 
       <!-- Mobile Hamburger -->
@@ -121,11 +122,11 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="bg-uw-black border-t border-uw-mid px-6 py-0">
       <div class="flex flex-col gap-0">
-        <a href="index.html" class="font-display text-2xl py-3 text-uw-red border-b border-uw-mid">Home</a>
-        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Inventory</a>
-        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">About</a>
-        <a href="contact.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors">Contact</a>
-        <a href="admin.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors">Admin ↗</a>
+        <a href="index.html" class="font-display text-2xl py-3 text-uw-red border-b border-uw-mid inline-flex items-center gap-2"><i data-lucide="home"></i>Home</a>
+        <a href="inventory.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="warehouse"></i>Inventory</a>
+        <a href="about.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="info"></i>About</a>
+        <a href="contact.html" class="font-display text-2xl py-3 border-b border-uw-mid hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="phone"></i>Contact</a>
+        <a href="admin.html" class="font-display text-2xl py-3 hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="shield"></i>Admin ↗</a>
       </div>
     </div>
   </nav>
@@ -142,7 +143,7 @@
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
         <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Clearing and customs</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
-        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle registration/span>
+        <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle registration</span>
         <span class="font-mono text-uw-white text-xs tracking-widest px-4">✦</span>
         <!-- Duplicate for seamless loop -->
         <span class="font-mono text-uw-white text-xs tracking-widest uppercase px-8">Vehicle sourcing</span>
@@ -173,15 +174,15 @@
         <div class="lg:col-span-7 relative z-10">
           <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-6 fade-in-up" style="animation-delay:0.1s">Harare, Zimbabwe — Est. 2018</div>
 
-          <h1 class="hero-word text-[clamp(5rem,14vw,13rem)] text-uw-white leading-none mb-0 fade-in-up" style="animation-delay:0.2s">DRIVE</h1>
+          <h1 class="hero-word text-[clamp(5rem,14vw,13rem)] text-uw-white leading-none mb-0 fade-in-up" style="animation-delay:0.2s">URBAN</h1>
           <h1 class="hero-word text-[clamp(5rem,14vw,13rem)] leading-none mb-0 fade-in-up" style="animation-delay:0.3s">
-            <span class="text-uw-white">DIF</span><span class="text-uw-red">FER</span><span class="text-uw-white">ENT</span>
+            <span class="text-uw-white">WH</span><span class="text-uw-red">EE</span><span class="text-uw-white">LS</span>
           </h1>
 
           <div class="flex items-start gap-6 mt-8 fade-in-up" style="animation-delay:0.45s">
           
             <p class="font-body text-uw-muted text-lg leading-relaxed max-w-md">
-              Urban Wheels curates Zimbabwe's most sought-after vehicles. From track-ready performance cars to refined luxury SUVs — we bring the extraordinary to your doorstep.
+             Join Urban Wheels group for more details on importing cars from Japan and South Africa
             </p>
           </div>
 
@@ -190,23 +191,23 @@
               Browse Inventory
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300">
-              Contact Us Now
+            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2">
+              <i data-lucide="phone-call"></i> Contact Us Now
             </a>
           </div>
         </div>
 
         <!-- Right: Featured Car Card -->
-        <div class="lg:col-span-5 relative mt-8 lg:mt-8 fade-in-up" style="animation-delay:0.5s">
+        <div class="lg:col-span-5 relative mt-6 lg:-mt-48 fade-in-up" style="animation-delay:0.5s">
           <div class="relative">
             <!-- Accent box -->
             <div class="absolute -top-4 -left-4 w-full h-full border border-uw-red opacity-40"></div>
             <div class="bg-uw-gray border border-uw-mid p-0 relative overflow-hidden" id="hero-featured-card">
-              <img src="assets/hero.jpeg" alt="Featured Vehicle" class="w-full h-56 object-cover">
+              <img src="assets/hero.jpeg" alt="Featured Vehicle" class="w-full h-72 object-cover object-top">
               <div class="p-6" id="hero-card-content">
                 <div class="flex justify-between items-start mb-3">
                   <div>
-                    <h3 class="font-display text-3xl tracking-wide mb-2" id="hero-name">Premium Vehicle</h3>
+                    <h3 class="font-display text-3xl tracking-wide mb-2" id="hero-name">Premium Vehicle - Drive Differently</h3>
                     <p class="font-body text-uw-muted text-sm" id="hero-sub">Exceptional Quality • Professional Service</p>
                   </div>
                   <div class="text-right">
@@ -281,7 +282,7 @@
       </div>
 
       <div class="mt-8 md:hidden text-center reveal">
-        <a href="inventory.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">View All Inventory →</a>
+        <a href="inventory.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-2"><i data-lucide="arrow-right"></i>View All Inventory →</a>
       </div>
     </div>
   </section>
@@ -324,7 +325,7 @@
           <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-4">— Why Choose Us</div>
           <h2 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-8">THE URBAN<br>WHEELS<br><span class="text-uw-red">DIFFERENCE</span></h2>
           <p class="font-body text-uw-muted leading-relaxed mb-8 max-w-md">We don't just sell cars. We match you with a machine that reflects who you are. Every vehicle in our inventory is hand-selected, inspected, and certified by our team of automotive experts.</p>
-          <a href="about.html" class="font-mono text-sm uppercase tracking-widest text-uw-white border-b border-uw-red pb-1 hover:text-uw-red transition-colors">Our Story →</a>
+          <a href="about.html" class="font-mono text-sm uppercase tracking-widest text-uw-white border-b border-uw-red pb-1 hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="book-open"></i>Our Story →</a>
         </div>
         <!-- Right: Feature Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 reveal" style="transition-delay:0.2s">
@@ -425,8 +426,8 @@
       <h2 class="font-display text-[clamp(3rem,8vw,7rem)] leading-none text-uw-white mb-6 reveal">READY TO<br>FIND YOUR CAR?</h2>
       <p class="font-body text-uw-white opacity-80 max-w-md mx-auto mb-10 reveal">Browse our current inventory or speak directly to one of our automotive consultants today.</p>
       <div class="flex flex-wrap justify-center gap-4 reveal">
-        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300">Browse Cars</a>
-        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300">Contact Us</a>
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="car-front"></i>Browse Cars</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Contact Us</a>
       </div>
     </div>
   </section>
@@ -444,9 +445,9 @@
           </div>
           <p class="font-body text-uw-muted text-sm leading-relaxed max-w-xs">Zimbabwe's premier automotive dealership. Curating exceptional vehicles since 2018.</p>
           <div class="flex gap-4 mt-6">
-            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">FB</a>
-            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">IG</a>
-            <a href="#" class="w-9 h-9 border border-uw-mid flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono">TW</a>
+            <a href="#" class="w-9 h-9 border border-uw-mid inline-flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono"><i data-lucide="facebook"></i></a>
+            <a href="#" class="w-9 h-9 border border-uw-mid inline-flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono"><i data-lucide="instagram"></i></a>
+            <a href="#" class="w-9 h-9 border border-uw-mid inline-flex items-center justify-center text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors text-xs font-mono"><i data-lucide="twitter"></i></a>
           </div>
         </div>
         <div>
@@ -566,7 +567,7 @@
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? 'Auto' : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
             </div>
-            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block">View Details →</a>
+            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block inline-flex items-center gap-2"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
           </div>`;
         grid.appendChild(card);
         setTimeout(() => card.classList.add('visible'), 100 + i * 100);
@@ -576,5 +577,6 @@
     loadFeaturedCars();
     loadHeroCard();
   </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

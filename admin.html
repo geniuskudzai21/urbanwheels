@@ -128,7 +128,7 @@
       <!-- Top bar -->
       <div class="bg-uw-black border-b border-uw-mid px-8 py-4 flex items-center justify-between sticky top-0 z-30">
         <h2 class="font-display text-2xl tracking-widest" id="page-title">DASHBOARD</h2>
-        <button onclick="showSection('add')" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest px-5 py-2.5 hover:bg-uw-white hover:text-uw-black transition-colors duration-200 flex items-center gap-2">
+        <button onclick="showSection('add')" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest px-[18.5px] py-[8.5px] hover:bg-uw-white hover:text-uw-black transition-colors duration-200 flex items-center gap-2">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
           Add Car
         </button>
@@ -308,7 +308,7 @@
               <div class="space-y-3">
                 <div class="flex items-center gap-3">
                   <input type="file" id="f-image-upload" accept="image/*" class="hidden" />
-                  <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-sm uppercase tracking-widest px-6 py-3 hover:border-uw-red transition-colors inline-flex items-center gap-2">
+                  <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-sm uppercase tracking-widest px-[22.5px] py-[10.5px] hover:border-uw-red transition-colors inline-flex items-center gap-2">
                     <i data-lucide="image"></i> Choose Image
                   </button>
                   <span id="file-name" class="font-mono text-xs text-uw-muted">No file selected</span>
@@ -321,8 +321,8 @@
 
             <!-- Actions -->
             <div class="flex gap-4 pt-4 border-t border-uw-mid">
-              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="save"></i> Save Listing →</button>
-              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="x"></i> Cancel</button>
+              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="save"></i> Save Listing →</button>
+              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-[30.5px] py-[14.5px] hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="x"></i> Cancel</button>
             </div>
           </form>
         </div>
@@ -508,8 +508,8 @@
           </td>
           <td class="px-4 py-3">
             <div class="flex gap-2">
-              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors"><i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit</button>
-              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-3 py-1.5 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete</button>
+              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-[10.5px] py-[4.5px] border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors"><i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit</button>
+              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-[10.5px] py-[4.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete</button>
             </div>
           </td>`;
         tbody.appendChild(tr);
@@ -686,6 +686,6 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
   </script>
-  <script>lucide.createIcons();</script>
+  <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>
 </body>
 </html>

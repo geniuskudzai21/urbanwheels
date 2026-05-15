@@ -183,8 +183,8 @@
     <div class="max-w-screen-xl mx-auto px-6 text-center">
       <h2 class="font-display text-[clamp(2.5rem,7vw,6rem)] leading-none text-uw-white mb-6">READY TO DRIVE?</h2>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="search"></i>Browse Inventory</a>
-        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Get In Touch</a>
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="search"></i>Browse Inventory</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Get In Touch</a>
       </div>
     </div>
   </section>
@@ -213,6 +213,6 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
   </script>
-  <script>lucide.createIcons();</script>
+  <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>
 </body>
 </html>

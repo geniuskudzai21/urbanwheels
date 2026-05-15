@@ -109,7 +109,7 @@
         <a href="inventory.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white hover:text-uw-white">Inventory</a>
         <a href="about.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">About</a>
         <a href="contact.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Contact</a>
-        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200 inline-flex items-center gap-2"><i data-lucide="shield"></i>Admin</a>
+        <a href="admin.html" class="font-mono text-xs uppercase tracking-widest px-3 py-1.5 border border-uw-white text-uw-white hover:bg-uw-white hover:text-uw-black transition-colors duration-200 inline-flex items-center gap-2"><i data-lucide="shield"></i>Admin</a>
       </div>
 
       <!-- Mobile Hamburger -->
@@ -187,11 +187,11 @@
           </div>
 
           <div class="flex flex-wrap gap-4 mt-10 fade-in-up" style="animation-delay:0.55s">
-            <a href="inventory.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-3">
+            <a href="inventory.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[25.5px] py-[14.5px] hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-3">
               Browse Inventory
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-uw-red hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2">
+            <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-[25.5px] py-[14.5px] hover:border-uw-red hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2">
               <i data-lucide="phone-call"></i> Contact Us Now
             </a>
           </div>
@@ -426,8 +426,8 @@
       <h2 class="font-display text-[clamp(3rem,8vw,7rem)] leading-none text-uw-white mb-6 reveal">READY TO<br>FIND YOUR CAR?</h2>
       <p class="font-body text-uw-white opacity-80 max-w-md mx-auto mb-10 reveal">Browse our current inventory or speak directly to one of our automotive consultants today.</p>
       <div class="flex flex-wrap justify-center gap-4 reveal">
-        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="car-front"></i>Browse Cars</a>
-        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-10 py-4 hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Contact Us</a>
+        <a href="inventory.html" class="bg-uw-white text-uw-red font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-black hover:text-uw-white transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="car-front"></i>Browse Cars</a>
+        <a href="contact.html" class="border border-uw-white text-uw-white font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-white hover:text-uw-red transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="phone"></i>Contact Us</a>
       </div>
     </div>
   </section>
@@ -567,7 +567,7 @@
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? 'Auto' : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
             </div>
-            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block inline-flex items-center gap-2"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
+            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-[10.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block inline-flex items-center gap-2"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
           </div>`;
         grid.appendChild(card);
         setTimeout(() => card.classList.add('visible'), 100 + i * 100);
@@ -577,6 +577,6 @@
     loadFeaturedCars();
     loadHeroCard();
   </script>
-  <script>lucide.createIcons();</script>
+  <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>
 </body>
 </html>

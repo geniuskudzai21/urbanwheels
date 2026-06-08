@@ -44,7 +44,7 @@
     <div class="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
       <a href="index.html" class="flex items-center gap-3">
         <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
-        <span class="font-display text-2xl tracking-widest text-uw-white">URBAN WHEELS</span>
+        <span class="font-display text-2xl tracking-widest text-uw-white max-md:text-xl">URBAN WHEELS</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
         <a href="index.html" class="nav-link font-body text-sm font-600 uppercase tracking-widest text-uw-white">Home</a>
@@ -101,7 +101,7 @@
         </div>
 
         <!-- Sort -->
-        <select id="sort-select" class="sort-select bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-4 py-2 focus:border-uw-red transition-colors">
+        <select id="sort-select" class="sort-select bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-4 py-2 focus:border-uw-red transition-colors max-sm:w-full">
           <option value="newest">Newest First</option>
           <option value="price-asc">Price: Low → High</option>
           <option value="price-desc">Price: High → Low</option>
@@ -141,7 +141,7 @@
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-3">
           <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
-          <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+          <span class="font-display text-xl tracking-widest max-md:text-lg">URBAN WHEELS</span>
         </div>
         <div class="font-mono text-uw-muted text-xs">© <span id="current-year"></span> Urban Wheels · Harare, Zimbabwe</div>
       </div>
@@ -232,7 +232,7 @@
               </div>
               ${car.inspection ? `<div class="flex justify-end"><span class="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 ${car.inspection === 'with inspection' ? 'bg-green-600/20 text-green-400 border border-green-600' : 'bg-orange-600/20 text-orange-400 border border-orange-600'}">${car.inspection === 'with inspection' ? '✓ With Inspection' : '✗ No Inspection'}</span></div>` : ''}
             </div>
-            <a href="car-detail.html?id=${car.id}" class="w-full text-center inline-flex items-center gap-2 justify-center font-mono text-xs uppercase tracking-widest py-[10.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block mt-4"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
+            <a href="car-detail.html?id=${car.id}" class="w-full text-center inline-flex items-center gap-2 justify-center font-mono text-xs uppercase tracking-widest py-[10.5px] max-md:py-2 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block mt-4"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
           </div>`;
         grid.appendChild(card);
       });

@@ -54,30 +54,66 @@
   <!-- ═══════════════════════════════
        LOGIN SCREEN
   ═══════════════════════════════ -->
-  <div id="login-screen" class="fixed inset-0 z-50 bg-uw-black flex items-center justify-center px-6">
-    <div class="w-full max-w-md fade-in border border-uw-mid p-8">
-      <div class="flex items-center gap-3 mb-12 justify-center">
-        <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
-        <span class="font-display text-3xl tracking-widest">URBAN WHEELS</span>
-      </div>
-      <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2 text-center">Admin Access</div>
-      <h1 class="font-display text-5xl text-center mb-8">SIGN IN</h1>
-      <form id="login-form" class="flex flex-col gap-4">
-        <div>
-          <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Email</label>
-          <input type="email" id="login-email" placeholder="email@example.co.zw" required
-            class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+  <div id="login-screen" class="fixed inset-0 z-50 bg-uw-black flex items-center justify-center px-4 sm:px-6">
+    <div class="relative w-full max-w-md fade-in">
+
+      <!-- Decorative corners -->
+      <div class="absolute -top-3 -left-3 sm:-top-4 sm:-left-4 w-16 h-16 sm:w-20 sm:h-20" style="border-left:3px solid rgba(227,21,21,0.4);border-top:3px solid rgba(227,21,21,0.4);"></div>
+      <div class="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20" style="border-right:3px solid rgba(227,21,21,0.4);border-bottom:3px solid rgba(227,21,21,0.4);"></div>
+
+      <!-- Header branding -->
+      <div class="bg-uw-gray border border-uw-mid p-8 sm:p-10 max-md:p-6 relative">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-11 h-11 sm:w-14 sm:h-14 object-contain max-md:w-10 max-md:h-10">
+          <div>
+            <div class="font-display text-2xl sm:text-3xl tracking-widest leading-none max-md:text-xl">URBAN WHEELS</div>
+            <div class="font-mono text-uw-red text-[10px] tracking-[0.3em] uppercase mt-1">Admin Portal</div>
+          </div>
         </div>
-        <div>
-          <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Password</label>
-          <input type="password" id="login-password" placeholder="••••••••" required
-            class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+
+        <div class="border-t border-uw-mid my-6 sm:my-8"></div>
+
+        <h1 class="font-display text-4xl sm:text-5xl leading-none max-md:text-3xl">WELCOME BACK</h1>
+        <p class="font-body text-uw-muted text-sm mt-2 mb-6 sm:mb-8 max-md:mb-6">Sign in to manage your inventory</p>
+
+        <form id="login-form" class="flex flex-col gap-4 sm:gap-5">
+          <div>
+            <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2" for="login-email">Email</label>
+            <div class="relative">
+              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:16px;height:16px;"></i>
+              <input type="email" id="login-email" placeholder="admin@urbanwheels.co.zw" autocomplete="email" required
+                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-10 pr-4 py-3 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
+            </div>
+          </div>
+          <div>
+            <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2" for="login-password">Password</label>
+            <div class="relative">
+              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:16px;height:16px;"></i>
+              <input type="password" id="login-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" required
+                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-10 pr-12 py-3 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-uw-muted hover:text-uw-white transition-colors" style="background:none;border:none;cursor:pointer;">
+                <i data-lucide="eye" id="password-eye-icon" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="login-error" class="hidden font-mono text-uw-red text-xs py-2.5 px-3 bg-uw-red/10 border border-uw-red/30">Invalid email or password.</div>
+
+          <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-3.5 sm:py-4 hover:bg-uw-white hover:text-uw-black transition-all duration-300 mt-2 inline-flex items-center gap-2 justify-center">
+            <span id="login-btn-text">Sign In</span>
+            <span id="login-btn-spinner" class="hidden">
+              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            </span>
+            <span id="login-btn-arrow">→</span>
+          </button>
+        </form>
+
+        <div class="mt-6 text-center">
+          <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-2">
+            <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+            Back to Site
+          </a>
         </div>
-        <div id="login-error" class="hidden font-mono text-uw-red text-xs py-2">Invalid credentials. Please try again.</div>
-        <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-4 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 mt-2 inline-flex items-center gap-2"><i data-lucide="log-in"></i> Sign In →</button>
-      </form>
-      <div class="mt-6 text-center">
-        <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-2"><i data-lucide="arrow-left"></i> ← Back to Site</a>
       </div>
     </div>
   </div>
@@ -87,13 +123,16 @@
   ═══════════════════════════════ -->
   <div id="admin-app" class="hidden min-h-screen flex">
 
+    <!-- Mobile sidebar backdrop -->
+    <div id="sidebar-backdrop" class="hidden fixed inset-0 z-30 bg-black bg-opacity-60 lg:hidden" onclick="toggleMobileSidebar()"></div>
+
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-uw-gray border-r border-uw-mid z-40 flex flex-col">
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-uw-gray border-r border-uw-mid z-40 flex flex-col max-lg:-translate-x-full max-lg:transition-transform max-lg:duration-300">
       <!-- Logo -->
       <div class="p-6 border-b border-uw-mid">
         <div class="flex items-center gap-3">
           <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-16 h-16 object-contain">
-          <span class="font-display text-xl tracking-widest">URBAN WHEELS</span>
+          <span class="font-display text-xl tracking-widest max-md:text-lg">URBAN WHEELS</span>
         </div>
         <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mt-1">Admin Panel</div>
       </div>
@@ -124,18 +163,25 @@
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="ml-64 flex-1 min-h-screen">
+    <main class="ml-64 flex-1 min-h-screen max-lg:ml-0">
       <!-- Top bar -->
       <div class="bg-uw-black border-b border-uw-mid px-8 py-4 flex items-center justify-between sticky top-0 z-30">
-        <h2 class="font-display text-2xl tracking-widest" id="page-title">DASHBOARD</h2>
-        <button onclick="showSection('add')" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest px-[18.5px] py-[8.5px] hover:bg-uw-white hover:text-uw-black transition-colors duration-200 flex items-center gap-2">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleMobileSidebar()" class="lg:hidden flex flex-col gap-1.5 p-2 -ml-2">
+            <span class="block w-5 h-0.5 bg-uw-white"></span>
+            <span class="block w-5 h-0.5 bg-uw-white"></span>
+            <span class="block w-3 h-0.5 bg-uw-red"></span>
+          </button>
+          <h2 class="font-display text-2xl tracking-widest max-md:text-xl" id="page-title">DASHBOARD</h2>
+        </div>
+        <button onclick="showSection('add')" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest px-[18.5px] py-[8.5px] max-md:px-3 max-md:py-2 hover:bg-uw-white hover:text-uw-black transition-colors duration-200 flex items-center gap-2">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
           Add Car
         </button>
       </div>
 
       <!-- ─── SECTION: DASHBOARD ─── -->
-      <section id="section-dashboard" class="p-8">
+      <section id="section-dashboard" class="p-8 max-lg:p-4">
         <!-- Stats -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           <div class="stat-card bg-uw-gray p-5">
@@ -167,13 +213,13 @@
       </section>
 
       <!-- ─── SECTION: MANAGE CARS ─── -->
-      <section id="section-cars" class="hidden p-8">
-        <div class="flex items-center justify-between mb-6">
+      <section id="section-cars" class="hidden p-8 max-lg:p-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-3">
           <div>
             <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mb-1">All Vehicles</div>
             <div class="font-mono text-uw-muted text-xs"><span id="cars-count">0</span> total</div>
           </div>
-          <input type="text" id="admin-search" placeholder="Search..." class="bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-2 focus:border-uw-red transition-colors placeholder-uw-muted w-64" />
+          <input type="text" id="admin-search" placeholder="Search..." class="bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-2 focus:border-uw-red transition-colors placeholder-uw-muted w-64 max-md:w-full" />
         </div>
 
         <!-- Table -->
@@ -197,7 +243,7 @@
       </section>
 
       <!-- ─── SECTION: ADD / EDIT CAR ─── -->
-      <section id="section-add" class="hidden p-8">
+      <section id="section-add" class="hidden p-8 max-lg:p-4">
         <div class="max-w-3xl">
           <div class="font-mono text-uw-muted text-xs uppercase tracking-widest mb-2" id="form-mode-label">New Listing</div>
           <h2 class="font-display text-4xl mb-8" id="form-section-title">ADD A <span class="text-uw-red">NEW CAR</span></h2>
@@ -320,9 +366,9 @@
             </div>
 
             <!-- Actions -->
-            <div class="flex gap-4 pt-4 border-t border-uw-mid">
-              <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="save"></i> Save Listing →</button>
-              <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-[30.5px] py-[14.5px] hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="x"></i> Cancel</button>
+        <div class="flex gap-4 pt-4 border-t border-uw-mid">
+          <button type="submit" id="submit-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[38.5px] py-[14.5px] max-md:px-4 max-md:py-2.5 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="save"></i> Save Listing →</button>
+          <button type="button" onclick="resetForm()" class="border border-uw-mid text-uw-muted font-mono text-sm uppercase tracking-widest px-[30.5px] py-[14.5px] max-md:px-4 max-md:py-2.5 hover:border-uw-red hover:text-uw-red transition-colors inline-flex items-center gap-2"><i data-lucide="x"></i> Cancel</button>
             </div>
           </form>
         </div>
@@ -332,7 +378,7 @@
 
   <!-- DELETE CONFIRM MODAL -->
   <div id="modal-overlay" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center px-6">
-    <div id="modal-panel" class="bg-uw-gray border border-uw-red max-w-sm w-full p-8">
+    <div id="modal-panel" class="bg-uw-gray border border-uw-red max-w-sm w-full p-8 max-md:p-6">
       <div class="font-display text-4xl mb-2">DELETE CAR?</div>
       <p class="font-body text-uw-muted text-sm mb-6">This action cannot be undone. The listing will be permanently removed.</p>
       <div class="flex gap-3">
@@ -389,23 +435,57 @@
     let deleteTargetId = null;
     let isEditMode = false;
 
+    // ─── PASSWORD TOGGLE ───
+    function togglePasswordVisibility() {
+      const input = document.getElementById('login-password');
+      const icon = document.getElementById('password-eye-icon');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      icon.setAttribute('data-lucide', input.type === 'password' ? 'eye' : 'eye-off');
+      lucide.createIcons();
+    }
+
+    // ─── ADMIN CREDENTIALS ───
+    const ADMIN_EMAIL = 'admin@urbanwheels.co.zw';
+    const ADMIN_PASSWORD = 'urbanwheels';
+
     // ─── LOGIN ───
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       const btn = document.getElementById('login-btn');
-      btn.textContent = 'Signing in...';
+      const btnText = document.getElementById('login-btn-text');
+      const btnSpinner = document.getElementById('login-btn-spinner');
+      const btnArrow = document.getElementById('login-btn-arrow');
+      const errorDiv = document.getElementById('login-error');
 
-      // Try Supabase auth
+      errorDiv.classList.add('hidden');
+      btnText.textContent = 'Signing in';
+      btnSpinner.classList.remove('hidden');
+      btnArrow.classList.add('hidden');
+      btn.disabled = true;
+
+      // Try Supabase auth first
+      let success = false;
       try {
         const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        if (!error) success = true;
+      } catch {}
+
+      // Fallback: hardcoded admin credentials
+      if (!success && email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        success = true;
+      }
+
+      if (success) {
         document.getElementById('admin-email-display').textContent = email;
         showAdminApp();
-      } catch {
-        document.getElementById('login-error').classList.remove('hidden');
-        btn.textContent = 'Sign In →';
+      } else {
+        errorDiv.classList.remove('hidden');
+        btnText.textContent = 'Sign In';
+        btnSpinner.classList.add('hidden');
+        btnArrow.classList.remove('hidden');
+        btn.disabled = false;
       }
     });
 
@@ -416,9 +496,15 @@
     }
 
     function logout() {
-      window.supabaseClient.auth.signOut();
+      try { window.supabaseClient.auth.signOut(); } catch {}
       document.getElementById('login-screen').style.display = 'flex';
       document.getElementById('admin-app').classList.add('hidden');
+    }
+
+    // ─── MOBILE SIDEBAR ───
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('max-lg:-translate-x-full');
+      document.getElementById('sidebar-backdrop').classList.toggle('hidden');
     }
 
     // ─── SECTIONS ───
@@ -429,6 +515,11 @@
       });
       document.getElementById('section-' + name).classList.remove('hidden');
       document.getElementById('link-' + name)?.classList.add('active');
+      // Close sidebar on mobile
+      const sidebar = document.getElementById('sidebar');
+      if (!sidebar.classList.contains('max-lg:-translate-x-full')) {
+        toggleMobileSidebar();
+      }
       const titles = { dashboard: 'DASHBOARD', cars: 'MANAGE CARS', add: isEditMode ? 'EDIT CAR' : 'ADD NEW CAR' };
       document.getElementById('page-title').textContent = titles[name];
     }

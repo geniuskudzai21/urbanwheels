@@ -62,55 +62,55 @@
       <div class="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20" style="border-right:3px solid rgba(227,21,21,0.4);border-bottom:3px solid rgba(227,21,21,0.4);"></div>
 
       <!-- Header branding -->
-      <div class="bg-uw-gray border border-uw-mid p-8 sm:p-10 max-md:p-6 relative">
-        <div class="flex items-center gap-3 sm:gap-4">
-          <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-11 h-11 sm:w-14 sm:h-14 object-contain max-md:w-10 max-md:h-10">
+      <div class="bg-uw-gray border border-uw-mid px-6 sm:px-8 py-6 sm:py-7 max-md:px-5 max-md:py-5 relative">
+        <div class="flex items-center gap-2.5">
+          <img src="assets/logo.png" alt="Urban Wheels Logo" class="w-9 h-9 sm:w-11 sm:h-11 object-contain max-md:w-8 max-md:h-8">
           <div>
-            <div class="font-display text-2xl sm:text-3xl tracking-widest leading-none max-md:text-xl">URBAN WHEELS</div>
-            <div class="font-mono text-uw-red text-[10px] tracking-[0.3em] uppercase mt-1">Admin Portal</div>
+            <div class="font-display text-xl sm:text-2xl tracking-widest leading-none max-md:text-lg">URBAN WHEELS</div>
+            <div class="font-mono text-uw-red text-[9px] tracking-[0.3em] uppercase mt-0.5">Admin Portal</div>
           </div>
         </div>
 
-        <div class="border-t border-uw-mid my-6 sm:my-8"></div>
+        <div class="border-t border-uw-mid my-4 sm:my-5"></div>
 
-        <h1 class="font-display text-4xl sm:text-5xl leading-none max-md:text-3xl">WELCOME BACK</h1>
-        <p class="font-body text-uw-muted text-sm mt-2 mb-6 sm:mb-8 max-md:mb-6">Sign in to manage your inventory</p>
+        <h1 class="font-display text-2xl sm:text-3xl leading-none max-md:text-xl">WELCOME BACK</h1>
+        <p class="font-body text-uw-muted text-xs mt-1 mb-4 sm:mb-5 max-md:mb-3">Sign in to manage your inventory</p>
 
-        <form id="login-form" class="flex flex-col gap-4 sm:gap-5">
+        <form id="login-form" class="flex flex-col gap-3">
           <div>
-            <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2" for="login-email">Email</label>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-1.5" for="login-email">Email</label>
             <div class="relative">
-              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:16px;height:16px;"></i>
+              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:14px;height:14px;"></i>
               <input type="email" id="login-email" placeholder="admin@urbanwheels.co.zw" autocomplete="email" required
-                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-10 pr-4 py-3 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
+                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-9 pr-3 py-2.5 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
             </div>
           </div>
           <div>
-            <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2" for="login-password">Password</label>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-1.5" for="login-password">Password</label>
             <div class="relative">
-              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:16px;height:16px;"></i>
-              <input type="password" id="login-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" required
-                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-10 pr-12 py-3 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
-              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-uw-muted hover:text-uw-white transition-colors" style="background:none;border:none;cursor:pointer;">
-                <i data-lucide="eye" id="password-eye-icon" style="width:16px;height:16px;"></i>
+              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:14px;height:14px;"></i>
+              <input type="password" id="login-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" required
+                class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-9 pr-10 py-2.5 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-uw-muted hover:text-uw-white transition-colors" style="background:none;border:none;cursor:pointer;">
+                <i data-lucide="eye" id="password-eye-icon" style="width:14px;height:14px;"></i>
               </button>
             </div>
           </div>
 
-          <div id="login-error" class="hidden font-mono text-uw-red text-xs py-2.5 px-3 bg-uw-red/10 border border-uw-red/30">Invalid email or password.</div>
+          <div id="login-error" class="hidden font-mono text-uw-red text-[11px] py-2 px-2.5 bg-uw-red/10 border border-uw-red/30">Invalid email or password.</div>
 
-          <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest py-3.5 sm:py-4 hover:bg-uw-white hover:text-uw-black transition-all duration-300 mt-2 inline-flex items-center gap-2 justify-center">
+          <button type="submit" id="login-btn" class="bg-uw-red text-uw-white font-mono text-xs uppercase tracking-widest py-2.5 hover:bg-uw-white hover:text-uw-black transition-all duration-300 mt-1 inline-flex items-center gap-1.5 justify-center">
             <span id="login-btn-text">Sign In</span>
             <span id="login-btn-spinner" class="hidden">
-              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+              <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
             </span>
             <span id="login-btn-arrow">→</span>
           </button>
         </form>
 
-        <div class="mt-6 text-center">
-          <a href="index.html" class="font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-2">
-            <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+        <div class="mt-4 text-center">
+          <a href="index.html" class="font-mono text-[10px] text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest inline-flex items-center gap-1.5">
+            <i data-lucide="arrow-left" style="width:12px;height:12px;"></i>
             Back to Site
           </a>
         </div>
@@ -395,6 +395,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/admin-config.js"></script>
   <script src="main.js"></script>
   <script>
     
@@ -443,10 +444,6 @@
       icon.setAttribute('data-lucide', input.type === 'password' ? 'eye' : 'eye-off');
       lucide.createIcons();
     }
-
-    // ─── ADMIN CREDENTIALS ───
-    const ADMIN_EMAIL = 'admin@urbanwheels.co.zw';
-    const ADMIN_PASSWORD = 'urbanwheels';
 
     // ─── LOGIN ───
     document.getElementById('login-form').addEventListener('submit', async (e) => {

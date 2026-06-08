@@ -108,6 +108,7 @@ Thumbs.db
 
 # Generated config (built from template + env vars)
 js/supabase-config.js
+js/admin-config.js
 
 # Image optimization
 *.optimized.*

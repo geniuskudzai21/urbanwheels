@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const templatePath = path.join(__dirname, '..', 'js', 'supabase-config.template.js');
-const outputPath = path.join(__dirname, '..', 'js', 'supabase-config.js');
-
 // Load .env file if present
 const envPath = path.join(__dirname, '..', '.env');
 if (fs.existsSync(envPath)) {
@@ -23,15 +20,34 @@ if (fs.existsSync(envPath)) {
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const adminEmail = process.env.ADMIN_EMAIL;
+const adminPassword = process.env.ADMIN_PASSWORD;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('ERROR: SUPABASE_URL and SUPABASE_ANON_KEY environment variables must be set.');
+  console.error('ERROR: SUPABASE_URL and SUPABASE_ANON_KEY must be set.');
   process.exit(1);
 }
 
-let template = fs.readFileSync(templatePath, 'utf8');
-template = template.replace(/__SUPABASE_URL__/g, supabaseUrl);
-template = template.replace(/__SUPABASE_ANON_KEY__/g, supabaseAnonKey);
-fs.writeFileSync(outputPath, template);
+// Generate supabase-config.js
+let supabaseTemplate = fs.readFileSync(
+  path.join(__dirname, '..', 'js', 'supabase-config.template.js'), 'utf8'
+);
+supabaseTemplate = supabaseTemplate
+  .replace(/__SUPABASE_URL__/g, supabaseUrl)
+  .replace(/__SUPABASE_ANON_KEY__/g, supabaseAnonKey);
+fs.writeFileSync(path.join(__dirname, '..', 'js', 'supabase-config.js'), supabaseTemplate);
+console.log('✓ supabase-config.js generated');
 
-console.log('✓ supabase-config.js generated from template');
+// Generate admin-config.js (only if ADMIN vars are set)
+if (adminEmail && adminPassword) {
+  let adminTemplate = fs.readFileSync(
+    path.join(__dirname, '..', 'js', 'admin-config.template.js'), 'utf8'
+  );
+  adminTemplate = adminTemplate
+    .replace(/__ADMIN_EMAIL__/g, adminEmail)
+    .replace(/__ADMIN_PASSWORD__/g, adminPassword);
+  fs.writeFileSync(path.join(__dirname, '..', 'js', 'admin-config.js'), adminTemplate);
+  console.log('✓ admin-config.js generated');
+} else {
+  console.warn('⚠ ADMIN_EMAIL/ADMIN_PASSWORD not set — skipping admin-config.js');
+}

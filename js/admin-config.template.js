@@ -1,0 +1,2 @@
+const ADMIN_EMAIL = '__ADMIN_EMAIL__';
+const ADMIN_PASSWORD = '__ADMIN_PASSWORD__';

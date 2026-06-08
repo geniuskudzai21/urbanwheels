@@ -133,22 +133,22 @@
             <div class="grid sm:grid-cols-2 gap-4">
               <div>
                 <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-2">First Name *</label>
-                <input type="text" id="c-fname" placeholder="Tendai" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+                <input type="text" id="c-fname" placeholder="Your first name" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
               </div>
               <div>
                 <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-2">Last Name *</label>
-                <input type="text" id="c-lname" placeholder="Moyo" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+                <input type="text" id="c-lname" placeholder="Your last name" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
               </div>
             </div>
 
             <div>
               <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-2">Email Address *</label>
-              <input type="email" id="c-email" placeholder="you@example.com" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              <input type="email" id="c-email" placeholder="your@email.com" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
             </div>
 
             <div>
               <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-2">Phone Number</label>
-              <input type="tel" id="c-phone" placeholder="+263 77 ..." class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              <input type="tel" id="c-phone" placeholder="+1 234 567 890" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
             </div>
 
             <div>
@@ -301,13 +301,10 @@
       btn.textContent = 'Sending...';
       btn.disabled = true;
 
-      // Simulate send
-      setTimeout(() => {
-        succEl.classList.remove('hidden');
-        this.reset();
-        btn.textContent = 'Send Message →';
-        btn.disabled = false;
-      }, 1200);
+      succEl.classList.remove('hidden');
+      this.reset();
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
     });
   </script>
   <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>

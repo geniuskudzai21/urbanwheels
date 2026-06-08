@@ -193,16 +193,12 @@
       try {
         const { data: car, error } = await window.supabaseClient.from('cars').select('*').eq('id', carId).single();
         if (error || !car) {
-          const demoCar = getAllDemoCars().find(c => c.id == carId);
-          if (demoCar) renderCar(demoCar);
-          else showError();
+          showError();
         } else {
           renderCar(car);
         }
       } catch {
-        const demoCar = getAllDemoCars().find(c => c.id == carId);
-        if (demoCar) renderCar(demoCar);
-        else showError();
+        showError();
       }
     }
 

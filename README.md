@@ -14,7 +14,7 @@ A premium car dealership website built with HTML, Tailwind CSS, and Supabase.
 1. In Supabase, go to **SQL Editor**
 2. Open `supabase-schema.sql` from this folder
 3. Paste the contents and click **Run**
-4. This creates the `cars` table, RLS policies, and seeds 6 demo cars
+4. This creates the `cars` table and RLS policies
 
 ### Step 3 — Add Your API Keys
 1. In Supabase, go to **Settings → API**
@@ -30,8 +30,6 @@ A premium car dealership website built with HTML, Tailwind CSS, and Supabase.
 2. Click **Invite User** or **Add User**
 3. Enter your admin email and password
 4. Use these credentials to log into `admin.html`
-
-> **Demo Mode:** If Supabase isn't connected, the site still works with built-in demo data. The admin dashboard allows login with any email + password (4+ chars).
 
 ### Step 5 — Open the Site
 Open `index.html` in your browser — or deploy to any static host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).

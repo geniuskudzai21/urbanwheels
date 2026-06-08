@@ -404,14 +404,8 @@
         document.getElementById('admin-email-display').textContent = email;
         showAdminApp();
       } catch {
-        // Demo mode: accept any credentials
-        if (email && password.length >= 4) {
-          document.getElementById('admin-email-display').textContent = email;
-          showAdminApp();
-        } else {
-          document.getElementById('login-error').classList.remove('hidden');
-          btn.textContent = 'Sign In →';
-        }
+        document.getElementById('login-error').classList.remove('hidden');
+        btn.textContent = 'Sign In →';
       }
     });
 
@@ -443,9 +437,9 @@
     async function loadAdminCars() {
       try {
         const { data: cars, error } = await window.supabaseClient.from('cars').select('*').order('created_at', { ascending: false });
-        if (error || !cars) { adminCars = getAllDemoCars(); }
-        else { adminCars = cars.length > 0 ? cars : getAllDemoCars(); }
-      } catch { adminCars = getAllDemoCars(); }
+        if (error || !cars) { adminCars = []; }
+        else { adminCars = cars.length > 0 ? cars : []; }
+      } catch { adminCars = []; }
 
       updateStats();
       renderRecentCars();
@@ -632,26 +626,18 @@
           const { error } = await window.supabaseClient.from('cars').insert([carData]);
           if (!error) success = true;
         }
-      } catch {}
+        } catch {}
 
-      // Demo mode: simulate success
-      if (!success) {
-        if (editId) {
-          const idx = adminCars.findIndex(c => c.id == editId);
-          if (idx > -1) adminCars[idx] = { ...adminCars[idx], ...carData };
-        } else {
-          adminCars.unshift({ ...carData, id: Date.now() });
-        }
-        success = true;
-      } else {
+      if (success) {
         await loadAdminCars();
+        updateStats();
+        renderRecentCars();
+        renderCarsTable(adminCars);
+        showToast(editId ? '✓ Car updated successfully' : '✓ Car added successfully');
+        resetForm();
+      } else {
+        showToast('✗ Failed to save. Check your connection.');
       }
-
-      updateStats();
-      renderRecentCars();
-      renderCarsTable(adminCars);
-      showToast(editId ? '✓ Car updated successfully' : '✓ Car added successfully');
-      resetForm();
       btn.innerHTML = isEditMode ? '<i data-lucide="save" class="w-4 h-4"></i> Save Changes →' : '<i data-lucide="save" class="w-4 h-4"></i> Save Listing →';
       btn.disabled = false;
     });

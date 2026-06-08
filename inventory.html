@@ -168,12 +168,12 @@
       try {
         const { data: cars, error } = await window.supabaseClient.from('cars').select('*').order('created_at', { ascending: false });
         if (error || !cars || cars.length === 0) {
-          allCars = getAllDemoCars();
+          allCars = [];
         } else {
           allCars = cars;
         }
       } catch {
-        allCars = getAllDemoCars();
+        allCars = [];
       }
       renderCars();
     }

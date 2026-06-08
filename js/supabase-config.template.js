@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════
 // SUPABASE CONFIGURATION
-// Replace with your actual Supabase project URL and anon key
+// This file is generated from the template during build.
 // ═══════════════════════════════════════
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = '__SUPABASE_URL__';
+const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
 window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

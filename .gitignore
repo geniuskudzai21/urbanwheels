@@ -106,6 +106,9 @@ Thumbs.db
 # Supabase
 .supabase/
 
+# Generated config (built from template + env vars)
+js/supabase-config.js
+
 # Image optimization
 *.optimized.*
 

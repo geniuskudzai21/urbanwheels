@@ -183,7 +183,7 @@
       <!-- ─── SECTION: DASHBOARD ─── -->
       <section id="section-dashboard" class="p-8 max-lg:p-4">
         <!-- Stats -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div class="grid grid-cols-2 gap-4 mb-10">
           <div class="stat-card bg-uw-gray p-5">
             <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Total Cars</div>
             <div class="font-display text-4xl text-uw-white" id="stat-total">—</div>
@@ -191,14 +191,6 @@
           <div class="stat-card bg-uw-gray p-5">
             <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Available</div>
             <div class="font-display text-4xl text-uw-green" id="stat-available">—</div>
-          </div>
-          <div class="stat-card bg-uw-gray p-5">
-            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Featured</div>
-            <div class="font-display text-4xl text-uw-yellow" id="stat-featured">—</div>
-          </div>
-          <div class="stat-card bg-uw-gray p-5">
-            <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-2">Sold</div>
-            <div class="font-display text-4xl text-uw-red" id="stat-sold">—</div>
           </div>
         </div>
 
@@ -264,49 +256,48 @@
               </div>
               <div>
                 <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Model *</label>
-                <select id="f-model" required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
-                  <option value="">Select Model...</option>
-                  <option value="Corolla">Toyota Corolla</option>
-                  <option value="Camry">Toyota Camry</option>
-                  <option value="Land Cruiser">Toyota Land Cruiser</option>
-                  <option value="Hilux">Toyota Hilux</option>
-                  <option value="Vitz">Toyota Vitz</option>
-                  <option value="Yaris">Toyota Yaris</option>
-                  <option value="RAV4">Toyota RAV4</option>
-                  <option value="Prado">Toyota Prado</option>
-                  <option value="C-HR">Toyota C-HR</option>
-                  <option value="3 Series">BMW 3 Series</option>
-                  <option value="5 Series">BMW 5 Series</option>
-                  <option value="X5">BMW X5</option>
-                  <option value="X3">BMW X3</option>
-                  <option value="X1">BMW X1</option>
-                  <option value="X6">BMW X6</option>
-                  <option value="Z4">BMW Z4</option>
-                  <option value="C-Class">Mercedes C-Class</option>
-                  <option value="E-Class">Mercedes E-Class</option>
-                  <option value="S-Class">Mercedes S-Class</option>
-                  <option value="GLE">Mercedes GLE</option>
-                  <option value="GLC">Mercedes GLC</option>
-                  <option value="A-Class">Mercedes A-Class</option>
-                  <option value="Benz">Mercedes-Benz</option>
-                  <option value="Civic">Honda Civic</option>
-                  <option value="CR-V">Honda CR-V</option>
-                  <option value="Fit">Honda Fit</option>
-                  <option value="HR-V">Honda HR-V</option>
-                  <option value="Accord">Honda Accord</option>
-                  <option value="Ranger">Ford Ranger</option>
-                  <option value="Raptor">Ford Raptor</option>
-                  <option value="Mustang">Ford Mustang</option>
-                  <option value="Focus">Ford Focus</option>
-                  <option value="Everest">Ford Everest</option>
-                  <option value="A4">Audi A4</option>
-                  <option value="A6">Audi A6</option>
-                  <option value="Q7">Audi Q7</option>
-                  <option value="Q5">Audi Q5</option>
-                  <option value="Q3">Audi Q3</option>
-                  <option value="TT">Audi TT</option>
-                  <option value="Other">Other Model</option>
-                </select>
+                <input type="text" id="f-model" list="model-suggestions" placeholder="Type or select a model..." required class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+                <datalist id="model-suggestions">
+                  <option value="Toyota Corolla">
+                  <option value="Toyota Camry">
+                  <option value="Toyota Land Cruiser">
+                  <option value="Toyota Hilux">
+                  <option value="Toyota Vitz">
+                  <option value="Toyota Yaris">
+                  <option value="Toyota RAV4">
+                  <option value="Toyota Prado">
+                  <option value="Toyota C-HR">
+                  <option value="BMW 3 Series">
+                  <option value="BMW 5 Series">
+                  <option value="BMW X5">
+                  <option value="BMW X3">
+                  <option value="BMW X1">
+                  <option value="BMW X6">
+                  <option value="BMW Z4">
+                  <option value="Mercedes C-Class">
+                  <option value="Mercedes E-Class">
+                  <option value="Mercedes S-Class">
+                  <option value="Mercedes GLE">
+                  <option value="Mercedes GLC">
+                  <option value="Mercedes A-Class">
+                  <option value="Mercedes-Benz">
+                  <option value="Honda Civic">
+                  <option value="Honda CR-V">
+                  <option value="Honda Fit">
+                  <option value="Honda HR-V">
+                  <option value="Honda Accord">
+                  <option value="Ford Ranger">
+                  <option value="Ford Raptor">
+                  <option value="Ford Mustang">
+                  <option value="Ford Focus">
+                  <option value="Ford Everest">
+                  <option value="Audi A4">
+                  <option value="Audi A6">
+                  <option value="Audi Q7">
+                  <option value="Audi Q5">
+                  <option value="Audi Q3">
+                  <option value="Audi TT">
+                </datalist>
               </div>
             </div>
 
@@ -537,8 +528,7 @@
     function updateStats() {
       document.getElementById('stat-total').textContent = adminCars.length;
       document.getElementById('stat-available').textContent = adminCars.filter(c => c.status === 'available' || !c.status).length;
-      document.getElementById('stat-featured').textContent = adminCars.filter(c => c.featured).length;
-      document.getElementById('stat-sold').textContent = adminCars.filter(c => c.status === 'sold').length;
+
       document.getElementById('cars-count').textContent = adminCars.length;
     }
 

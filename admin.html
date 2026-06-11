@@ -36,6 +36,43 @@
     .car-row:hover { background: #1a1a1a; }
     .car-row { transition: background 0.15s; }
 
+    .desktop-empty { display: table-row; }
+    .mobile-empty { display: none; }
+    @media (max-width: 767px) {
+      .desktop-empty { display: none; }
+      .mobile-empty { display: table-row; }
+      #cars-table, #cars-table thead { display: none; }
+      #cars-table-body tr {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #2e2e2e;
+        margin-bottom: 12px;
+        padding: 16px;
+        background: #1a1a1a;
+        gap: 10px;
+      }
+      #cars-table-body td {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 !important;
+        border: none !important;
+      }
+      #cars-table-body td::before {
+        content: attr(data-label);
+        font-family: 'Space Mono', monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #7a7a7a;
+        min-width: 65px;
+        flex-shrink: 0;
+      }
+      #cars-table-body td:first-child::before { display: none; }
+      #cars-table-body td:last-child::before { align-self: flex-start; margin-top: 2px; }
+      #cars-table-body td:last-child { flex-wrap: wrap; }
+    }
+
     /* Toast */
     #toast { transition: transform 0.3s, opacity 0.3s; transform: translateY(100px); opacity: 0; }
     #toast.show { transform: translateY(0); opacity: 1; }
@@ -216,19 +253,18 @@
 
         <!-- Table -->
         <div class="border border-uw-mid overflow-x-auto">
-          <table class="w-full min-w-[700px]">
+          <table id="cars-table" class="w-full">
             <thead class="bg-uw-gray">
               <tr>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Vehicle</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Price</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Year</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Status</th>
-                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Featured</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody id="cars-table-body">
-              <tr><td colspan="6" class="px-4 py-8 text-center"><div class="skeleton h-10 w-full"></div></td></tr>
+              <tr><td colspan="5" class="px-4 py-8 text-center"><div class="skeleton h-10 w-full"></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -559,7 +595,8 @@
     function renderCarsTable(cars) {
       const tbody = document.getElementById('cars-table-body');
       if (cars.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>';
+        tbody.innerHTML = `<tr class="desktop-empty"><td colspan="5" class="px-4 py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>
+          <tr class="mobile-empty"><td colspan="5" class="px-4 py-8 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>`;
         return;
       }
       tbody.innerHTML = '';
@@ -567,7 +604,7 @@
         const tr = document.createElement('tr');
         tr.className = 'car-row border-b border-uw-mid';
         tr.innerHTML = `
-          <td class="px-4 py-3">
+          <td class="px-4 py-3" data-label="">
             <div class="flex items-center gap-3">
               <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60'}" alt="" class="w-12 h-9 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60'" />
               <div>
@@ -576,22 +613,20 @@
               </div>
             </div>
           </td>
-          <td class="px-4 py-3 font-display text-uw-red text-lg">$${Number(car.price || 0).toLocaleString()}</td>
-          <td class="px-4 py-3 font-mono text-uw-muted text-xs">${car.year || '—'}</td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 font-display text-uw-red text-lg" data-label="Price">$${Number(car.price || 0).toLocaleString()}</td>
+          <td class="px-4 py-3 font-mono text-uw-muted text-xs" data-label="Year">${car.year || '—'}</td>
+          <td class="px-4 py-3" data-label="Status">
             <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : car.status === 'reserved' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green'}">${car.status || 'available'}</span>
           </td>
-          <td class="px-4 py-3">
-            <span class="font-mono text-[10px]">${car.featured ? '★ Yes' : '—'}</span>
-          </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3" data-label="">
             <div class="flex gap-2">
-              <button onclick="editCar(${car.id})" class="font-mono text-[10px] uppercase px-[10.5px] py-[4.5px] border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors"><i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit</button>
-              <button onclick="openDeleteModal(${car.id})" class="font-mono text-[10px] uppercase px-[10.5px] py-[4.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete</button>
+              <button onclick="editCar(${car.id})" class="border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors p-2"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+              <button onclick="openDeleteModal(${car.id})" class="border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors p-2"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
             </div>
           </td>`;
         tbody.appendChild(tr);
       });
+      lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });
     }
 
     // Admin search

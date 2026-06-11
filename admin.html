@@ -55,7 +55,7 @@
        LOGIN SCREEN
   ═══════════════════════════════ -->
   <div id="login-screen" class="fixed inset-0 z-50 bg-uw-black flex items-center justify-center px-4 sm:px-6">
-    <div class="relative w-full max-w-md fade-in">
+    <div class="relative w-full fade-in" style="max-width:438px">
 
       <!-- Decorative corners -->
       <div class="absolute -top-3 -left-3 sm:-top-4 sm:-left-4 w-16 h-16 sm:w-20 sm:h-20" style="border-left:3px solid rgba(227,21,21,0.4);border-top:3px solid rgba(227,21,21,0.4);"></div>
@@ -485,6 +485,12 @@
 
     function logout() {
       localStorage.removeItem('uw_admin_session');
+      document.getElementById('login-form').reset();
+      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('login-btn-text').textContent = 'Sign In';
+      document.getElementById('login-btn-spinner').classList.add('hidden');
+      document.getElementById('login-btn-arrow').classList.remove('hidden');
+      document.getElementById('login-btn').disabled = false;
       document.getElementById('login-screen').style.display = 'flex';
       document.getElementById('admin-app').classList.add('hidden');
     }

@@ -386,7 +386,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <!-- admin auth via Supabase only -->
+  <script src="js/admin-config.js"></script>
   <script src="main.js"></script>
   <script>
     
@@ -436,10 +436,19 @@
       lucide.createIcons();
     }
 
+    // ─── SESSION CHECK ON LOAD ───
+    (function checkSession() {
+      const session = localStorage.getItem('uw_admin_session');
+      if (session === 'true') {
+        document.getElementById('admin-email-display').textContent = ADMIN_USERNAME;
+        showAdminApp();
+      }
+    })();
+
     // ─── LOGIN ───
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
+    document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById('login-email').value;
+      const username = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       const btn = document.getElementById('login-btn');
       const btnText = document.getElementById('login-btn-text');
@@ -453,22 +462,19 @@
       btnArrow.classList.add('hidden');
       btn.disabled = true;
 
-      let success = false;
-      try {
-        const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
-        if (!error) success = true;
-      } catch {}
-
-      if (success) {
-        document.getElementById('admin-email-display').textContent = email;
-        showAdminApp();
-      } else {
-        errorDiv.classList.remove('hidden');
-        btnText.textContent = 'Sign In';
-        btnSpinner.classList.add('hidden');
-        btnArrow.classList.remove('hidden');
-        btn.disabled = false;
-      }
+      setTimeout(() => {
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          localStorage.setItem('uw_admin_session', 'true');
+          document.getElementById('admin-email-display').textContent = ADMIN_USERNAME;
+          showAdminApp();
+        } else {
+          errorDiv.classList.remove('hidden');
+          btnText.textContent = 'Sign In';
+          btnSpinner.classList.add('hidden');
+          btnArrow.classList.remove('hidden');
+          btn.disabled = false;
+        }
+      }, 400);
     });
 
     function showAdminApp() {
@@ -478,7 +484,7 @@
     }
 
     function logout() {
-      try { window.supabaseClient.auth.signOut(); } catch {}
+      localStorage.removeItem('uw_admin_session');
       document.getElementById('login-screen').style.display = 'flex';
       document.getElementById('admin-app').classList.add('hidden');
     }

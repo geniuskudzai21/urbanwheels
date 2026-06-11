@@ -78,10 +78,10 @@
 
         <form id="login-form" class="flex flex-col gap-3">
           <div>
-            <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-1.5" for="login-email">Email</label>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-uw-muted block mb-1.5" for="login-email">Username</label>
             <div class="relative">
-              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:14px;height:14px;"></i>
-              <input type="email" id="login-email" placeholder="admin@urbanwheels.co.zw" autocomplete="email" required
+              <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 text-uw-muted pointer-events-none" style="width:14px;height:14px;"></i>
+              <input type="text" id="login-email" autocomplete="username" required
                 class="w-full bg-uw-black border border-uw-mid text-uw-white font-body text-sm pl-9 pr-3 py-2.5 focus:border-uw-red focus:ring-1 focus:ring-uw-red/30 transition-all placeholder-uw-muted/50" />
             </div>
           </div>
@@ -386,7 +386,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <script src="js/admin-config.js"></script>
+  <!-- admin auth via Supabase only -->
   <script src="main.js"></script>
   <script>
     
@@ -453,17 +453,11 @@
       btnArrow.classList.add('hidden');
       btn.disabled = true;
 
-      // Try Supabase auth first
       let success = false;
       try {
         const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
         if (!error) success = true;
       } catch {}
-
-      // Fallback: hardcoded admin credentials
-      if (!success && email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        success = true;
-      }
 
       if (success) {
         document.getElementById('admin-email-display').textContent = email;

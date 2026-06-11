@@ -20,7 +20,7 @@ if (fs.existsSync(envPath)) {
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const adminEmail = process.env.ADMIN_EMAIL;
+const adminUsername = process.env.ADMIN_USERNAME;
 const adminPassword = process.env.ADMIN_PASSWORD;
 
 if (!supabaseUrl || !supabaseAnonKey) {
@@ -39,15 +39,15 @@ fs.writeFileSync(path.join(__dirname, '..', 'js', 'supabase-config.js'), supabas
 console.log('✓ supabase-config.js generated');
 
 // Generate admin-config.js (only if ADMIN vars are set)
-if (adminEmail && adminPassword) {
+if (adminUsername && adminPassword) {
   let adminTemplate = fs.readFileSync(
     path.join(__dirname, '..', 'js', 'admin-config.template.js'), 'utf8'
   );
   adminTemplate = adminTemplate
-    .replace(/__ADMIN_EMAIL__/g, adminEmail)
+    .replace(/__ADMIN_USERNAME__/g, adminUsername)
     .replace(/__ADMIN_PASSWORD__/g, adminPassword);
   fs.writeFileSync(path.join(__dirname, '..', 'js', 'admin-config.js'), adminTemplate);
   console.log('✓ admin-config.js generated');
 } else {
-  console.warn('⚠ ADMIN_EMAIL/ADMIN_PASSWORD not set — skipping admin-config.js');
+  console.warn('⚠ ADMIN_USERNAME/ADMIN_PASSWORD not set — skipping admin-config.js');
 }

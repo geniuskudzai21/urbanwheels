@@ -565,9 +565,9 @@
             <div class="grid grid-cols-3 gap-2 mt-auto pt-4 border-t border-uw-mid">
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.year || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Year</div></div>
               <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? Number(car.mileage).toLocaleString() : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">KM</div></div>
-              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.mileage ? 'Auto' : '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Gearbox</div></div>
+              <div class="text-center"><div class="font-display text-lg text-uw-white">${car.fuel_type || '—'}</div><div class="font-mono text-uw-muted text-[10px] uppercase">Fuel</div></div>
             </div>
-            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-[10.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block inline-flex items-center gap-2"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
+            <a href="car-detail.html?id=${car.id}" class="mt-4 w-full text-center font-mono text-xs uppercase tracking-widest py-[10.5px] border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors duration-300 block inline-flex items-center justify-center gap-2"><i data-lucide="arrow-right" class="w-4 h-4"></i>View Details →</a>
           </div>`;
         grid.appendChild(card);
         setTimeout(() => card.classList.add('visible'), 100 + i * 100);

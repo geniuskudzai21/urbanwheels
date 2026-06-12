@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS cars (
   mileage       INTEGER,
   price         NUMERIC(12, 2),
   inspection    TEXT DEFAULT 'with inspection',  -- 'with inspection' | 'without inspection'
-  description   TEXT,        -- Contains all vehicle details: transmission, fuel_type, body_type, color, engine, etc.
+  fuel_type     TEXT DEFAULT 'Petrol',           -- Petrol | Diesel | Electric | Hybrid
+  description   TEXT,        -- Contains all vehicle details: transmission, body_type, color, engine, etc.
   image_url     TEXT,        -- URL or base64 data URI of the vehicle image
   created_at    TIMESTAMPTZ DEFAULT NOW(),
   updated_at    TIMESTAMPTZ DEFAULT NOW()
@@ -55,8 +56,9 @@ CREATE TRIGGER set_updated_at
   BEFORE UPDATE ON cars
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- 6. Add image_url column if upgrading existing table
+-- 6. Add columns if upgrading existing table
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE cars ADD COLUMN IF NOT EXISTS fuel_type TEXT DEFAULT 'Petrol';
 
 -- Create storage bucket for car image uploads
 INSERT INTO storage.buckets (id, name, public) VALUES ('car-images', 'car-images', true)

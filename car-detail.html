@@ -105,7 +105,6 @@
 
         <!-- RIGHT: Details -->
         <div class="fade-in" style="animation-delay:0.15s">
-          <div class="font-mono text-uw-red text-xs tracking-[0.3em] uppercase mb-2" id="car-make-badge">Brand</div>
           <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
           <div class="font-display text-3xl text-uw-red mb-6" id="car-model">Model</div>
           <div class="font-display text-5xl text-uw-red mb-2" id="car-price">$0</div>
@@ -128,7 +127,7 @@
 
           <!-- CTA Buttons -->
           <div class="flex flex-wrap gap-3">
-            <a href="contact.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[30.5px] py-[14.5px] max-md:px-5 max-md:py-2.5 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 flex-1 text-center inline-flex items-center gap-2"><i data-lucide="message-circle"></i>Enquire Now</a>
+            <a href="contact.html" class="bg-uw-red text-uw-white font-mono text-sm uppercase tracking-widest px-[30.5px] py-[14.5px] max-md:px-5 max-md:py-2.5 hover:bg-uw-white hover:text-uw-black transition-colors duration-300 inline-flex items-center gap-2"><i data-lucide="message-circle"></i>Enquire Now</a>
           </div>
         </div>
       </div>
@@ -213,7 +212,6 @@
       document.getElementById('car-image').src = car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80';
       document.getElementById('car-image').alt = car.name;
       if (car.featured) document.getElementById('car-badge').classList.remove('hidden');
-      document.getElementById('car-make-badge').textContent = (car.make || '') + ' · ' + (car.body_type || '');
       document.getElementById('car-title').textContent = car.name;
       document.getElementById('car-model').textContent = car.model || '—';
       document.getElementById('car-price').textContent = '$' + Number(car.price || 0).toLocaleString();

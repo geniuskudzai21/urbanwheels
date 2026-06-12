@@ -22,8 +22,6 @@
     .car-card:hover { transform: translateY(-5px); }
     .car-card:hover .card-img { filter: brightness(1.08); }
     .card-img { transition: filter 0.3s; }
-    .filter-btn { transition: all 0.2s; }
-    .filter-btn.active { background: #e31515; color: #f5f0eb; border-color: #e31515; }
     input:focus, select:focus { outline: none; border-color: #e31515; }
     .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#e31515; transition:width 0.3s; }
     .nav-link:hover::after { width:100%; }
@@ -88,16 +86,6 @@
       </div>
 
       <div class="flex flex-wrap gap-3 items-center justify-between">
-        <!-- Filter Buttons -->
-        <div class="flex flex-wrap gap-2" id="body-filters">
-          <button class="filter-btn active inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="all"><i data-lucide="filter"></i>All</button>
-          <button class="filter-btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="SUV"><i data-lucide="chevron-right"></i>SUV</button>
-          <button class="filter-btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Sedan"><i data-lucide="chevron-right"></i>Sedan</button>
-          <button class="filter-btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Pickup"><i data-lucide="chevron-right"></i>Pickup</button>
-          <button class="filter-btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Hatchback"><i data-lucide="chevron-right"></i>Hatchback</button>
-          <button class="filter-btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-4 py-2 border border-uw-mid text-uw-muted" data-filter="Coupe"><i data-lucide="chevron-right"></i>Coupe</button>
-        </div>
-
         <!-- Sort -->
         <select id="sort-select" class="sort-select bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-4 py-2 focus:border-uw-red transition-colors max-sm:w-full">
           <option value="newest">Newest First</option>
@@ -265,16 +253,6 @@
         grid.appendChild(card);
       });
     }
-
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-        renderCars();
-      });
-    });
 
     // Search
     let searchTimeout;

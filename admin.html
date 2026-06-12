@@ -553,7 +553,6 @@
           <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'}" alt="" class="w-14 h-10 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'" />
           <div class="flex-1 min-w-0">
             <div class="font-body font-700 text-sm truncate">${car.name}</div>
-            <div class="font-mono text-uw-muted text-[10px]">${car.year || ''} · ${car.make || ''}</div>
           </div>
           <div class="font-display text-xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
           <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : 'border-uw-green text-uw-green'}">${car.status || 'Available'}</span>`;
@@ -588,7 +587,6 @@
               <img src="${img}" alt="" class="w-12 h-9 object-cover flex-shrink-0" onerror="this.src='${img}'" />
               <div>
                 <div class="font-body font-700 text-sm">${car.name}</div>
-                <div class="font-mono text-uw-muted text-[10px]">${car.make || ''} · ${car.body_type || ''}</div>
               </div>
             </div>
           </td>
@@ -613,7 +611,6 @@
             <img src="${img}" alt="" class="w-16 h-12 object-cover flex-shrink-0" onerror="this.src='${img}'" />
             <div class="flex-1 min-w-0">
               <div class="font-body font-700 text-sm truncate">${car.name}</div>
-              <div class="font-mono text-uw-muted text-[10px] truncate">${car.make || ''} · ${car.body_type || ''}</div>
             </div>
             <div class="font-display text-xl text-uw-red whitespace-nowrap shrink-0">${price}</div>
           </div>

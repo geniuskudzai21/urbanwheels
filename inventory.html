@@ -240,8 +240,12 @@
               <h3 class="font-display text-xl tracking-wide text-uw-white">${car.name}</h3>
               <div class="font-mono text-uw-red text-sm uppercase tracking-widest mt-1">${car.model || '—'}</div>
             </div>
-            <p class="font-body text-uw-muted text-sm mb-4 line-clamp-3 leading-relaxed flex-1">${car.description || 'No description available'}</p>
-            <div class="space-y-3">
+            <p class="font-body text-uw-muted text-sm mb-3 line-clamp-2 leading-relaxed flex-1">${car.description || 'No description available'}</p>
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+              ${car.engine ? `<span class="font-mono text-[10px] text-uw-muted uppercase tracking-widest border border-uw-mid px-2 py-0.5">${car.engine}</span>` : ''}
+              ${car.transmission ? `<span class="font-mono text-[10px] text-uw-muted uppercase tracking-widest border border-uw-mid px-2 py-0.5">${car.transmission}</span>` : ''}
+            </div>
+            <div class="space-y-2">
               <div class="flex justify-between items-center">
                 <span class="font-mono text-uw-muted text-xs uppercase tracking-widest">Price</span>
                 <span class="font-display text-2xl text-uw-red font-bold">$${Number(car.price || 0).toLocaleString()}</span>

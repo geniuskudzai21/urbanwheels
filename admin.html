@@ -341,6 +341,24 @@
               </div>
             </div>
 
+            <!-- Row: Engine & Transmission -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Engine</label>
+                <input type="text" id="f-engine" placeholder="e.g. 3.0L V6, 2.0L Turbo" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors placeholder-uw-muted" />
+              </div>
+              <div>
+                <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Transmission</label>
+                <select id="f-transmission" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                  <option value="">Select...</option>
+                  <option value="Automatic">Automatic</option>
+                  <option value="Manual">Manual</option>
+                  <option value="CVT">CVT</option>
+                  <option value="Semi-Auto">Semi-Auto</option>
+                </select>
+              </div>
+            </div>
+
             <!-- Description Section -->
             <div class="border-l-4 border-uw-red pl-6 mb-6">
               <h3 class="font-display text-xl text-uw-red mb-4">VEHICLE DETAILS</h3>
@@ -661,6 +679,8 @@
       previewImg.src = '';
       delete previewImg.dataset.fileData;
       delete previewImg.dataset.fileName;
+      document.getElementById('f-engine').value = '';
+      document.getElementById('f-transmission').value = '';
       isEditMode = false;
       document.getElementById('form-mode-label').textContent = 'New Listing';
       document.getElementById('form-section-title').innerHTML = 'ADD A <span class="text-uw-red">NEW CAR</span>';
@@ -682,6 +702,8 @@
       document.getElementById('f-desc').value = car.description || '';
       document.getElementById('f-inspection').value = car.inspection || 'with inspection';
       document.getElementById('f-fuel').value = car.fuel_type || 'Petrol';
+      document.getElementById('f-engine').value = car.engine || '';
+      document.getElementById('f-transmission').value = car.transmission || '';
       if (car.image_url) {
         document.getElementById('img-preview-wrap').style.display = 'block';
         document.getElementById('img-preview').src = car.image_url;
@@ -762,6 +784,8 @@
         description: document.getElementById('f-desc').value,
         inspection: document.getElementById('f-inspection').value,
         fuel_type: document.getElementById('f-fuel').value,
+        engine: document.getElementById('f-engine').value || null,
+        transmission: document.getElementById('f-transmission').value || null,
         image_url: imageUrl,
       };
 

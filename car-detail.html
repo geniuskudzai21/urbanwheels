@@ -111,7 +111,7 @@
           <div id="car-inspection" class="mb-6"></div>
 
           <!-- Quick Specs -->
-          <div class="grid grid-cols-3 gap-0 border border-uw-mid mb-8" id="quick-specs">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 border border-uw-mid mb-8" id="quick-specs">
             <div class="p-4 border-b border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Year</div>
               <div class="font-display text-2xl" id="spec-year">—</div>
@@ -120,9 +120,17 @@
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Fuel</div>
               <div class="font-display text-2xl" id="spec-fuel">—</div>
             </div>
-            <div class="p-4 border-b border-uw-mid">
+            <div class="p-4 border-b border-r border-uw-mid sm:border-r-0 lg:border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Mileage</div>
               <div class="font-display text-2xl" id="spec-mileage">—</div>
+            </div>
+            <div class="p-4 border-b border-r border-uw-mid">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Engine</div>
+              <div class="font-display text-xl leading-tight" id="spec-engine">—</div>
+            </div>
+            <div class="p-4 border-b border-uw-mid">
+              <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Transmission</div>
+              <div class="font-display text-2xl" id="spec-transmission">—</div>
             </div>
           </div>
 
@@ -230,6 +238,8 @@
       document.getElementById('spec-year').textContent = car.year || '—';
       document.getElementById('spec-fuel').textContent = car.fuel_type || '—';
       document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
+      document.getElementById('spec-engine').textContent = car.engine || '—';
+      document.getElementById('spec-transmission').textContent = car.transmission || '—';
       document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
       document.getElementById('form-car-name').textContent = car.name.toUpperCase();
 

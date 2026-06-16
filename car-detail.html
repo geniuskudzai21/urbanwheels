@@ -107,35 +107,37 @@
         <div class="fade-in" style="animation-delay:0.15s">
           <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
           <div class="font-display text-3xl text-uw-red mb-6" id="car-model">Model</div>
-          <div class="font-display text-5xl text-uw-red mb-2" id="car-price">$0</div>
-          <div id="car-inspection" class="mb-6"></div>
+          <div class="flex items-center justify-between mb-6">
+            <div class="font-display text-5xl text-uw-red" id="car-price">$0</div>
+            <div id="car-inspection" class="ml-5"></div>
+          </div>
 
           <!-- Quick Specs -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 border border-uw-mid mb-8" id="quick-specs">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 border border-uw-mid mb-4" id="quick-specs">
             <div class="p-4 border-b border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Year</div>
-              <div class="font-display text-2xl" id="spec-year">—</div>
+              <div class="font-display text-[20px]" id="spec-year">—</div>
             </div>
             <div class="p-4 border-b border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Fuel</div>
-              <div class="font-display text-2xl" id="spec-fuel">—</div>
+              <div class="font-display text-[20px]" id="spec-fuel">—</div>
             </div>
             <div class="p-4 border-b border-r border-uw-mid sm:border-r-0 lg:border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Mileage</div>
-              <div class="font-display text-2xl" id="spec-mileage">—</div>
+              <div class="font-display text-[20px] whitespace-nowrap" id="spec-mileage">—</div>
             </div>
             <div class="p-4 border-b border-r border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Engine</div>
-              <div class="font-display text-xl leading-tight" id="spec-engine">—</div>
+              <div class="font-display text-[20px] leading-tight" id="spec-engine">—</div>
             </div>
             <div class="p-4 border-b border-uw-mid">
               <div class="font-mono text-uw-muted text-[10px] uppercase tracking-widest mb-1">Transmission</div>
-              <div class="font-display text-2xl" id="spec-transmission">—</div>
+              <div class="font-display text-[20px]" id="spec-transmission">—</div>
             </div>
           </div>
 
           <!-- Description -->
-          <p class="font-body text-uw-muted leading-relaxed mb-8" id="car-description"></p>
+          <p class="font-body text-uw-muted leading-relaxed mb-2" id="car-description"></p>
 
           <!-- CTA Buttons -->
           <div class="flex flex-wrap gap-3">

@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Car Detail — Urban Wheels</title>
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <meta name="description" content="View detailed information about this vehicle at Urban Wheels. Check specs, price, and availability. Contact us for a test drive in Harare, Zimbabwe." />
+  <meta name="keywords" content="car detail, vehicle specs, Urban Wheels, buy car Harare, car for sale Zimbabwe" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://urbanwheels.co.zw/car-detail.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Car Detail — Urban Wheels Zimbabwe" />
+  <meta property="og:description" content="View detailed information about this vehicle at Urban Wheels in Harare, Zimbabwe." />
+  <meta property="og:image" content="https://urbanwheels.co.zw/assets/hero.jpeg" />
+  <meta property="og:url" content="https://urbanwheels.co.zw/car-detail.html" />
+  <meta property="og:site_name" content="Urban Wheels" />
+  <meta property="og:locale" content="en_ZW" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Car Detail — Urban Wheels Zimbabwe" />
+  <meta name="twitter:description" content="View detailed information about this vehicle at Urban Wheels." />
+  <meta name="twitter:image" content="https://urbanwheels.co.zw/assets/hero.jpeg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -216,10 +232,43 @@
     }
 
     function renderCar(car) {
-      document.title = car.name + ' — Urban Wheels';
+      document.title = car.name + ' — Urban Wheels Zimbabwe';
+      const desc = car.description ? car.description.substring(0, 160) : (car.name + ' for sale at Urban Wheels in Harare, Zimbabwe. Check specs, price &amp; availability.');
+      document.querySelector('meta[name="description"]').setAttribute('content', desc);
+      document.querySelector('meta[property="og:title"]').setAttribute('content', car.name + ' — Urban Wheels');
+      document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
+      document.querySelector('meta[property="og:image"]').setAttribute('content', car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg');
+      document.querySelector('meta[name="twitter:title"]').setAttribute('content', car.name + ' — Urban Wheels');
+      document.querySelector('meta[name="twitter:description"]').setAttribute('content', desc);
+      document.querySelector('meta[name="twitter:image"]').setAttribute('content', car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg');
+      const ld = document.getElementById('vehicle-ld');
+      if (ld) ld.remove();
+      const script = document.createElement('script');
+      script.id = 'vehicle-ld';
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Car",
+        "name": car.name,
+        "model": car.model,
+        "vehicleEngine": { "@type": "EngineSpecification", "name": car.engine || '' },
+        "vehicleTransmission": car.transmission || '',
+        "fuelType": car.fuel_type || '',
+        "mileageFromOdometer": { "@type": "QuantitativeValue", "value": car.mileage || 0, "unitCode": "KMT" },
+        "vehicleModelDate": car.year ? String(car.year) : '',
+        "offers": {
+          "@type": "Offer",
+          "price": car.price || 0,
+          "priceCurrency": "USD",
+          "availability": car.status === 'sold' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock'
+        },
+        "image": car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg',
+        "url": window.location.href
+      });
+      document.head.appendChild(script);
       document.getElementById('breadcrumb-name').textContent = car.name;
       document.getElementById('car-image').src = car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80';
-      document.getElementById('car-image').alt = car.name;
+      document.getElementById('car-image').alt = car.name + ' — Urban Wheels Zimbabwe';
       if (car.featured) document.getElementById('car-badge').classList.remove('hidden');
       document.getElementById('car-title').textContent = car.name;
       document.getElementById('car-model').textContent = car.model || '—';

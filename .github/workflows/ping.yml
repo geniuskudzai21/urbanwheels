@@ -2,7 +2,7 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: '0 0 */3 * *'
+    - cron: '0 0 */3 * *' # every 3 days
   workflow_dispatch:
 
 jobs:
@@ -10,10 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping site
-        run: curl -s -o /dev/null -w "%{http_code}" "${{ secrets.SITE_URL }}" || echo "site ping failed"
-
-      - name: Ping Supabase API
-        run: |
-          curl -s -o /dev/null -w "%{http_code}" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/cars?select=count&limit=1" || echo "supabase ping failed"
+        run: curl https://urbanwheels.co.zw

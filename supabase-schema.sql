@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS cars (
   inspection    TEXT DEFAULT 'with inspection',  -- 'with inspection' | 'without inspection'
   fuel_type     TEXT DEFAULT 'Petrol',           -- Petrol | Diesel | Electric | Hybrid
   engine        TEXT,                            -- e.g. "3.0L V6", "2.0L Turbo"
-  transmission  TEXT,                            -- Automatic | Manual | CVT | Semi-Auto
+  transmission  TEXT,                            -- Automatic | Manual | CVT | CC
   description   TEXT,        -- Contains all vehicle details: body_type, color, etc.
   image_url     TEXT,        -- URL or base64 data URI of the vehicle image
   created_at    TIMESTAMPTZ DEFAULT NOW(),

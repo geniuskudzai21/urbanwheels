@@ -623,6 +623,14 @@
     }
 
     loadFeaturedCars();
+
+    // Real-time: auto-refresh when cars are added/updated/deleted
+    window.supabaseClient
+      .channel('home-cars')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'cars' }, () => {
+        loadFeaturedCars();
+      })
+      .subscribe();
   </script>
   <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>
 </body>

@@ -295,6 +295,14 @@
     });
 
     loadInventory();
+
+    // Real-time: auto-refresh when cars are added/updated/deleted
+    window.supabaseClient
+      .channel('inventory-cars')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'cars' }, () => {
+        loadInventory();
+      })
+      .subscribe();
   </script>
   <script>lucide.createIcons({ attrs: { width: '22', height: '22', 'stroke-width': '1.5' } });</script>
 </body>

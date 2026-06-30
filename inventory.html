@@ -128,6 +128,12 @@
         <div class="skeleton h-96 md:h-80"></div>
         <div class="skeleton h-96 md:h-80"></div>
       </div>
+      <!-- Load More -->
+      <div id="load-more-container" class="hidden text-center mt-10">
+        <button id="load-more-btn" class="font-mono text-xs uppercase tracking-widest px-8 py-3 border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red hover:bg-uw-red/5 transition-colors duration-300 inline-flex items-center gap-2">
+          Load More <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+      </div>
       <!-- No results -->
       <div id="no-results" class="hidden text-center py-32">
         <div class="font-display text-8xl text-uw-mid mb-4">?</div>
@@ -195,6 +201,7 @@
     let activeFilter = 'all';
     let searchQuery = '';
     let sortBy = 'newest';
+    let displayCount = 12;
 
     async function loadInventory() {
       try {
@@ -229,15 +236,19 @@
       else if (sortBy === 'price-desc') filtered.sort((a, b) => b.price - a.price);
       else if (sortBy === 'mileage-asc') filtered.sort((a, b) => a.mileage - b.mileage);
 
-      document.getElementById('results-count').textContent = filtered.length;
+      const totalFiltered = filtered.length;
+      document.getElementById('results-count').textContent = totalFiltered;
 
-      if (filtered.length === 0) {
+      if (totalFiltered === 0) {
         noResults.classList.remove('hidden');
+        document.getElementById('load-more-container').classList.add('hidden');
         return;
       }
       noResults.classList.add('hidden');
 
-      filtered.forEach((car, i) => {
+      const showMore = filtered.slice(0, displayCount);
+
+      showMore.forEach((car, i) => {
         const card = document.createElement('div');
         card.className = 'car-card bg-uw-gray border border-uw-mid hover:border-uw-red transition-colors duration-300 flex flex-col fade-in md:text-sm';
         card.style.animationDelay = (i * 0.06) + 's';
@@ -275,6 +286,13 @@
           </div>`;
         grid.appendChild(card);
       });
+
+      const loadMoreContainer = document.getElementById('load-more-container');
+      if (displayCount >= totalFiltered) {
+        loadMoreContainer.classList.add('hidden');
+      } else {
+        loadMoreContainer.classList.remove('hidden');
+      }
     }
 
     // Search
@@ -283,6 +301,7 @@
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         searchQuery = e.target.value.toLowerCase().trim();
+        displayCount = 12;
         renderCars();
       }, 300);
     });
@@ -290,6 +309,13 @@
     // Sort
     document.getElementById('sort-select').addEventListener('change', e => {
       sortBy = e.target.value;
+      displayCount = 12;
+      renderCars();
+    });
+
+    // Load More
+    document.getElementById('load-more-btn').addEventListener('click', () => {
+      displayCount += 12;
       renderCars();
     });
 

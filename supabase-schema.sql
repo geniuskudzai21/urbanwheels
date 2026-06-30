@@ -64,6 +64,7 @@ ALTER TABLE cars ADD COLUMN IF NOT EXISTS images TEXT[];
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS fuel_type TEXT DEFAULT 'Petrol';
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS engine TEXT;
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS transmission TEXT;
+ALTER TABLE cars ADD COLUMN IF NOT EXISTS availability TEXT DEFAULT 'in_stock';
 
 -- Create storage bucket for car image uploads
 INSERT INTO storage.buckets (id, name, public) VALUES ('car-images', 'car-images', true)

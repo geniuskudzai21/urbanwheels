@@ -131,11 +131,14 @@
 
         <!-- RIGHT: Details -->
         <div class="fade-in" style="animation-delay:0.15s">
-          <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-2" id="car-title">Car Name</h1>
-          <div class="font-display text-3xl text-uw-red mb-6" id="car-model">Model</div>
-          <div class="flex items-center justify-between mb-6">
+          <h1 class="font-display text-[70px] leading-none mb-2" id="car-title">Car Name</h1>
+          <div class="font-display text-3xl text-uw-red mb-16" id="car-model">Model</div>
+          <div class="flex items-center justify-between mb-4">
             <div class="font-display text-5xl text-uw-red" id="car-price">$0</div>
-            <div id="car-inspection" class="ml-5"></div>
+            <div class="flex items-center gap-2">
+              <div id="car-inspection"></div>
+              <div id="car-availability"></div>
+            </div>
           </div>
 
           <!-- Quick Specs -->
@@ -362,6 +365,11 @@
       document.getElementById('car-title').textContent = car.name;
       document.getElementById('car-model').textContent = car.model || '—';
       document.getElementById('car-price').textContent = '$' + Number(car.price || 0).toLocaleString();
+      document.getElementById('spec-year').textContent = car.year || '—';
+      document.getElementById('spec-fuel').textContent = car.fuel_type || '—';
+      document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
+      document.getElementById('spec-engine').textContent = car.engine || '—';
+      document.getElementById('spec-transmission').textContent = car.transmission || '—';
       const inspectionEl = document.getElementById('car-inspection');
       if (car.inspection === 'with inspection') {
         inspectionEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-green-600/20 text-green-400 border border-green-600">✓ With Inspection</span>';
@@ -370,11 +378,12 @@
       } else {
         inspectionEl.innerHTML = '';
       }
-      document.getElementById('spec-year').textContent = car.year || '—';
-      document.getElementById('spec-fuel').textContent = car.fuel_type || '—';
-      document.getElementById('spec-mileage').textContent = car.mileage ? Number(car.mileage).toLocaleString() + ' km' : '—';
-      document.getElementById('spec-engine').textContent = car.engine || '—';
-      document.getElementById('spec-transmission').textContent = car.transmission || '—';
+      const availEl = document.getElementById('car-availability');
+      if (car.availability === 'for_import') {
+        availEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-yellow-600/20 text-yellow-400 border border-yellow-600">Available for Import</span>';
+      } else {
+        availEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-green-600/20 text-green-400 border border-green-600">Available in Zimbabwe</span>';
+      }
       document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
       document.getElementById('form-car-name').textContent = car.name.toUpperCase();
 

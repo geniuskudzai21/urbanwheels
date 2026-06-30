@@ -228,6 +228,7 @@
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Price</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Year</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Status</th>
+                <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Availability</th>
                 <th class="font-mono text-[10px] uppercase tracking-widest text-uw-muted text-left px-4 py-3">Actions</th>
               </tr>
             </thead>
@@ -352,6 +353,15 @@
                   <option value="CC">CC</option>
                 </select>
               </div>
+            </div>
+
+            <!-- Availability -->
+            <div>
+              <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Availability Status</label>
+              <select id="f-availability" class="w-full bg-uw-gray border border-uw-mid text-uw-white font-body text-sm px-4 py-3 focus:border-uw-red transition-colors">
+                <option value="in_stock">Available in Zimbabwe</option>
+                <option value="for_import">Available for Import</option>
+              </select>
             </div>
 
             <!-- Description Section -->
@@ -587,7 +597,10 @@
             <div class="font-mono text-uw-muted text-[10px] mt-0.5 truncate">${car.engine || ''}${car.engine && car.transmission ? ' · ' : ''}${car.transmission || ''}</div>
           </div>
           <div class="font-display text-xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
-          <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : 'border-uw-green text-uw-green'}">${car.status || 'Available'}</span>`;
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-[10px] uppercase px-2 py-1 border ${car.status === 'sold' ? 'border-uw-red text-uw-red' : 'border-uw-green text-uw-green'}">${car.status || 'Available'}</span>
+            ${car.availability === 'for_import' ? '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-yellow text-uw-yellow">For Import</span>' : '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-green text-uw-green">In Stock</span>'}
+          </div>`;
         container.appendChild(el);
       });
     }
@@ -597,7 +610,7 @@
       const mobileList = document.getElementById('cars-mobile-list');
 
       if (cars.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</td></tr>';
         mobileList.innerHTML = '<div class="bg-uw-gray border border-uw-mid py-12 text-center font-mono text-uw-muted text-xs uppercase">No cars found</div>';
         return;
       }
@@ -607,6 +620,8 @@
 
       cars.forEach(car => {
         const statusColor = car.status === 'sold' ? 'border-uw-red text-uw-red' : car.status === 'reserved' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green';
+        const availColor = car.availability === 'for_import' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green';
+        const availLabel = car.availability === 'for_import' ? 'For Import' : 'In Stock';
         const img = (car.images && car.images[0]) || car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60';
         const price = '$' + Number(car.price || 0).toLocaleString();
 
@@ -629,6 +644,9 @@
             <span class="font-mono text-[10px] uppercase px-2 py-1 border ${statusColor}">${car.status || 'available'}</span>
           </td>
           <td class="px-4 py-3">
+            <span class="font-mono text-[10px] uppercase px-2 py-1 border ${availColor}">${availLabel}</span>
+          </td>
+          <td class="px-4 py-3">
             <div class="flex gap-2">
               <button onclick="editCar(${car.id})" class="border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors p-2"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
               <button onclick="openDeleteModal(${car.id})" class="border border-uw-mid text-uw-muted hover:border-uw-red hover:text-uw-red transition-colors p-2"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
@@ -649,12 +667,9 @@
             <div class="font-display text-xl text-uw-red whitespace-nowrap shrink-0">${price}</div>
           </div>
           <div class="flex items-center justify-between pt-3 border-t border-uw-mid">
-            <div class="flex items-center gap-4">
-              <div>
-                <div class="font-mono text-uw-muted text-[10px] uppercase">Year</div>
-                <div class="font-body text-sm">${car.year || '—'}</div>
-              </div>
+            <div class="flex items-center gap-2">
               <span class="font-mono text-[10px] uppercase px-2 py-1 border ${statusColor}">${car.status || 'available'}</span>
+              <span class="font-mono text-[10px] uppercase px-2 py-1 border ${availColor}">${availLabel}</span>
             </div>
             <div class="flex gap-2">
               <button onclick="editCar(${car.id})" class="border border-uw-mid text-uw-muted hover:border-uw-white hover:text-uw-white transition-colors p-2"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
@@ -714,6 +729,7 @@
       document.getElementById('f-fuel').value = car.fuel_type || 'Petrol';
       document.getElementById('f-engine').value = car.engine || '';
       document.getElementById('f-transmission').value = car.transmission || '';
+      document.getElementById('f-availability').value = car.availability || 'in_stock';
       const images = (car.images && car.images.length > 0) ? car.images : (car.image_url ? [car.image_url] : []);
       existingImageUrls = [...images];
       renderExistingImages();
@@ -818,6 +834,7 @@
         fuel_type: document.getElementById('f-fuel').value,
         engine: document.getElementById('f-engine').value || null,
         transmission: document.getElementById('f-transmission').value || null,
+        availability: document.getElementById('f-availability').value || 'in_stock',
         image_url: imageUrl,
         images: finalImages,
       };

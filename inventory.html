@@ -112,7 +112,7 @@
       </div>
 
       <!-- Filters -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
         <select id="filter-fuel" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
           <option value="">All Fuel Types</option>
           <option value="Petrol">Petrol</option>
@@ -120,18 +120,78 @@
           <option value="Electric">Electric</option>
           <option value="Hybrid">Hybrid</option>
         </select>
-        <input type="number" id="filter-price-min" placeholder="Price min" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-        <input type="number" id="filter-price-max" placeholder="Price max" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-        <input type="number" id="filter-year-min" placeholder="Year min" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-        <input type="number" id="filter-year-max" placeholder="Year max" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
-        <div class="col-span-2 sm:col-span-3 lg:col-span-5">
-          <div class="flex gap-3">
-            <input type="number" id="filter-mileage-min" placeholder="Mileage min" class="flex-1 bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-            <input type="number" id="filter-mileage-max" placeholder="Mileage max" class="flex-1 bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
-          </div>
-        </div>
+        <select id="filter-price-max" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
+          <option value="">Price</option>
+          <option value="2000">$0 — $2,000</option>
+          <option value="4000">$2,000 — $4,000</option>
+          <option value="6000">$4,000 — $6,000</option>
+          <option value="8000">$6,000 — $8,000</option>
+          <option value="10000">$8,000 — $10,000</option>
+          <option value="12000">$10,000 — $12,000</option>
+          <option value="14000">$12,000 — $14,000</option>
+          <option value="16000">$14,000 — $16,000</option>
+          <option value="18000">$16,000 — $18,000</option>
+          <option value="20000">$18,000 — $20,000</option>
+          <option value="over20000">Over $20,000</option>
+        </select>
+        <select id="filter-year" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
+          <option value="">Year</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+          <option value="2016">2016</option>
+          <option value="2015">2015</option>
+          <option value="2014">2014</option>
+          <option value="2013">2013</option>
+          <option value="2012">2012</option>
+          <option value="2011">2011</option>
+          <option value="2010">2010</option>
+          <option value="2009">2009</option>
+          <option value="2008">2008</option>
+          <option value="2007">2007</option>
+          <option value="2006">2006</option>
+          <option value="2005">2005</option>
+          <option value="2004">2004</option>
+          <option value="2003">2003</option>
+          <option value="2002">2002</option>
+          <option value="2001">2001</option>
+          <option value="2000">2000</option>
+        </select>
+        <select id="filter-mileage-max" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
+          <option value="">Mileage</option>
+          <option value="20000">0 — 20,000 km</option>
+          <option value="40000">20,000 — 40,000 km</option>
+          <option value="60000">40,000 — 60,000 km</option>
+          <option value="80000">60,000 — 80,000 km</option>
+          <option value="100000">80,000 — 100,000 km</option>
+          <option value="120000">100,000 — 120,000 km</option>
+          <option value="140000">120,000 — 140,000 km</option>
+          <option value="160000">140,000 — 160,000 km</option>
+          <option value="180000">160,000 — 180,000 km</option>
+          <option value="200000">180,000 — 200,000 km</option>
+          <option value="220000">200,000 — 220,000 km</option>
+          <option value="240000">220,000 — 240,000 km</option>
+          <option value="260000">240,000 — 260,000 km</option>
+          <option value="280000">260,000 — 280,000 km</option>
+          <option value="300000">280,000 — 300,000 km</option>
+          <option value="320000">300,000 — 320,000 km</option>
+          <option value="340000">320,000 — 340,000 km</option>
+          <option value="360000">340,000 — 360,000 km</option>
+          <option value="380000">360,000 — 380,000 km</option>
+          <option value="400000">380,000 — 400,000 km</option>
+          <option value="420000">400,000 — 420,000 km</option>
+          <option value="440000">420,000 — 440,000 km</option>
+          <option value="460000">440,000 — 460,000 km</option>
+          <option value="480000">460,000 — 480,000 km</option>
+          <option value="500000">480,000 — 500,000 km</option>
+        </select>
       </div>
 
       <!-- Results count -->
@@ -226,11 +286,8 @@
     let sortBy = 'newest';
     let displayCount = 12;
     let fuelFilter = '';
-    let priceMin = '';
     let priceMax = '';
-    let yearMin = '';
-    let yearMax = '';
-    let mileageMin = '';
+    let yearFilter = '';
     let mileageMax = '';
 
     async function loadInventory() {
@@ -259,9 +316,9 @@
           (car.make && car.make.toLowerCase().includes(searchQuery)) ||
           (car.model && car.model.toLowerCase().includes(searchQuery));
         const matchFuel = !fuelFilter || (car.fuel_type && car.fuel_type === fuelFilter);
-        const matchPrice = (!priceMin || car.price >= Number(priceMin)) && (!priceMax || car.price <= Number(priceMax));
-        const matchYear = (!yearMin || car.year >= Number(yearMin)) && (!yearMax || car.year <= Number(yearMax));
-        const matchMileage = (!mileageMin || car.mileage >= Number(mileageMin)) && (!mileageMax || car.mileage <= Number(mileageMax));
+        const matchPrice = !priceMax || (priceMax === 'over20000' ? car.price >= 20000 : (car.price >= Number(priceMax) - 2000 && car.price <= Number(priceMax)));
+        const matchYear = !yearFilter || car.year == Number(yearFilter);
+        const matchMileage = !mileageMax || (car.mileage >= Number(mileageMax) - 20000 && car.mileage <= Number(mileageMax));
         return matchFilter && matchSearch && matchFuel && matchPrice && matchYear && matchMileage;
       });
 
@@ -348,14 +405,11 @@
     });
 
     // Filters
-    ['filter-fuel','filter-price-min','filter-price-max','filter-year-min','filter-year-max','filter-mileage-min','filter-mileage-max'].forEach(id => {
+    ['filter-fuel','filter-price-max','filter-year','filter-mileage-max'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => {
         fuelFilter = document.getElementById('filter-fuel').value;
-        priceMin = document.getElementById('filter-price-min').value;
         priceMax = document.getElementById('filter-price-max').value;
-        yearMin = document.getElementById('filter-year-min').value;
-        yearMax = document.getElementById('filter-year-max').value;
-        mileageMin = document.getElementById('filter-mileage-min').value;
+        yearFilter = document.getElementById('filter-year').value;
         mileageMax = document.getElementById('filter-mileage-max').value;
         displayCount = 12;
         renderCars();

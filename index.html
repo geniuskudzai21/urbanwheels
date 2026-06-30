@@ -592,7 +592,7 @@
         card.style.transitionDelay = (i * 0.1) + 's';
         card.innerHTML = `
           <div class="relative overflow-hidden h-52">
-            <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'}"
+            <img src="${(car.images && car.images[0]) || car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'}"
               alt="${car.name}" class="card-img w-full h-full object-cover" loading="lazy"
               onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=600&q=80'" />
             <div class="absolute top-3 left-3 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Latest</div>

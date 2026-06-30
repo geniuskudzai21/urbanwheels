@@ -46,6 +46,9 @@
     .spec-row:last-child { border-bottom: none; }
     @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .fade-in { animation: fadeInUp 0.5s ease forwards; }
+    .slide-img { transition: opacity 0.6s ease; }
+    .slide-img.active { opacity: 1; position: relative; z-index: 1; }
+    .slide-img.inactive { opacity: 0; position: absolute; inset: 0; z-index: 0; }
   </style>
 </head>
 <body class="bg-uw-black text-uw-white">
@@ -108,9 +111,16 @@
       <div class="grid lg:grid-cols-2 gap-12 mb-16">
         <!-- LEFT: Image -->
         <div class="fade-in">
-          <div class="relative border border-uw-mid overflow-hidden">
-            <img id="car-image" src="" alt="" class="w-full object-cover" style="max-height: 480px;" />
-            <div id="car-badge" class="hidden absolute top-4 left-4 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest">Featured</div>
+          <div class="relative border border-uw-mid overflow-hidden" id="slideshow-container">
+            <div id="slides" class="relative" style="min-height:300px"></div>
+            <button id="prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 bg-uw-black bg-opacity-70 text-uw-white p-2 hover:bg-opacity-90 transition-all z-10 hidden" onclick="changeSlide(-1)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button id="next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 bg-uw-black bg-opacity-70 text-uw-white p-2 hover:bg-opacity-90 transition-all z-10 hidden" onclick="changeSlide(1)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div id="slide-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10"></div>
+            <div id="car-badge" class="hidden absolute top-4 left-4 bg-uw-red font-mono text-xs text-uw-white px-3 py-1 uppercase tracking-widest z-10">Featured</div>
           </div>
           <!-- Back to inventory -->
           <a href="inventory.html" class="mt-4 inline-flex items-center gap-2 font-mono text-xs text-uw-muted hover:text-uw-red transition-colors uppercase tracking-widest">
@@ -231,16 +241,96 @@
       }
     }
 
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80';
+    let currentSlide = 0;
+    let slideImages = [];
+    let slideTimer = null;
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      if (slideImages.length > 1) {
+        slideTimer = setInterval(() => changeSlide(1), 3000);
+      }
+    }
+
+    function stopAutoSlide() {
+      if (slideTimer) { clearInterval(slideTimer); slideTimer = null; }
+    }
+
+    function renderSlideshow(images) {
+      slideImages = images.length > 0 ? images : [FALLBACK_IMG];
+      currentSlide = 0;
+      const slidesContainer = document.getElementById('slides');
+      const dotsContainer = document.getElementById('slide-dots');
+      slidesContainer.innerHTML = '';
+      dotsContainer.innerHTML = '';
+
+      slideImages.forEach((url, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'slide-img w-full ' + (i === 0 ? 'active' : 'inactive');
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Vehicle image ' + (i + 1);
+        img.className = 'w-full object-cover';
+        img.style.maxHeight = '480px';
+        img.onerror = function() { if (this.src !== FALLBACK_IMG) this.src = FALLBACK_IMG; };
+        img.onload = function() {
+          if (i === 0) {
+            slidesContainer.style.minHeight = '';
+          }
+        };
+        wrap.appendChild(img);
+        slidesContainer.appendChild(wrap);
+
+        const dot = document.createElement('button');
+        dot.className = (i === 0 ? 'bg-uw-red' : 'bg-uw-muted bg-opacity-50') + ' w-2.5 h-2.5 rounded-full transition-colors hover:bg-uw-red';
+        dot.onclick = function() { goToSlide(i); };
+        dotsContainer.appendChild(dot);
+      });
+
+      const hasMultiple = slideImages.length > 1;
+      document.getElementById('prev-slide').style.display = hasMultiple ? 'block' : 'none';
+      document.getElementById('next-slide').style.display = hasMultiple ? 'block' : 'none';
+      startAutoSlide();
+    }
+
+    function changeSlide(direction) {
+      const total = slideImages.length;
+      if (total < 2) return;
+      const slides = document.getElementById('slides').children;
+      const dots = document.getElementById('slide-dots').children;
+      slides[currentSlide].classList.replace('active', 'inactive');
+      dots[currentSlide].className = 'w-2.5 h-2.5 rounded-full bg-uw-muted bg-opacity-50 hover:bg-uw-red';
+      currentSlide = (currentSlide + direction + total) % total;
+      slides[currentSlide].classList.replace('inactive', 'active');
+      dots[currentSlide].className = 'w-2.5 h-2.5 rounded-full bg-uw-red';
+      startAutoSlide();
+    }
+
+    function goToSlide(index) {
+      const total = slideImages.length;
+      if (total < 2) return;
+      const slides = document.getElementById('slides').children;
+      const dots = document.getElementById('slide-dots').children;
+      slides[currentSlide].classList.replace('active', 'inactive');
+      dots[currentSlide].className = 'w-2.5 h-2.5 rounded-full bg-uw-muted bg-opacity-50 hover:bg-uw-red';
+      currentSlide = index;
+      slides[currentSlide].classList.replace('inactive', 'active');
+      dots[currentSlide].className = 'w-2.5 h-2.5 rounded-full bg-uw-red';
+      startAutoSlide();
+    }
+
     function renderCar(car) {
       document.title = car.name + ' — Urban Wheels Zimbabwe';
+      const primaryImage = (car.images && car.images[0]) || car.image_url || FALLBACK_IMG;
       const desc = car.description ? car.description.substring(0, 160) : (car.name + ' for sale at Urban Wheels in Harare, Zimbabwe. Check specs, price &amp; availability.');
       document.querySelector('meta[name="description"]').setAttribute('content', desc);
       document.querySelector('meta[property="og:title"]').setAttribute('content', car.name + ' — Urban Wheels');
       document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
-      document.querySelector('meta[property="og:image"]').setAttribute('content', car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg');
+      document.querySelector('meta[property="og:image"]').setAttribute('content', primaryImage);
       document.querySelector('meta[name="twitter:title"]').setAttribute('content', car.name + ' — Urban Wheels');
       document.querySelector('meta[name="twitter:description"]').setAttribute('content', desc);
-      document.querySelector('meta[name="twitter:image"]').setAttribute('content', car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg');
+      document.querySelector('meta[name="twitter:image"]').setAttribute('content', primaryImage);
       const ld = document.getElementById('vehicle-ld');
       if (ld) ld.remove();
       const script = document.createElement('script');
@@ -262,13 +352,12 @@
           "priceCurrency": "USD",
           "availability": car.status === 'sold' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock'
         },
-        "image": car.image_url || 'https://urbanwheels.co.zw/assets/hero.jpeg',
+        "image": primaryImage,
         "url": window.location.href
       });
       document.head.appendChild(script);
       document.getElementById('breadcrumb-name').textContent = car.name;
-      document.getElementById('car-image').src = car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=800&q=80';
-      document.getElementById('car-image').alt = car.name + ' — Urban Wheels Zimbabwe';
+      renderSlideshow(car.images && car.images.length > 0 ? car.images : (car.image_url ? [car.image_url] : []));
       if (car.featured) document.getElementById('car-badge').classList.remove('hidden');
       document.getElementById('car-title').textContent = car.name;
       document.getElementById('car-model').textContent = car.model || '—';
@@ -289,7 +378,6 @@
       document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
       document.getElementById('form-car-name').textContent = car.name.toUpperCase();
 
-      // Full specs
       document.getElementById('loading-state').classList.add('hidden');
       document.getElementById('car-content').classList.remove('hidden');
     }

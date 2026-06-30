@@ -367,18 +367,17 @@
 
             <!-- Image Upload -->
             <div>
-              <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Vehicle Image</label>
+              <label class="font-mono text-xs uppercase tracking-widest text-uw-muted block mb-2">Vehicle Images (up to 5)</label>
               <div class="space-y-3">
                 <div class="flex items-center gap-3">
-                  <input type="file" id="f-image-upload" accept="image/*" class="hidden" />
+                  <input type="file" id="f-image-upload" accept="image/*" multiple class="hidden" />
                   <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-xs uppercase tracking-widest px-4 py-2.5 hover:border-uw-red transition-colors inline-flex items-center gap-2">
-                    <i data-lucide="image" class="w-3.5 h-3.5"></i> <span class="hidden xs:inline">Choose Image</span>
+                    <i data-lucide="image" class="w-3.5 h-3.5"></i> <span class="hidden xs:inline">Choose Images</span>
                   </button>
-                  <span id="file-name" class="font-mono text-xs text-uw-muted truncate max-w-[140px] sm:max-w-none">No file selected</span>
+                  <span id="file-count" class="font-mono text-xs text-uw-muted">0 / 5 images selected</span>
                 </div>
-                <div class="mt-2" id="img-preview-wrap" style="display:none">
-                  <img id="img-preview" src="" alt="Preview" class="h-32 w-auto border border-uw-mid object-cover" />
-                </div>
+                <div class="flex flex-wrap gap-3 mt-2" id="img-previews"></div>
+                <div class="flex flex-wrap gap-3 mt-2" id="existing-images"></div>
               </div>
             </div>
 
@@ -417,36 +416,46 @@
   <script>
     
     
-    // ─── File upload functionality ───
+    // ─── File upload functionality (multiple images, max 5) ───
+    const MAX_IMAGES = 5;
+    let pendingFiles = [];
+
     document.getElementById('f-image-upload').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      const fileName = document.getElementById('file-name');
-      const previewWrap = document.getElementById('img-preview-wrap');
-      const previewImg = document.getElementById('img-preview');
-      
-      if (file) {
-        // Update file name display
-        fileName.textContent = file.name;
-        
-        // Show preview
+      const newFiles = Array.from(e.target.files);
+      const remaining = MAX_IMAGES - pendingFiles.length;
+      if (newFiles.length > remaining) {
+        showToast(`You can only upload up to ${MAX_IMAGES} images (${remaining} remaining)`);
+        this.value = '';
+        return;
+      }
+      pendingFiles = pendingFiles.concat(newFiles);
+      renderImagePreviews();
+      e.target.value = '';
+    });
+
+    function removePendingImage(index) {
+      pendingFiles.splice(index, 1);
+      renderImagePreviews();
+    }
+
+    function renderImagePreviews() {
+      const container = document.getElementById('img-previews');
+      const count = document.getElementById('file-count');
+      count.textContent = `${pendingFiles.length} / ${MAX_IMAGES} images selected`;
+      container.innerHTML = '';
+      pendingFiles.forEach((file, i) => {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          previewWrap.style.display = 'block';
-          previewImg.src = e.target.result;
-          
-          // Store the file data for form submission
-          previewImg.dataset.fileData = e.target.result;
-          previewImg.dataset.fileName = file.name;
+        reader.onload = function(ev) {
+          const wrap = document.createElement('div');
+          wrap.className = 'relative group';
+          wrap.innerHTML = `
+            <img src="${ev.target.result}" alt="Preview ${i+1}" class="h-24 w-32 object-cover border border-uw-mid" />
+            <button type="button" onclick="removePendingImage(${i})" class="absolute -top-2 -right-2 bg-uw-red text-uw-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">&times;</button>`;
+          container.appendChild(wrap);
         };
         reader.readAsDataURL(file);
-      } else {
-        fileName.textContent = 'No file selected';
-        previewWrap.style.display = 'none';
-        previewImg.src = '';
-        delete previewImg.dataset.fileData;
-        delete previewImg.dataset.fileName;
-      }
-    });
+      });
+    }
 
     // ─── Admin data ───
     let adminCars = [];
@@ -570,8 +579,9 @@
       adminCars.slice(0, 5).forEach(car => {
         const el = document.createElement('div');
         el.className = 'flex items-center gap-4 bg-uw-gray border border-uw-mid px-4 py-3';
+        const carImg = (car.images && car.images[0]) || car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60';
         el.innerHTML = `
-          <img src="${car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'}" alt="" class="w-14 h-10 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'" />
+          <img src="${carImg}" alt="" class="w-14 h-10 object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'" />
           <div class="flex-1 min-w-0">
             <div class="font-body font-700 text-sm truncate">${car.name}</div>
             <div class="font-mono text-uw-muted text-[10px] mt-0.5 truncate">${car.engine || ''}${car.engine && car.transmission ? ' · ' : ''}${car.transmission || ''}</div>
@@ -597,7 +607,7 @@
 
       cars.forEach(car => {
         const statusColor = car.status === 'sold' ? 'border-uw-red text-uw-red' : car.status === 'reserved' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green';
-        const img = car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60';
+        const img = (car.images && car.images[0]) || car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60';
         const price = '$' + Number(car.price || 0).toLocaleString();
 
         // Desktop row
@@ -671,12 +681,10 @@
     function clearAndShowAdd() {
       document.getElementById('car-form').reset();
       document.getElementById('edit-car-id').value = '';
-      document.getElementById('img-preview-wrap').style.display = 'none';
-      document.getElementById('file-name').textContent = 'No file selected';
-      const previewImg = document.getElementById('img-preview');
-      previewImg.src = '';
-      delete previewImg.dataset.fileData;
-      delete previewImg.dataset.fileName;
+      pendingFiles = [];
+      document.getElementById('img-previews').innerHTML = '';
+      document.getElementById('file-count').textContent = '0 / 5 images selected';
+      document.getElementById('existing-images').innerHTML = '';
       document.getElementById('f-engine').value = '';
       document.getElementById('f-transmission').value = '';
       isEditMode = false;
@@ -687,10 +695,14 @@
     }
 
     // ─── EDIT CAR ───
+    let existingImageUrls = [];
     function editCar(id) {
       const car = adminCars.find(c => c.id == id);
       if (!car) return;
       isEditMode = true;
+      pendingFiles = [];
+      document.getElementById('img-previews').innerHTML = '';
+      document.getElementById('file-count').textContent = '0 / 5 images selected';
       document.getElementById('edit-car-id').value = car.id;
       document.getElementById('f-name').value = car.name || '';
       document.getElementById('f-model').value = car.model || '';
@@ -702,28 +714,47 @@
       document.getElementById('f-fuel').value = car.fuel_type || 'Petrol';
       document.getElementById('f-engine').value = car.engine || '';
       document.getElementById('f-transmission').value = car.transmission || '';
-      if (car.image_url) {
-        document.getElementById('img-preview-wrap').style.display = 'block';
-        document.getElementById('img-preview').src = car.image_url;
-      }
+      const images = (car.images && car.images.length > 0) ? car.images : (car.image_url ? [car.image_url] : []);
+      existingImageUrls = [...images];
+      renderExistingImages();
       document.getElementById('form-mode-label').textContent = 'Editing: ' + car.name;
       document.getElementById('form-section-title').innerHTML = 'EDIT <span class="text-uw-red">LISTING</span>';
       document.getElementById('submit-btn').innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Changes →';
       showSection('add');
     }
 
+    function renderExistingImages() {
+      const container = document.getElementById('existing-images');
+      container.innerHTML = '';
+      existingImageUrls.forEach((url, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'relative group';
+        wrap.innerHTML = `
+          <img src="${url}" alt="Existing ${i+1}" class="h-24 w-32 object-cover border border-uw-mid" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=100&q=60'" />
+          <button type="button" onclick="removeExistingImage(${i})" class="absolute -top-2 -right-2 bg-uw-red text-uw-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">&times;</button>
+          <span class="absolute bottom-1 left-1 bg-uw-black bg-opacity-80 font-mono text-[10px] text-uw-white px-1.5 py-0.5">Existing</span>`;
+        container.appendChild(wrap);
+      });
+    }
+
+    function removeExistingImage(index) {
+      const removed = existingImageUrls.splice(index, 1);
+      removedUrls.push(removed[0]);
+      renderExistingImages();
+    }
+
+    let removedUrls = [];
+
     function resetForm() {
       isEditMode = false;
       document.getElementById('car-form').reset();
       document.getElementById('edit-car-id').value = '';
-      document.getElementById('img-preview-wrap').style.display = 'none';
-      document.getElementById('file-name').textContent = 'No file selected';
-      
-      // Clear file upload data
-      const previewImg = document.getElementById('img-preview');
-      previewImg.src = '';
-      delete previewImg.dataset.fileData;
-      delete previewImg.dataset.fileName;
+      pendingFiles = [];
+      document.getElementById('img-previews').innerHTML = '';
+      document.getElementById('file-count').textContent = '0 / 5 images selected';
+      document.getElementById('existing-images').innerHTML = '';
+      existingImageUrls = [];
+      removedUrls = [];
       
       document.getElementById('form-mode-label').textContent = 'New Listing';
       document.getElementById('form-section-title').innerHTML = 'ADD A <span class="text-uw-red">NEW CAR</span>';
@@ -738,15 +769,13 @@
       btn.textContent = 'Saving...';
       btn.disabled = true;
 
-      // Handle image upload to Supabase Storage
-      const fileInput = document.getElementById('f-image-upload');
-      const file = fileInput.files[0];
-      let imageUrl = '';
+      // Handle multiple image uploads to Supabase Storage
+      let imageUrls = [];
+      let base64Fallbacks = [];
 
-      if (file) {
+      for (const file of pendingFiles) {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
         try {
           const { error: uploadError } = await window.supabaseClient.storage
             .from('car-images')
@@ -756,22 +785,27 @@
             const { data: urlData } = window.supabaseClient.storage
               .from('car-images')
               .getPublicUrl(fileName);
-            imageUrl = urlData.publicUrl;
+            imageUrls.push(urlData.publicUrl);
           } else {
-            // Fallback to base64 if storage upload fails
-            const previewImg = document.getElementById('img-preview');
-            imageUrl = previewImg.dataset.fileData || '';
+            const reader = new FileReader();
+            const base64 = await new Promise(resolve => {
+              reader.onload = () => resolve(reader.result);
+              reader.readAsDataURL(file);
+            });
+            base64Fallbacks.push(base64);
           }
         } catch {
-          const previewImg = document.getElementById('img-preview');
-          imageUrl = previewImg.dataset.fileData || '';
+          const reader = new FileReader();
+          const base64 = await new Promise(resolve => {
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+          });
+          base64Fallbacks.push(base64);
         }
-      } else if (document.getElementById('edit-car-id').value) {
-        // Editing - keep existing image if no new file selected
-        const editId = document.getElementById('edit-car-id').value;
-        const existingCar = adminCars.find(c => c.id == editId);
-        if (existingCar) imageUrl = existingCar.image_url || '';
       }
+
+      const finalImages = [...existingImageUrls, ...imageUrls, ...base64Fallbacks];
+      const imageUrl = finalImages[0] || '';
 
       const carData = {
         name: document.getElementById('f-name').value,
@@ -785,6 +819,7 @@
         engine: document.getElementById('f-engine').value || null,
         transmission: document.getElementById('f-transmission').value || null,
         image_url: imageUrl,
+        images: finalImages,
       };
 
       const editId = document.getElementById('edit-car-id').value;

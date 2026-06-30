@@ -60,6 +60,7 @@ CREATE TRIGGER set_updated_at
 
 -- 6. Add columns if upgrading existing table
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE cars ADD COLUMN IF NOT EXISTS images TEXT[];
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS fuel_type TEXT DEFAULT 'Petrol';
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS engine TEXT;
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS transmission TEXT;

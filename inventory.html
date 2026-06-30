@@ -111,6 +111,29 @@
         </select>
       </div>
 
+      <!-- Filters -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-4">
+        <select id="filter-fuel" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
+          <option value="">All Fuel Types</option>
+          <option value="Petrol">Petrol</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Electric">Electric</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+        <input type="number" id="filter-price-min" placeholder="Price min" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        <input type="number" id="filter-price-max" placeholder="Price max" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        <input type="number" id="filter-year-min" placeholder="Year min" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+        <input type="number" id="filter-year-max" placeholder="Year max" class="bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
+        <div class="col-span-2 sm:col-span-3 lg:col-span-5">
+          <div class="flex gap-3">
+            <input type="number" id="filter-mileage-min" placeholder="Mileage min" class="flex-1 bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+            <input type="number" id="filter-mileage-max" placeholder="Mileage max" class="flex-1 bg-uw-black border border-uw-mid text-uw-white font-mono text-xs px-3 py-2 focus:border-uw-red transition-colors placeholder-uw-muted" />
+          </div>
+        </div>
+      </div>
+
       <!-- Results count -->
       <div class="mt-4 font-mono text-uw-muted text-xs"><span id="results-count">0</span> vehicles found</div>
     </div>
@@ -202,6 +225,13 @@
     let searchQuery = '';
     let sortBy = 'newest';
     let displayCount = 12;
+    let fuelFilter = '';
+    let priceMin = '';
+    let priceMax = '';
+    let yearMin = '';
+    let yearMax = '';
+    let mileageMin = '';
+    let mileageMax = '';
 
     async function loadInventory() {
       try {
@@ -228,7 +258,11 @@
           (car.name && car.name.toLowerCase().includes(searchQuery)) ||
           (car.make && car.make.toLowerCase().includes(searchQuery)) ||
           (car.model && car.model.toLowerCase().includes(searchQuery));
-        return matchFilter && matchSearch;
+        const matchFuel = !fuelFilter || (car.fuel_type && car.fuel_type === fuelFilter);
+        const matchPrice = (!priceMin || car.price >= Number(priceMin)) && (!priceMax || car.price <= Number(priceMax));
+        const matchYear = (!yearMin || car.year >= Number(yearMin)) && (!yearMax || car.year <= Number(yearMax));
+        const matchMileage = (!mileageMin || car.mileage >= Number(mileageMin)) && (!mileageMax || car.mileage <= Number(mileageMax));
+        return matchFilter && matchSearch && matchFuel && matchPrice && matchYear && matchMileage;
       });
 
       // Sort
@@ -311,6 +345,21 @@
       sortBy = e.target.value;
       displayCount = 12;
       renderCars();
+    });
+
+    // Filters
+    ['filter-fuel','filter-price-min','filter-price-max','filter-year-min','filter-year-max','filter-mileage-min','filter-mileage-max'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        fuelFilter = document.getElementById('filter-fuel').value;
+        priceMin = document.getElementById('filter-price-min').value;
+        priceMax = document.getElementById('filter-price-max').value;
+        yearMin = document.getElementById('filter-year-min').value;
+        yearMax = document.getElementById('filter-year-max').value;
+        mileageMin = document.getElementById('filter-mileage-min').value;
+        mileageMax = document.getElementById('filter-mileage-max').value;
+        displayCount = 12;
+        renderCars();
+      });
     });
 
     // Load More

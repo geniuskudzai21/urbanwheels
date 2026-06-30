@@ -262,7 +262,7 @@
                 ${car.inspection ? `<span class="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 ${car.inspection === 'with inspection' ? 'bg-green-600/20 text-green-400 border border-green-600' : 'bg-orange-600/20 text-orange-400 border border-orange-600'} block text-center lg:inline whitespace-nowrap">${car.inspection === 'with inspection' ? '✓ With Inspection' : '✗ Without Inspection'}</span>` : ''}
               </div>
               <div>
-                <span class="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 ${car.availability === 'for_import' ? 'bg-yellow-600/20 text-yellow-400 border border-yellow-600' : 'bg-green-600/20 text-green-400 border border-green-600'} block text-center lg:inline whitespace-nowrap">${car.availability === 'for_import' ? 'Available for Import' : 'Available in Zimbabwe'}</span>
+                <span class="font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 ${car.availability === 'in_stock' ? 'bg-green-600/20 text-green-400 border border-green-600' : 'bg-yellow-600/20 text-yellow-400 border border-yellow-600'} block text-center lg:inline whitespace-nowrap">${car.availability === 'in_stock' ? 'Available in Zimbabwe' : 'Available for Import'}</span>
               </div>
             </div>
             <div class="space-y-2">

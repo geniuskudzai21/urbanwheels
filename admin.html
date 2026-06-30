@@ -591,7 +591,7 @@
             <div class="font-mono text-uw-muted text-[10px] mt-0.5 truncate">${car.engine || ''}${car.engine && car.transmission ? ' · ' : ''}${car.transmission || ''}</div>
           </div>
           <div class="font-display text-xl text-uw-red whitespace-nowrap">$${Number(car.price || 0).toLocaleString()}</div>
-          ${car.availability === 'for_import' ? '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-yellow text-uw-yellow">For Import</span>' : '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-green text-uw-green">In Stock</span>'}`;
+          ${car.availability === 'in_stock' ? '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-green text-uw-green">In Stock</span>' : '<span class="font-mono text-[10px] uppercase px-2 py-1 border border-uw-yellow text-uw-yellow">For Import</span>'}`;
         container.appendChild(el);
       });
     }
@@ -610,8 +610,8 @@
       mobileList.innerHTML = '';
 
       cars.forEach(car => {
-        const availColor = car.availability === 'for_import' ? 'border-uw-yellow text-uw-yellow' : 'border-uw-green text-uw-green';
-        const availLabel = car.availability === 'for_import' ? 'For Import' : 'In Stock';
+        const availColor = car.availability === 'in_stock' ? 'border-uw-green text-uw-green' : 'border-uw-yellow text-uw-yellow';
+        const availLabel = car.availability === 'in_stock' ? 'In Stock' : 'For Import';
         const img = (car.images && car.images[0]) || car.image_url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?w=80&q=60';
         const price = '$' + Number(car.price || 0).toLocaleString();
 

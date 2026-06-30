@@ -379,10 +379,10 @@
         inspectionEl.innerHTML = '';
       }
       const availEl = document.getElementById('car-availability');
-      if (car.availability === 'for_import') {
-        availEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-yellow-600/20 text-yellow-400 border border-yellow-600">Available for Import</span>';
-      } else {
+      if (car.availability === 'in_stock') {
         availEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-green-600/20 text-green-400 border border-green-600">Available in Zimbabwe</span>';
+      } else {
+        availEl.innerHTML = '<span class="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1 bg-yellow-600/20 text-yellow-400 border border-yellow-600">Available for Import</span>';
       }
       document.getElementById('car-description').textContent = car.description || 'Contact us for more details on this vehicle.';
       document.getElementById('form-car-name').textContent = car.name.toUpperCase();

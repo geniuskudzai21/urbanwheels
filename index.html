@@ -606,7 +606,7 @@
               <div class="text-right">
                 <div class="font-display text-2xl text-uw-red">$${Number(car.price || 0).toLocaleString()}</div>
                 ${car.inspection ? `<div class="font-mono text-[10px] uppercase tracking-widest mt-1 ${car.inspection === 'with inspection' ? 'text-green-400' : 'text-orange-400'}">${car.inspection === 'with inspection' ? '✓ With Inspection' : '✗ Without Inspection'}</div>` : ''}
-                <div class="font-mono text-[10px] uppercase tracking-widest mt-1 ${car.availability === 'for_import' ? 'text-yellow-400' : 'text-green-400'}">${car.availability === 'for_import' ? 'Available for Import' : 'Available in Zimbabwe'}</div>
+                <div class="font-mono text-[10px] uppercase tracking-widest mt-1 ${car.availability === 'in_stock' ? 'text-green-400' : 'text-yellow-400'}">${car.availability === 'in_stock' ? 'Available in Zimbabwe' : 'Available for Import'}</div>
               </div>
             </div>
             <div class="grid grid-cols-3 gap-2 mt-auto pt-4 border-t border-uw-mid">

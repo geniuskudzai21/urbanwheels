@@ -383,7 +383,7 @@
                   <button type="button" onclick="document.getElementById('f-image-upload').click()" class="bg-uw-gray border border-uw-mid text-uw-white font-mono text-xs uppercase tracking-widest px-4 py-2.5 hover:border-uw-red transition-colors inline-flex items-center gap-2">
                     <i data-lucide="image" class="w-3.5 h-3.5"></i> <span class="hidden xs:inline">Choose Images</span>
                   </button>
-                  <span id="file-count" class="font-mono text-xs text-uw-muted">0 / 5 images selected</span>
+                  <span id="file-count" class="font-mono text-xs text-uw-muted">0 / 5 images</span>
                 </div>
                 <div class="flex flex-wrap gap-3 mt-2" id="img-previews"></div>
                 <div class="flex flex-wrap gap-3 mt-2" id="existing-images"></div>
@@ -691,7 +691,7 @@
       document.getElementById('edit-car-id').value = '';
       pendingFiles = [];
       document.getElementById('img-previews').innerHTML = '';
-      document.getElementById('file-count').textContent = '0 / 5 images selected';
+      document.getElementById('file-count').textContent = '0 / 5 images';
       document.getElementById('existing-images').innerHTML = '';
       document.getElementById('f-engine').value = '';
       document.getElementById('f-transmission').value = '';
@@ -710,7 +710,7 @@
       isEditMode = true;
       pendingFiles = [];
       document.getElementById('img-previews').innerHTML = '';
-      document.getElementById('file-count').textContent = '0 / 5 images selected';
+      document.getElementById('file-count').textContent = '0 / 5 images';
       document.getElementById('edit-car-id').value = car.id;
       document.getElementById('f-name').value = car.name || '';
       document.getElementById('f-model').value = car.model || '';
@@ -726,6 +726,7 @@
       const images = (car.images && car.images.length > 0) ? car.images : (car.image_url ? [car.image_url] : []);
       existingImageUrls = [...images];
       renderExistingImages();
+      document.getElementById('file-count').textContent = existingImageUrls.length + ' / 5 images';
       document.getElementById('form-mode-label').textContent = 'Editing: ' + car.name;
       document.getElementById('form-section-title').innerHTML = 'EDIT <span class="text-uw-red">LISTING</span>';
       document.getElementById('submit-btn').innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Changes →';
@@ -750,6 +751,7 @@
       const removed = existingImageUrls.splice(index, 1);
       removedUrls.push(removed[0]);
       renderExistingImages();
+      document.getElementById('file-count').textContent = existingImageUrls.length + pendingFiles.length + ' / 5 images';
     }
 
     let removedUrls = [];
@@ -760,7 +762,7 @@
       document.getElementById('edit-car-id').value = '';
       pendingFiles = [];
       document.getElementById('img-previews').innerHTML = '';
-      document.getElementById('file-count').textContent = '0 / 5 images selected';
+      document.getElementById('file-count').textContent = '0 / 5 images';
       document.getElementById('existing-images').innerHTML = '';
       existingImageUrls = [];
       removedUrls = [];

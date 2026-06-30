@@ -112,7 +112,7 @@
       </div>
 
       <!-- Filters -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4">
         <select id="filter-fuel" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
           <option value="">Fuel</option>
           <option value="Petrol">Petrol</option>
@@ -189,6 +189,11 @@
           <option value="460000">440,000 — 460,000 km</option>
           <option value="480000">460,000 — 480,000 km</option>
           <option value="500000">480,000 — 500,000 km</option>
+        </select>
+        <select id="filter-availability" class="bg-uw-black border border-uw-mid text-uw-muted font-mono text-xs uppercase tracking-wider px-3 py-2 focus:border-uw-red transition-colors">
+          <option value="">Location</option>
+          <option value="in_stock">In Zimbabwe</option>
+          <option value="for_import">For Import</option>
         </select>
       </div>
 
@@ -292,6 +297,7 @@
     let priceMax = '';
     let yearFilter = '';
     let mileageMax = '';
+    let availabilityFilter = '';
 
     async function loadInventory() {
       try {
@@ -322,7 +328,8 @@
         const matchPrice = !priceMax || (priceMax === 'over20000' ? car.price >= 20000 : (car.price >= Number(priceMax) - 2000 && car.price <= Number(priceMax)));
         const matchYear = !yearFilter || car.year == Number(yearFilter);
         const matchMileage = !mileageMax || (car.mileage >= Number(mileageMax) - 20000 && car.mileage <= Number(mileageMax));
-        return matchFilter && matchSearch && matchFuel && matchPrice && matchYear && matchMileage;
+        const matchAvailability = !availabilityFilter || car.availability === availabilityFilter;
+        return matchFilter && matchSearch && matchFuel && matchPrice && matchYear && matchMileage && matchAvailability;
       });
 
       // Sort
@@ -389,7 +396,7 @@
       }
 
       const resetBtn = document.getElementById('reset-btn');
-      const hasActiveFilters = searchQuery || sortBy !== 'newest' || fuelFilter || priceMax || yearFilter || mileageMax;
+      const hasActiveFilters = searchQuery || sortBy !== 'newest' || fuelFilter || priceMax || yearFilter || mileageMax || availabilityFilter;
       resetBtn.classList.toggle('hidden', !hasActiveFilters);
     }
 
@@ -412,12 +419,13 @@
     });
 
     // Filters
-    ['filter-fuel','filter-price-max','filter-year','filter-mileage-max'].forEach(id => {
+    ['filter-fuel','filter-price-max','filter-year','filter-mileage-max','filter-availability'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => {
         fuelFilter = document.getElementById('filter-fuel').value;
         priceMax = document.getElementById('filter-price-max').value;
         yearFilter = document.getElementById('filter-year').value;
         mileageMax = document.getElementById('filter-mileage-max').value;
+        availabilityFilter = document.getElementById('filter-availability').value;
         displayCount = 12;
         renderCars();
       });
@@ -439,10 +447,12 @@
       document.getElementById('filter-price-max').value = '';
       document.getElementById('filter-year').value = '';
       document.getElementById('filter-mileage-max').value = '';
+      document.getElementById('filter-availability').value = '';
       fuelFilter = '';
       priceMax = '';
       yearFilter = '';
       mileageMax = '';
+      availabilityFilter = '';
       displayCount = 12;
       renderCars();
     });
